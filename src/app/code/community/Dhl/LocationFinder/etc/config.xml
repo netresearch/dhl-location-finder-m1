@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dhl_LocationFinder>
+            <version>0.1.0</version>
+        </Dhl_LocationFinder>
+    </modules>
+    <global>
+        <blocks>
+            <dhl_locationfinder>
+                <class>Dhl_LocationFinder_Block</class>
+            </dhl_locationfinder>
+        </blocks>
+        <helpers>
+            <dhl_locationfinder>
+                <class>Dhl_LocationFinder_Helper</class>
+            </dhl_locationfinder>
+        </helpers>
+        <models>
+            <dhl_locationfinder>
+                <class>Dhl_LocationFinder_Model</class>
+            </dhl_locationfinder>
+        </models>
+        <resources>
+            <dhl_locationfinder_setup>
+                <setup>
+                    <module>Dhl_LocationFinder</module>
+                </setup>
+            </dhl_locationfinder_setup>
+        </resources>
+    </global>
+    <phpunit>
+        <suite>
+            <modules>
+                <Dhl_LocationFinder />
+            </modules>
+        </suite>
+    </phpunit>
+</config>
