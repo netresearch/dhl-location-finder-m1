@@ -1,8 +1,8 @@
 {
-    "name": "dhl/location-finder",
+    "name": "dhl/location-finder-m1",
     "license": "OSL-3.0",
     "type": "magento-module",
-    "description": "DHL Parcel Location Finder",
+    "description": "DHL Parcel Location Finder module for Magento",
     "suggest": {
         "magento-hackathon/magento-composer-installer": "^3.0.6"
     },
