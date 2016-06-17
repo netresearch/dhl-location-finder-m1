@@ -1,55 +1,54 @@
-Dhl LocationFinder Extension
-=====================
-Add your description here
+Dhl Parcel Shop Finder Extension
+================================
+
+The DHL Parcel Location Finder extension for Magento allows customers to select
+Parcel Shops in the One Page Checkout.
+
 Facts
 -----
-- version: 1.0.0
+- version: 0.1.0
 - extension key: Dhl_LocationFinder
-- [extension on Magento Connect](http://www.magentocommerce.com/magento-connect/dhl)-locationfinder-1234.html)
-- Magento Connect 1.0 extension key: magento-community/Dhl_LocationFinder
+- [extension on Magento Connect](http://www.magentocommerce.com/magento-connect/dhl-locationfinder-1234.html)
 - Magento Connect 2.0 extension key: http://connect20.magentocommerce.com/community/Dhl_LocationFinder
-- [extension on GitHub](https://github.com/dhl/Dhl_LocationFinder)
-- [direct download link](http://connect.magentocommerce.com/community/get/Dhl_LocationFinder-1.0.0.tgz)
+- [extension on GitLab](https://git.netresearch.de/dhl/location-finder)
+- [direct download link](http://connect.magentocommerce.com/community/get/Dhl_LocationFinder-0.1.0.tgz)
 
 Description
 -----------
-This paragraph describes what the extension does.
+This extension integrates a map in the One Page Checkout that visualizes
+Parcel Shops or Packstation machines. The customer can then select a location
+nearby and use it as delivery address.
 
 Requirements
 ------------
-- PHP >= 5.2.0
-- Mage_Core
-- ...
+- PHP >= 5.5.0
 
 Compatibility
 -------------
-- Magento >= 1.4
+- Magento CE >= 1.7
 
 Installation Instructions
 -------------------------
-1. Install the extension via Magento Connect with the key shown above or copy all the files into your document root.
+
+1. Install the extension via Magento Connect with the key shown above or install
+   via composer / modman.
 2. Clear the cache, logout from the admin panel and then login again.
-3. Configure and activate the extension under System - Configuration - Company - Example Extension.
-4. ...
+
+More information on configuration and integration into custom themes can be found
+in the documentation.
 
 Uninstallation
 --------------
 1. Remove all extension files from your Magento installation
-2. ...
+2. Remove the database columns from the shipping address entity (t.b.d.)
 
 Support
 -------
-If you have any issues with this extension, open an issue on [GitHub](https://github.com/dhl/Dhl_LocationFinder/issues).
-
-Contribution
-------------
-Any contribution is highly appreciated. The best way to contribute code is to open a [pull request on GitHub](https://help.github.com/articles/using-pull-requests).
+If you have any issues with this extension, contact the support (t.b.d.)
 
 Developer
 ---------
-Christoph Aßmann
-[http://www.firstname-lastname.com](http://www.firstname-lastname.com)
-[@FirstNameLastName](https://twitter.com/FirstNameLastName)
+Christoph Aßmann | [Netresearch GmbH & Co. KG](http://www.netresearch.de/) | [@mam08ixo](https://twitter.com/mam08ixo)
 
 Licence
 -------
@@ -57,4 +56,4 @@ Licence
 
 Copyright
 ---------
-(c) 2016 Dhl
+(c) 2016 DHL Paket GmbH
