@@ -25,7 +25,7 @@
  */
 
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Dhl_LocationFinder_Test_Model_ConfigTest
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,28 +33,25 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest extends EcomDev_PHPUnit_Test_Case_Config
+class Dhl_LocationFinder_Test_Model_ConfigTest extends EcomDev_PHPUnit_Test_Case
 {
     /**
      * @test
      */
-    public function validateCodePool()
+    public function getWsAuthUser()
     {
-        $this->assertModuleCodePool('community');
+        $username = Mage::getModel('dhl_locationfinder/config')->getWsAuthUser();
+        $this->assertInternalType('string', $username);
+        $this->assertNotEmpty($username);
     }
 
     /**
      * @test
      */
-    public function validateConfig()
+    public function getWsAuthPass()
     {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
-
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
+        $password = Mage::getModel('dhl_locationfinder/config')->getWsAuthPass();
+        $this->assertInternalType('string', $password);
+        $this->assertNotEmpty($password);
     }
 }
