@@ -1,2 +1,4 @@
 src/app/code/community/Dhl/LocationFinder/ app/code/community/Dhl/LocationFinder/
 src/app/etc/modules/Dhl_LocationFinder.xml app/etc/modules/Dhl_LocationFinder.xml
+
+src/lib/Dhl/Psf/ lib/Dhl/Psf/

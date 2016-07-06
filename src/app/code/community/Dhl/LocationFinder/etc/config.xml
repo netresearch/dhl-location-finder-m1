@@ -55,6 +55,17 @@
             </dhl_locationfinder_setup>
         </resources>
     </global>
+    <frontend>
+        <routers>
+            <dhl_locationfinder>
+                <use>standard</use>
+                <args>
+                    <module>Dhl_LocationFinder</module>
+                    <frontName>dhlpsf</frontName>
+                </args>
+            </dhl_locationfinder>
+        </routers>
+    </frontend>
     <default>
         <dhl_locationfinder>
             <webservice>
