@@ -1,4 +1,9 @@
-src/app/code/community/Dhl/LocationFinder/ app/code/community/Dhl/LocationFinder/
-src/app/etc/modules/Dhl_LocationFinder.xml app/etc/modules/Dhl_LocationFinder.xml
+src/app/code/community/Dhl/LocationFinder/                          app/code/community/Dhl/LocationFinder/
+src/app/design/frontend/base/default/layout/dhl_locationfinder.xml  app/design/frontend/base/default/layout/dhl_locationfinder.xml
+src/app/design/frontend/base/default/template/dhl_psfinder          app/design/frontend/base/default/template/dhl_psfinder
+src/app/etc/modules/Dhl_LocationFinder.xml                          app/etc/modules/Dhl_LocationFinder.xml
+src/app/locale/de_DE/Dhl_LocationFinder.csv                         app/locale/de_DE/Dhl_LocationFinder.csv
+src/app/locale/en_US/Dhl_LocationFinder.csv                         app/locale/en_US/Dhl_LocationFinder.csv
+src/js/dhl/psfinder.js                                              js/dhl/psfinder.js
 
-src/lib/Dhl/Psf/ lib/Dhl/Psf/
+src/lib/Dhl/Psf/                                                    lib/Dhl/Psf/

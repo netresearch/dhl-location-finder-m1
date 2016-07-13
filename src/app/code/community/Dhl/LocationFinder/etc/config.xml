@@ -65,6 +65,32 @@
                 </args>
             </dhl_locationfinder>
         </routers>
+        <layout>
+            <updates>
+                <dhl_locationfinder>
+                    <file>dhl_locationfinder.xml</file>
+                </dhl_locationfinder>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <append_parcel_finder_to_shipping>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>appendParcelFinderToShipping</method>
+                    </append_parcel_finder_to_shipping>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
     </frontend>
     <default>
         <dhl_locationfinder>

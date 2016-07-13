@@ -1,0 +1,32 @@
+<div id="dhl_psfinder_trigger">
+    <a href="javascript:void(0);" onclick="addFirstEntry()">Test</a>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+
+    addParcelFinderToShippingForm();
+
+    function addFirstEntry() {
+        new Ajax.Request('<?php echo Mage::getBaseUrl(); ?>dhlpsf/facilities/', {
+            parameters: $('co-billing-form').serialize(true),
+            onSuccess: function (data) {
+                var responseData = JSON.parse(data.responseText);
+
+                // Check if stores was found
+                if (responseData['success']) {
+                    // Add Address of store in shipping form
+                    var store = responseData['locations'][0];
+                    $('shipping:street1').setValue(store['street'] + ' ' + store['houseNo']);
+                    $('shipping:city').setValue(store['city']);
+                    $('shipping:country_id').setValue(store['country']);
+                    $('shipping:postcode').setValue(store['zipCode']);
+
+                    alert('Adressdaten wurden übertragen');
+                } else {
+                    alert(responseData['message']);
+                }
+            }
+        });
+    }
+    //]]>
+</script>
