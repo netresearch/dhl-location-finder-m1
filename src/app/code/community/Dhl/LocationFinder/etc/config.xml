@@ -92,6 +92,17 @@
             </core_block_abstract_to_html_after>
         </events>
     </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
         <dhl_locationfinder>
             <webservice>
@@ -99,6 +110,12 @@
                 <auth_password>2de26b775e59279464d1c2f8546432e62413372421c672db36eaacfc2f</auth_password>
             </webservice>
         </dhl_locationfinder>
+        <dhl>
+            <dhl_locationfinder>
+                <enable_store_finder>1</enable_store_finder>
+                <map_type>googlemaps</map_type>
+            </dhl_locationfinder>
+        </dhl>
     </default>
     <phpunit>
         <suite>

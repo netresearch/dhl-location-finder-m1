@@ -29,7 +29,9 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-            <block type="core/template" name="Store Finder" template="dhl_psfinder/js.phtml" after="-"/>
+            <block type="dhl_locationfinder/checkout_onepage_parcelfinder" name="addMapToCheckout">
+                <action method="addMapToCheckout"/>
+            </block>
         </reference>
     </checkout_onepage_index>
 </layout>

@@ -50,10 +50,12 @@ class Dhl_LocationFinder_Model_Observer
         $block = $observer->getData('block');
         if ($block instanceof Mage_Checkout_Block_Onepage_Shipping
             && false == $block instanceof Mage_Paypal_Block_Express_Review_Shipping
+            && Mage::getSingleton('dhl_locationfinder/config')->getIsModuleActive()
         ) {
             $transport        = $observer->getData('transport');
             $layout           = $block->getLayout();
             $html             = $transport->getHtml();
+            /** @var string $parcelFinderHtml */
             $parcelFinderHtml =
                 $layout->createBlock('dhl_locationfinder/checkout_onepage_parcelfinder', 'onepage_parcelfinder')
                        ->setTemplate('dhl_psfinder/checkout/onepage/parcelfinder.phtml')

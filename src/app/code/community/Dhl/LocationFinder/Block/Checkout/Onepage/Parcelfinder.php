@@ -38,15 +38,38 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder
     extends Mage_Core_Block_Template
 {
 
-    /**
-     * Internal constructor, that is called from real constructor.
-     *
-     *
-     */
-    protected function _construct()
+    public function addMapToCheckout()
     {
-        parent::_construct();
-        $this->setTemplate('dhl_psfinder/checkout/onepage/parcelfinder.phtml');
+        /** @var Mage_Page_Block_Html_Head $head */
+        $head = $this->getHeadBlock();
+        /** @var Dhl_LocationFinder_Model_Config $configModel */
+        $configModel = Mage::getSingleton('dhl_locationfinder/config');
+
+        if ($configModel->getIsModuleActive()) {
+
+            $externalBlock = $this->getLayout()->createBlock('core/text', 'addMapToCheckout');
+            switch ($configModel->getCurrentMapProvider()) {
+
+                case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:
+                    $externalBlock->setText(
+                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>>'
+                    );
+                    break;
+                default:
+                    $externalBlock->setText(
+                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>>'
+                    );
+                    break;
+            }
+            $head->setChild('mapForCheckout', $externalBlock);
+        }
+
+        return $head;
+    }
+
+    private function getHeadBlock()
+    {
+        return $this->getLayout()->getBlock('head');
     }
 
 }
