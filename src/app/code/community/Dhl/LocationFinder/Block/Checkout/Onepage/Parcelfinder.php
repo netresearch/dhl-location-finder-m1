@@ -47,7 +47,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder
 
         if ($configModel->getIsModuleActive()) {
 
-            $externalBlock = $this->getLayout()->createBlock('core/text', 'addMapToCheckout');
+            $externalBlock = $this->getLayout()->createBlock('core/text', 'mapForCheckout');
             switch ($configModel->getCurrentMapProvider()) {
 
                 case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:

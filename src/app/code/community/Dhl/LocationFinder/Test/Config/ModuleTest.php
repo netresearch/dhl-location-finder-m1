@@ -33,8 +33,9 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest extends EcomDev_PHPUnit_Test_Case_Config
-{
+class Dhl_LocationFinder_Test_Config_ModuleTest
+    extends EcomDev_PHPUnit_Test_Case_Config
+{ 
     /**
      * @test
      */
@@ -56,5 +57,10 @@ class Dhl_LocationFinder_Test_Config_ModuleTest extends EcomDev_PHPUnit_Test_Cas
         $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
         $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
         $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
+
+        $this->assertConfigNodeHasChild('default', 'dhl');
+        $this->assertConfigNodeHasChild('default/dhl', 'dhl_locationfinder');
+        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'enable_store_finder');
+        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'map_type');
     }
 }

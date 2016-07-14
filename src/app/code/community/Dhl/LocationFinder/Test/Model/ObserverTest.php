@@ -33,46 +33,17 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Model_ConfigTest
+class Dhl_LocationFinder_Test_Model_ObserverTest
     extends EcomDev_PHPUnit_Test_Case
 {
     /**
      * @test
      */
-    public function getWsAuthUser()
+    public function testAppendParcelFinderToShipping()
     {
-        $username = Mage::getModel('dhl_locationfinder/config')->getWsAuthUser();
-        $this->assertInternalType('string', $username);
-        $this->assertNotEmpty($username);
+        $this->markTestIncomplete(
+            'Is anything for test here'
+        );
     }
 
-    /**
-     * @test
-     */
-    public function getWsAuthPass()
-    {
-        $password = Mage::getModel('dhl_locationfinder/config')->getWsAuthPass();
-        $this->assertInternalType('string', $password);
-        $this->assertNotEmpty($password);
-    }
-
-    /**
-     * @test
-     */
-    public function getIsModuleActive()
-    {
-        $enabled = Mage::getModel('dhl_locationfinder/config')->getIsModuleActive();
-        $this->assertInternalType('string', $enabled);
-        $this->assertNotEmpty($enabled);
-    }
-
-    /**
-     * @test
-     */
-    public function getCurrentMapProvider()
-    {
-        $mapProvider = Mage::getModel('dhl_locationfinder/config')->getCurrentMapProvider();
-        $this->assertInternalType('string', $mapProvider);
-        $this->assertNotEmpty($mapProvider);
-    }
 }
