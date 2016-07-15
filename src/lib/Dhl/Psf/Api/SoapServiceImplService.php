@@ -8,7 +8,7 @@ class SoapServiceImplService extends \SoapClient
     /**
      * @var array $classmap The defined classes
      */
-    private static $classmap = array (
+    protected static $classmap = array (
       'getParcellocationByCoordinate' => 'Dhl\\Psf\\Api\\getParcellocationByCoordinate',
       'getParcellocationByCoordinateResponse' => 'Dhl\\Psf\\Api\\getParcellocationByCoordinateResponse',
       'psfParcellocation' => 'Dhl\\Psf\\Api\\psfParcellocation',

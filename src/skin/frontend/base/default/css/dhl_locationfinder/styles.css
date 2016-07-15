@@ -45,19 +45,41 @@
 
 #sf-map-wrapper .map-content {
     position: relative;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 500px;
+    top: 6%;
+    left: 6%;
+    width: 88%;
+    height: 530px;
     padding: 16px;
     background-color: white;
     z-index: 1002;
+}
+
+#sf-map-wrapper .map-content .fieldset {
+    margin-right: 10px;
+    display: block;
+    float: left;
+}
+
+#sf-map-wrapper .map-content .fieldset + .fieldset {
+    margin-top: 0;
 }
 
 #sf-map-wrapper .map-content .input-box {
     display: inline-block;
     float: left;
     margin-left: 10px;
+    padding: 0;
+}
+
+#sf-map-wrapper .map-content .input-box input,
+#sf-map-wrapper .map-content .input-box select {
+    background: white;
+    border: 1px solid #AEAEAE;
+    height: 33px;
+    font-size: 14px;
+    line-height: 21px;
+    padding: 0 8px;
+    width: 100%;
 }
 
 #sf-map-wrapper .map-content .input-box:first-child {
@@ -68,12 +90,16 @@
     width: 100%;
 }
 
+#sf-map-wrapper .map-content .input-box.country {
+    width: 150px;
+}
+
 #sf-map-wrapper .map-content .input-box.zipcode {
     width: 80px;
 }
 
 #sf-map-wrapper .map-content .input-box.city {
-    width: 200px;
+    width: 210px;
 }
 
 #sf-map-wrapper .map-content .input-box.street {
@@ -104,7 +130,7 @@
     z-index: 1003;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 1124px) {
 
     #sf-map-wrapper .map-content .buttons-set {
         float: none;
@@ -123,6 +149,25 @@
     }
 }
 
+@media only screen and (max-width: 900px) and (min-width: 769px) {
+
+    #sf-map-wrapper .map-content .buttons-set {
+        position: absolute;
+        right: 15px;
+        top: 16px;
+        padding: 0;
+    }
+
+    #sf-map-wrapper .map-content .fieldset {
+        margin-right: 0;
+    }
+
+    #sf-map-wrapper .map-content .fieldset + .fieldset {
+        margin-top: 10px;
+        clear: left;
+    }
+}
+
 @media only screen and (max-width: 768px) {
 
     #sf-map-wrapper .close-map {
@@ -130,41 +175,81 @@
     }
 
     #sf-map-wrapper .map-content {
-        top: 16%;
+        top: 8%;
         left: 1%;
         width: 98%;
-        height: 450px;
+        height: 500px;
     }
 
+    #sf-map-wrapper .map-content .fieldset {
+        float: none;
+        display: table;
+        width: 100%;
+    }
+
+    #sf-map-wrapper .map-content .fieldset + .fieldset {
+        margin-top: 10px;
+    }
+
+    #sf-map-wrapper .map-content .input-box.country,
     #sf-map-wrapper .map-content .input-box.zipcode {
         width: 30%;
-        float: left;
+        float: none;
+        display: table-cell;
     }
 
-    #sf-map-wrapper .map-content .input-box.city {
-        width: 64%;
-        margin-left: 4%;
-        float: right;
-    }
-
+    #sf-map-wrapper .map-content .input-box.city,
     #sf-map-wrapper .map-content .input-box.street {
         margin: 0;
-        width: 100%;
-        padding-top: 10px;
+        width: 70%;
+        padding-left: 5%;
+        display: table-cell;
+        float: none;
     }
 
     #sf-map-wrapper #map-canvas {
-        height: 69%;
+        height: 72%;
     }
 }
 
 @media only screen and (max-width: 375px) {
 
+    #sf-map-wrapper .close-map {
+        top: -7%;
+    }
+
+    #sf-map-wrapper .map-content .fieldset {
+        display: block;
+    }
+
+    #sf-map-wrapper .map-content .input-box.country {
+        width: 100%;
+        display: block;
+        float: none;
+    }
+
+    #sf-map-wrapper .map-content .input-box.zipcode {
+        float: left;
+    }
+
+    #sf-map-wrapper .map-content .input-box.city {
+        float: right;
+        padding: 10px 0;
+        margin: 0;
+        width: 66%;
+    }
+
+    #sf-map-wrapper .map-content .input-box.street {
+        float: right;
+        width: 100%;
+        padding: 0;
+    }
+
     #sf-map-wrapper .map-content {
-        height: 395px;
+        height: 430px;
     }
 
     #sf-map-wrapper #map-canvas {
-        height: 65%;
+        height: 56%;
     }
 }

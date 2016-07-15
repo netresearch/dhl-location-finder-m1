@@ -18,6 +18,7 @@
         'Dhl\Psf\Api\getParcellocationByAddress' => __DIR__ .'/getParcellocationByAddress.php',
         'Dhl\Psf\Api\getParcellocationByAddressResponse' => __DIR__ .'/getParcellocationByAddressResponse.php',
         'Dhl\Psf\Api\service' => __DIR__ .'/service.php',
+        'Dhl\Psf\Api\allowedCountries' => __DIR__ .'/allowedCountries.php',
         'Dhl\Psf\Api\closurePeriodType' => __DIR__ .'/closurePeriodType.php',
         'Dhl\Psf\Api\timeInfoType' => __DIR__ .'/timeInfoType.php',
         'Dhl\Psf\Api\ServiceException' => __DIR__ .'/ServiceException.php'

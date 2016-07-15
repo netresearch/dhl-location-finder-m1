@@ -14,7 +14,6 @@ DhlLocationFinder.prototype = {
             $$('body')[0].insert({
                 bottom: $(elementId)
             });
-
             this.mapWrapper = $(elementId);
         }
     },
@@ -31,7 +30,7 @@ DhlLocationFinder.prototype = {
                         this.mapElement,
                         {
                             center: new google.maps.LatLng(52.4945047, 13.4006041),
-                            zoom: 10,
+                            zoom: 11,
                             mapTypeId: google.maps.MapTypeId.ROADMAP
                         }
                     );
@@ -70,14 +69,14 @@ DhlLocationFinder.prototype = {
     },
     updateMapInLocationFinder: function (formId, actionUrl) {
         if (formId && actionUrl) {
+
+            var map = this.map;
             new Ajax.Request(actionUrl, {
                 parameters: $(formId).serialize(true),
                 onSuccess: function (data) {
                     var responseData = JSON.parse(data.responseText);
-
                     // Check if stores was found
                     if (responseData['success']) {
-
                         /*
                          // Add Address of store in shipping form
                          var store = responseData['locations'][0];
@@ -88,8 +87,65 @@ DhlLocationFinder.prototype = {
 
                          alert('Adressdaten wurden übertragen');
                          */
-                        console.log(responseData['locations']);
-                        //updateMapInCheckout(responseData['locations']);
+
+                        // Set results as stores
+                        var stores = [];
+                        var newCenter = '';
+                        responseData['locations'].each(function (location) {
+
+                            var coordinates = new google.maps.LatLng(location['lat'], location['long']);
+                            var store = new storeLocator.Store(
+                                location['id'],
+                                coordinates,
+                                null,
+                                {
+                                    title: location['name'],
+                                    address: location['street'] + ' ' + location['houseNo'] + ' ' + location['zipCode'] + ' ' + location['city'],
+                                    icon: location['icon'],
+                                    street: location['street'] // custom info from webservice response, see below
+                                }
+                            );
+                            if (newCenter == '') {
+                                newCenter = coordinates;
+                            }
+                            stores.push(store);
+                        });
+
+                        // Add the Stores to a dataset
+                        var dataFeed = new storeLocator.StaticDataFeed();
+                        dataFeed.setStores(stores);
+
+                        // Create View on the map
+                        var view = new storeLocator.View(
+                            map,
+                            dataFeed,
+                            {
+                                geolocation: false
+                            }
+                        );
+                        view.createMarker = function (store) {
+                            var markerOptions = {
+                                position: store.getLocation(),
+                                icon: store.getDetails().icon,
+                                title: store.getDetails().title
+                            };
+                            return new google.maps.Marker(markerOptions);
+                        };
+
+                        // Add Click Event for later use, to get the location credentials
+                        stores.each(function (store) {
+                            view.getMarker(store).addListener("click", function () {
+                                console.log("TODO: write store info to form elements, e.g. " + this.getDetails().street);
+                            }.bind(store));
+                        });
+
+                        // Update Map
+                        if (newCenter != '') {
+                            map.setCenter(newCenter);
+                            map.setZoom(13);
+                            view.refreshView();
+                        }
+
                     } else {
                         alert(responseData['message']);
                     }

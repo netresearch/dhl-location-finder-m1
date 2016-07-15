@@ -1,30 +1,76 @@
+<?php
+/**
+ * Dhl LocationFinder
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * PHP version 5
+ *
+ * @category  Dhl
+ * @package   Dhl_LocationFinder
+ * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @copyright 2016 Netresearch GmbH & Co. KG
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.netresearch.de/
+ */
+
+/**
+ * Dhl_LocationFinder_FacilitiesController
+ *
+ * @category  Dhl
+ * @package   Dhl_LocationFinder
+ * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.netresearch.de/
+ */
+/** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $this */
+?>
+
 <div id="dhl_locationfinder_trigger">
     <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap(
         '<?php echo Mage::getSingleton('dhl_locationfinder/config')->getCurrentMapProvider(); ?>',
         'map-canvas'
-        );">Test</a>
+        );"><?php echo $this->__('Search packing station / post office'); ?></a>
 </div>
 <div id="sf-map-wrapper">
     <div class="map-content">
         <form action="javascript:void(0);"
               onsubmit="locationFinder.updateMapInLocationFinder(
                   'locationFinderForm',
-                  '<?php echo Mage::getBaseUrl(); ?>dhlpsf/facilities/');"
+                  '<?php echo $this->getActionUrl(); ?>');"
               id="locationFinderForm"
               method="POST"
               class="clearfix">
             <div class="input-fields">
-                <div class="input-box zipcode">
-                    <input type="text" placeholder="<?php echo $this->__('Zipcode'); ?>" id="locationFinder-zipcode"
-                           name="locationfinder[zipcode]"/>
+                <div class="fieldset">
+                    <div class="input-box country">
+                        <?php echo $this->getCountrySelect('locationfinder') ?>
+                    </div>
+                    <div class="input-box city">
+                        <input type="text" placeholder="<?php echo $this->__('City'); ?>" id="locationfinder-city"
+                               name="locationfinder[city]"/>
+                    </div>
                 </div>
-                <div class="input-box city">
-                    <input type="text" placeholder="<?php echo $this->__('City'); ?>" id="locationFinder-city"
-                           name="locationfinder[city]"/>
-                </div>
-                <div class="input-box street">
-                    <input type="text" placeholder="<?php echo $this->__('Street'); ?>" id="locationFinder-street"
-                           name="locationfinder[street]"/>
+                <div class="fieldset">
+                    <div class="input-box zipcode">
+                        <input type="text" placeholder="<?php echo $this->__('Zipcode'); ?>" id="locationfinder-zipcode"
+                               name="locationfinder[zipcode]"/>
+                    </div>
+                    <div class="input-box street">
+                        <input type="text" placeholder="<?php echo $this->__('Street'); ?>" id="locationfinder-street"
+                               name="locationfinder[street]"/>
+                    </div>
                 </div>
                 <div class="buttons-set">
                     <button type="submit" class="button">
@@ -41,9 +87,9 @@
 <script type="text/javascript">
     //<![CDATA[
     var locationFinder = new DhlLocationFinder(
-        'sf-map-wrapper',                           // Id of the Wrapper Container for the location finder
-        'dhl_locationfinder_trigger',                     // Id of the Element which contain the CTA
-        'locationFinder'                               // Name of the Location Finder, for internal uses
+        'sf-map-wrapper',                        // Id of the Wrapper Container for the location finder
+        'dhl_locationfinder_trigger',            // Id of the Element which contain the CTA
+        'locationFinder'                         // Name of the location finder, for internal uses
     );
     //]]>
 </script>

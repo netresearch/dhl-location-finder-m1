@@ -55,12 +55,17 @@ class Dhl_LocationFinder_FacilitiesController
 
         // Build Address Data from Billing Form
         $searchAddress = $this->getRequest()->getParam('locationfinder');
-        //if no billing exist, it should be a test call
+
+        // Use required string for searched country
+        $allowedCountries = new LocationsApi\allowedCountries();
+        $allowedCountries = $allowedCountries->getCountries();
+
         $soapAddress = '';
-        isset($searchAddress['zipcode']) ? $soapAddress .= $searchAddress['zipcode'] : null;
+        isset($searchAddress['country']) ? $soapAddress .= $allowedCountries[$searchAddress['country']]
+            : null;
         isset($searchAddress['city']) ? $soapAddress .= ' ' . $searchAddress['city'] : null;
+        isset($searchAddress['zipcode']) ? $soapAddress .= ' ' . $searchAddress['zipcode'] : null;
         isset($searchAddress['street']) ? $soapAddress .= ' ' . $searchAddress['street'] : null;
-        isset($searchAddress['country_id']) ? $soapAddress .= ' ' . $searchAddress['country_id'] : null;
 
         if ($soapAddress != '') {
 
@@ -71,17 +76,27 @@ class Dhl_LocationFinder_FacilitiesController
                 $response  = $service->getParcellocationByAddress($requestType);
                 $locations = $response->getParcelLocation();
                 if ($locations) {
+
+                    // Get Icons for the store marker
+                    /** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $locationBlock */
+                    $locationBlock = Mage::getBlockSingleton('dhl_locationfinder/checkout_onepage_locationfinder');
+
                     foreach ($locations as $location) {
                         $mapLocation       = new stdClass();
                         $mapLocation->type = $location->getShopType();
                         $mapLocation->name = $location->getShopName();
+                        $mapLocation->icon = $locationBlock->getMarkerIconForShopType($location->getShopType());
 
                         $mapLocation->street  = $location->getStreet();
                         $mapLocation->houseNo = $location->getHouseNo();
                         $mapLocation->zipCode = $location->getZipCode();
                         $mapLocation->city    = $location->getCity();
                         $mapLocation->country = strtoupper($location->getCountryCode());
-                        //$mapLocation->timeInfo = $location->getPsfTimeinfos();
+                        $mapLocation->id      = $location->getPrimaryKeyDeliverySystem();
+
+                        $coordinates       = $location->getLocation();
+                        $mapLocation->lat  = $coordinates->getLatitude();
+                        $mapLocation->long = $coordinates->getLongitude();
 
                         $mapLocations[] = $mapLocation;
                     }
