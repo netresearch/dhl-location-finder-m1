@@ -54,48 +54,48 @@ class Dhl_LocationFinder_FacilitiesController
         $message      = '';
 
         // Build Address Data from Billing Form
-        $billingAddress = $this->getRequest()->getParam('billing');
+        $searchAddress = $this->getRequest()->getParam('locationfinder');
         //if no billing exist, it should be a test call
-        if ($billingAddress) {
-            $soapAddress = '';
-            isset($billingAddress['postcode']) ? $soapAddress .= $billingAddress['postcode'] : null;
-            isset($billingAddress['city']) ? $soapAddress .= ' ' . $billingAddress['city'] : null;
-            isset($billingAddress['street'][0]) ? $soapAddress .= ' ' . $billingAddress['street'][0] : null;
-            isset($billingAddress['country_id']) ? $soapAddress .= ' ' . $billingAddress['country_id'] : null;
-        } else {
-            $soapAddress = '04229 Leipzig Nonnenstraße 11d Germany';
-        }
+        $soapAddress = '';
+        isset($searchAddress['zipcode']) ? $soapAddress .= $searchAddress['zipcode'] : null;
+        isset($searchAddress['city']) ? $soapAddress .= ' ' . $searchAddress['city'] : null;
+        isset($searchAddress['street']) ? $soapAddress .= ' ' . $searchAddress['street'] : null;
+        isset($searchAddress['country_id']) ? $soapAddress .= ' ' . $searchAddress['country_id'] : null;
 
-        $service     = new LocationsApi\SoapServiceImplService(['trace' => true,]);
-        $requestType = new LocationsApi\getParcellocationByAddress($soapAddress);
+        if ($soapAddress != '') {
 
-        try {
-            $response  = $service->getParcellocationByAddress($requestType);
-            $locations = $response->getParcelLocation();
-            if ($locations) {
-                foreach ($locations as $location) {
-                    $mapLocation       = new stdClass();
-                    $mapLocation->type = $location->getShopType();
-                    $mapLocation->name = $location->getShopName();
+            $service     = new LocationsApi\SoapServiceImplService(['trace' => true,]);
+            $requestType = new LocationsApi\getParcellocationByAddress($soapAddress);
 
-                    $mapLocation->street  = $location->getStreet();
-                    $mapLocation->houseNo = $location->getHouseNo();
-                    $mapLocation->zipCode = $location->getZipCode();
-                    $mapLocation->city    = $location->getCity();
-                    $mapLocation->country = !empty($billingAddress) ? $billingAddress['country_id'] : 'DE';
+            try {
+                $response  = $service->getParcellocationByAddress($requestType);
+                $locations = $response->getParcelLocation();
+                if ($locations) {
+                    foreach ($locations as $location) {
+                        $mapLocation       = new stdClass();
+                        $mapLocation->type = $location->getShopType();
+                        $mapLocation->name = $location->getShopName();
 
-//            $mapLocation->timeInfo = $location->getPsfTimeinfos();
-                    $mapLocations[] = $mapLocation;
+                        $mapLocation->street  = $location->getStreet();
+                        $mapLocation->houseNo = $location->getHouseNo();
+                        $mapLocation->zipCode = $location->getZipCode();
+                        $mapLocation->city    = $location->getCity();
+                        $mapLocation->country = strtoupper($location->getCountryCode());
+                        //$mapLocation->timeInfo = $location->getPsfTimeinfos();
+
+                        $mapLocations[] = $mapLocation;
+                    }
+                    $success = true;
+                } else {
+                    $message = $this->__('We could not find any stores in your area.');
                 }
-                $success = true;
-            } else {
-                $message = $this->__('We could not find any stores in your area.');
+            } catch (SoapFault $sf) {
+                // DHL got an unknown Address
+                $message = $sf->getMessage();
             }
-        } catch (SoapFault $sf) {
-            // DHL got an unknown Address
-            $message = $sf->getMessage();
+        } else {
+            $message = $this->__('Please enter a valid address.');
         }
-
 
         $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->getResponse()

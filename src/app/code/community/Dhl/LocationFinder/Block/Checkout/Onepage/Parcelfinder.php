@@ -34,7 +34,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder
+class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     extends Mage_Core_Block_Template
 {
 
@@ -52,12 +52,12 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder
 
                 case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:
                     $externalBlock->setText(
-                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>>'
+                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>'
                     );
                     break;
                 default:
                     $externalBlock->setText(
-                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>>'
+                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>'
                     );
                     break;
             }
@@ -67,7 +67,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder
         return $head;
     }
 
-    private function getHeadBlock()
+    protected function getHeadBlock()
     {
         return $this->getLayout()->getBlock('head');
     }

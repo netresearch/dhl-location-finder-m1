@@ -38,7 +38,7 @@ class Dhl_LocationFinder_Model_Config
 {
     const CONFIG_XML_PATH_WS_AUTH_USER    = 'dhl_locationfinder/webservice/auth_username';
     const CONFIG_XML_PATH_WS_AUTH_PASS    = 'dhl_locationfinder/webservice/auth_password';
-    const CONFIG_XML_PATH_DHL_PSF_ENABLED = 'dhl/dhl_locationfinder/enable_store_finder';
+    const CONFIG_XML_PATH_DHL_PSF_ENABLED = 'dhl/dhl_locationfinder/enable_location_finder';
     const CONFIG_XML_PATH_DHL_MAP_TYPE    = 'dhl/dhl_locationfinder/map_type';
 
     /**

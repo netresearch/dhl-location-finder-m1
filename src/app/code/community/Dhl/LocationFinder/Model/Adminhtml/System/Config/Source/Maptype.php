@@ -36,7 +36,7 @@
  */
 class Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype
 {
-    const MAP_TYPE_GOOGLE = 'googlemaps';
+    const MAP_TYPE_GOOGLE       = 'googlemaps';
     const MAP_TYPE_GOOGLE_TITLE = 'Google Maps';
 
     /**

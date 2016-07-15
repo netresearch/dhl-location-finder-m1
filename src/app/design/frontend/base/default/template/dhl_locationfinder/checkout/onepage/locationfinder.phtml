@@ -1,0 +1,49 @@
+<div id="dhl_locationfinder_trigger">
+    <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap(
+        '<?php echo Mage::getSingleton('dhl_locationfinder/config')->getCurrentMapProvider(); ?>',
+        'map-canvas'
+        );">Test</a>
+</div>
+<div id="sf-map-wrapper">
+    <div class="map-content">
+        <form action="javascript:void(0);"
+              onsubmit="locationFinder.updateMapInLocationFinder(
+                  'locationFinderForm',
+                  '<?php echo Mage::getBaseUrl(); ?>dhlpsf/facilities/');"
+              id="locationFinderForm"
+              method="POST"
+              class="clearfix">
+            <div class="input-fields">
+                <div class="input-box zipcode">
+                    <input type="text" placeholder="<?php echo $this->__('Zipcode'); ?>" id="locationFinder-zipcode"
+                           name="locationfinder[zipcode]"/>
+                </div>
+                <div class="input-box city">
+                    <input type="text" placeholder="<?php echo $this->__('City'); ?>" id="locationFinder-city"
+                           name="locationfinder[city]"/>
+                </div>
+                <div class="input-box street">
+                    <input type="text" placeholder="<?php echo $this->__('Street'); ?>" id="locationFinder-street"
+                           name="locationfinder[street]"/>
+                </div>
+                <div class="buttons-set">
+                    <button type="submit" class="button">
+                        <span><span><?php echo $this->__('Search'); ?></span></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div id="map-canvas"></div>
+        <span onclick="locationFinder.hideLocationFinder()" class="close-map">Close</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var locationFinder = new DhlLocationFinder(
+        'sf-map-wrapper',                           // Id of the Wrapper Container for the location finder
+        'dhl_locationfinder_trigger',                     // Id of the Element which contain the CTA
+        'locationFinder'                               // Name of the Location Finder, for internal uses
+    );
+    //]]>
+</script>

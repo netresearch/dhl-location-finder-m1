@@ -45,22 +45,22 @@ class Dhl_LocationFinder_Model_Observer
      *
      * @return void
      */
-    public function appendParcelFinderToShipping(Varien_Event_Observer $observer)
+    public function appendLocationFinderToShipping(Varien_Event_Observer $observer)
     {
         $block = $observer->getData('block');
         if ($block instanceof Mage_Checkout_Block_Onepage_Shipping
             && false == $block instanceof Mage_Paypal_Block_Express_Review_Shipping
             && Mage::getSingleton('dhl_locationfinder/config')->getIsModuleActive()
         ) {
-            $transport        = $observer->getData('transport');
-            $layout           = $block->getLayout();
-            $html             = $transport->getHtml();
+            $transport = $observer->getData('transport');
+            $layout    = $block->getLayout();
+            $html      = $transport->getHtml();
             /** @var string $parcelFinderHtml */
-            $parcelFinderHtml =
-                $layout->createBlock('dhl_locationfinder/checkout_onepage_parcelfinder', 'onepage_parcelfinder')
-                       ->setTemplate('dhl_psfinder/checkout/onepage/parcelfinder.phtml')
+            $locationFinderHtml =
+                $layout->createBlock('dhl_locationfinder/checkout_onepage_locationfinder', 'onepage_locationfinder')
+                       ->setTemplate('dhl_locationfinder/checkout/onepage/locationfinder.phtml')
                        ->renderView();
-            $html .= $parcelFinderHtml;
+            $html .= $locationFinderHtml;
             $transport->setHtml($html);
         }
     }

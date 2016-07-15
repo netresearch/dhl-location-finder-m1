@@ -84,10 +84,10 @@
         <events>
             <core_block_abstract_to_html_after>
                 <observers>
-                    <append_parcel_finder_to_shipping>
+                    <append_location_finder_to_shipping>
                         <class>dhl_locationfinder/observer</class>
-                        <method>appendParcelFinderToShipping</method>
-                    </append_parcel_finder_to_shipping>
+                        <method>appendLocationFinderToShipping</method>
+                    </append_location_finder_to_shipping>
                 </observers>
             </core_block_abstract_to_html_after>
         </events>
@@ -112,7 +112,7 @@
         </dhl_locationfinder>
         <dhl>
             <dhl_locationfinder>
-                <enable_store_finder>1</enable_store_finder>
+                <enable_location_finder>1</enable_location_finder>
                 <map_type>googlemaps</map_type>
             </dhl_locationfinder>
         </dhl>

@@ -1,0 +1,170 @@
+#sf-map-wrapper {
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.8);
+    z-index: -1;
+    -webkit-transition: all 400ms; /* Safari */
+    transition: all 400ms;
+}
+
+#sf-map-wrapper.active {
+    z-index: 1001;
+    opacity: 1;
+    -webkit-transition: all 400ms; /* Safari */
+    transition: all 400ms;
+}
+
+#sf-map-wrapper .close-map {
+    display: inline-block;
+    position: absolute;
+    top: -6%;
+    right: -3%;
+    font-size: 0;
+    cursor: pointer;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background: white;
+    text-align: center;
+}
+
+#sf-map-wrapper .close-map:after {
+    content: 'x';
+    display: inline-block;
+    font-size: 20px;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    bottom: 5px;
+}
+
+#sf-map-wrapper .map-content {
+    position: relative;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 500px;
+    padding: 16px;
+    background-color: white;
+    z-index: 1002;
+}
+
+#sf-map-wrapper .map-content .input-box {
+    display: inline-block;
+    float: left;
+    margin-left: 10px;
+}
+
+#sf-map-wrapper .map-content .input-box:first-child {
+    margin-left: 0;
+}
+
+#sf-map-wrapper .map-content .input-box input {
+    width: 100%;
+}
+
+#sf-map-wrapper .map-content .input-box.zipcode {
+    width: 80px;
+}
+
+#sf-map-wrapper .map-content .input-box.city {
+    width: 200px;
+}
+
+#sf-map-wrapper .map-content .input-box.street {
+    width: 280px;
+}
+
+#sf-map-wrapper .map-content .buttons-set {
+    float: left;
+    border: none;
+    margin: 0;
+    padding: 0;
+    clear: none;
+}
+
+#sf-map-wrapper .map-content .buttons-set button {
+    margin-left: 10px;
+    float: left;
+}
+
+#sf-map-wrapper #map-canvas {
+    position: relative;
+    display: block;
+    margin-top: 15px;
+    height: 90%;
+}
+
+#sf-map-wrapper #map-canvas > * {
+    z-index: 1003;
+}
+
+@media only screen and (max-width: 960px) {
+
+    #sf-map-wrapper .map-content .buttons-set {
+        float: none;
+        text-align: left;
+        padding-top: 10px;
+        clear: both;
+    }
+
+    #sf-map-wrapper .map-content .buttons-set button {
+        margin: 0;
+        float: left;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 81%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    #sf-map-wrapper .close-map {
+        right: 0;
+    }
+
+    #sf-map-wrapper .map-content {
+        top: 16%;
+        left: 1%;
+        width: 98%;
+        height: 450px;
+    }
+
+    #sf-map-wrapper .map-content .input-box.zipcode {
+        width: 30%;
+        float: left;
+    }
+
+    #sf-map-wrapper .map-content .input-box.city {
+        width: 64%;
+        margin-left: 4%;
+        float: right;
+    }
+
+    #sf-map-wrapper .map-content .input-box.street {
+        margin: 0;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 69%;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+
+    #sf-map-wrapper .map-content {
+        height: 395px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 65%;
+    }
+}

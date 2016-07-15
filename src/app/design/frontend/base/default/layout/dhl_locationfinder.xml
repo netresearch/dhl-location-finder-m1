@@ -29,9 +29,16 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-            <block type="dhl_locationfinder/checkout_onepage_parcelfinder" name="addMapToCheckout">
+            <block type="dhl_locationfinder/checkout_onepage_locationfinder" name="addMapToCheckout">
                 <action method="addMapToCheckout"/>
             </block>
+            <action method="addItem" ifconfig="dhl/dhl_locationfinder/enable_location_finder">
+                <type>skin_css</type>
+                <script>css/dhl_locationfinder/styles.css</script>
+            </action>
+            <action method="addJs">
+                <script>dhl_locationfinder/locationfinder.js</script>
+            </action>
         </reference>
     </checkout_onepage_index>
 </layout>

@@ -34,7 +34,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Block_Checkout_Onepage_ParcelfinderTest
+class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
     extends EcomDev_PHPUnit_Test_Case
 {
     /**
@@ -42,7 +42,7 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_ParcelfinderTest
      */
     public function testaddMapToCheckout()
     {
-        $block = new Dhl_LocationFinder_Block_Checkout_Onepage_Parcelfinder();
+        $block = new Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder();
 
         $config = $this->getModelMock(
             'dhl_locationfinder/config',
@@ -57,13 +57,13 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_ParcelfinderTest
         $this->replaceByMock('model', 'dhl_locationfinder/config', $config);
 
         $config = $this->getBlockMock(
-            'dhl_locationfinder/checkout_onepage_parcelfinder',
+            'dhl_locationfinder/checkout_onepage_locationfinder',
             array('getHeadBlock')
         );
         $config->expects($this->once())
                ->method('getHeadBlock')
                ->will($this->returnValue(new Mage_Page_Block_Html_Head()));
-        $this->replaceByMock('block', 'dhl_locationfinder/checkout_onepage_parcelfinder', $config);
+        $this->replaceByMock('block', 'dhl_locationfinder/checkout_onepage_locationfinder', $config);
 
         $this->markTestIncomplete(
             'Could not Mock Private method'

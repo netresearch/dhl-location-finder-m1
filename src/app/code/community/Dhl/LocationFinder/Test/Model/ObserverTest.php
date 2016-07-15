@@ -39,7 +39,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
     /**
      * @test
      */
-    public function testAppendParcelFinderToShipping()
+    public function testAppendLocationFinderToShipping()
     {
         $this->markTestIncomplete(
             'Is anything for test here'

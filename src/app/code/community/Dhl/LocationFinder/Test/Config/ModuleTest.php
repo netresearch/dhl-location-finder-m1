@@ -35,7 +35,7 @@
  */
 class Dhl_LocationFinder_Test_Config_ModuleTest
     extends EcomDev_PHPUnit_Test_Case_Config
-{ 
+{
     /**
      * @test
      */
@@ -60,7 +60,7 @@ class Dhl_LocationFinder_Test_Config_ModuleTest
 
         $this->assertConfigNodeHasChild('default', 'dhl');
         $this->assertConfigNodeHasChild('default/dhl', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'enable_store_finder');
+        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'enable_location_finder');
         $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'map_type');
     }
 }
