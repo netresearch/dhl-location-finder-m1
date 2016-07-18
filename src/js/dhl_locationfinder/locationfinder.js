@@ -1,12 +1,12 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, className) {
-        this.initLocationFinder(wrapperElementId, buttonElementId, className);
+    initialize: function (wrapperElementId, buttonElementId) {
+        this.initLocationFinder(wrapperElementId, buttonElementId);
     },
-// TODO(nr) look, if i need the className
-    initLocationFinder: function (elementId, buttonElementId, className) {
-        if (elementId && buttonElementId && className) {
+
+    initLocationFinder: function (elementId, buttonElementId) {
+        if (elementId && buttonElementId) {
             $('shipping-new-address-form').insert({
                 top: $(buttonElementId)
             });
@@ -17,6 +17,7 @@ DhlLocationFinder.prototype = {
             this.mapWrapper = $(elementId);
         }
     },
+
     initMap: function (mapType, elementId) {
         if (!this.map && mapType && elementId) {
 
@@ -25,7 +26,7 @@ DhlLocationFinder.prototype = {
 
             switch (this.mapType) {
                 case 'googlemaps':
-
+                default:
                     var map = new google.maps.Map(
                         this.mapElement,
                         {
@@ -52,8 +53,6 @@ DhlLocationFinder.prototype = {
                         }
                     );
                     break;
-                default:
-                    break;
             }
             this.map = map;
         }
@@ -67,90 +66,112 @@ DhlLocationFinder.prototype = {
     hideLocationFinder: function () {
         this.mapWrapper.removeClassName('active');
     },
+
     updateMapInLocationFinder: function (formId, actionUrl) {
         if (formId && actionUrl) {
 
-            var map = this.map;
-            new Ajax.Request(actionUrl, {
-                parameters: $(formId).serialize(true),
-                onSuccess: function (data) {
-                    var responseData = JSON.parse(data.responseText);
-                    // Check if stores was found
-                    if (responseData['success']) {
-                        /*
-                         // Add Address of store in shipping form
-                         var store = responseData['locations'][0];
-                         $('shipping:street1').setValue(store['street'] + ' ' + store['houseNo']);
-                         $('shipping:city').setValue(store['city']);
-                         $('shipping:country_id').setValue(store['country']);
-                         $('shipping:postcode').setValue(store['zipCode']);
+            var currentClass = this;
+            var map = currentClass.map;
 
-                         alert('Adressdaten wurden übertragen');
-                         */
+            switch (this.mapType) {
+                case 'googlemaps':
+                default:
+                    var view = currentClass.view;
+                    var dataFeed = currentClass.dataFeed;
+                    new Ajax.Request(actionUrl, {
+                        parameters: $(formId).serialize(true),
+                        onSuccess: function (data) {
+                            var responseData = JSON.parse(data.responseText);
+                            // Check if stores was found
+                            if (responseData['success']) {
+                                /*
+                                 // Add Address of store in shipping form
+                                 var store = responseData['locations'][0];
+                                 $('shipping:street1').setValue(store['street'] + ' ' + store['houseNo']);
+                                 $('shipping:city').setValue(store['city']);
+                                 $('shipping:country_id').setValue(store['country']);
+                                 $('shipping:postcode').setValue(store['zipCode']);
 
-                        // Set results as stores
-                        var stores = [];
-                        var newCenter = '';
-                        responseData['locations'].each(function (location) {
+                                 alert('Adressdaten wurden übertragen');
+                                 */
 
-                            var coordinates = new google.maps.LatLng(location['lat'], location['long']);
-                            var store = new storeLocator.Store(
-                                location['id'],
-                                coordinates,
-                                null,
-                                {
-                                    title: location['name'],
-                                    address: location['street'] + ' ' + location['houseNo'] + ' ' + location['zipCode'] + ' ' + location['city'],
-                                    icon: location['icon'],
-                                    street: location['street'] // custom info from webservice response, see below
+                                // Set results as stores
+                                var stores = [];
+                                var newCenter = '';
+                                responseData['locations'].each(function (location) {
+
+                                    var coordinates = new google.maps.LatLng(location['lat'], location['long']);
+                                    var store = new storeLocator.Store(
+                                        location['id'],
+                                        coordinates,
+                                        null,
+                                        {
+                                            title: location['name'],
+                                            address: location['street'] + ' ' + location['houseNo'] + ' ' + location['zipCode'] + ' ' + location['city'],
+                                            icon: location['icon'],
+                                            street: location['street'] // custom info from webservice response, see below
+                                        }
+                                    );
+                                    if (newCenter == '') {
+                                        newCenter = coordinates;
+                                    }
+                                    stores.push(store);
+                                });
+
+                                if (typeof view === "undefined") {
+
+                                    // Add the Stores to a dataset
+                                    dataFeed = new storeLocator.StaticDataFeed();
+                                    dataFeed.setStores(stores);
+
+                                    // Create View on the map
+                                    view = new storeLocator.View(
+                                        map,
+                                        dataFeed,
+                                        {
+                                            geolocation: false
+                                        }
+                                    );
+
+                                    view.createMarker = function (store) {
+                                        var markerOptions = {
+                                            position: store.getLocation(),
+                                            icon: store.getDetails().icon,
+                                            title: store.getDetails().title
+                                        };
+                                        return new google.maps.Marker(markerOptions);
+                                    };
+                                } else {
+                                    view.clearMarkers();
+                                    dataFeed.setStores(stores);
                                 }
-                            );
-                            if (newCenter == '') {
-                                newCenter = coordinates;
+
+
+                                // Add Click Event for later use, to get the location credentials
+                                stores.each(function (store) {
+                                    // For the case, a store will use multiple times (through multiple searches)
+                                    google.maps.event.clearListeners(view.getMarker(store), 'click');
+                                    view.getMarker(store).addListener("click", function () {
+                                        console.log("TODO: write store info to form elements, e.g. " + this.getDetails().street);
+                                    }.bind(store));
+                                });
+
+                                // Update Map
+                                if (newCenter != '') {
+                                    map.setCenter(newCenter);
+                                    map.setZoom(13);
+                                    view.refreshView();
+                                    currentClass.view = view;
+                                    currentClass.dataFeed = dataFeed;
+                                }
+
+                            } else {
+                                alert(responseData['message']);
                             }
-                            stores.push(store);
-                        });
-
-                        // Add the Stores to a dataset
-                        var dataFeed = new storeLocator.StaticDataFeed();
-                        dataFeed.setStores(stores);
-
-                        // Create View on the map
-                        var view = new storeLocator.View(
-                            map,
-                            dataFeed,
-                            {
-                                geolocation: false
-                            }
-                        );
-                        view.createMarker = function (store) {
-                            var markerOptions = {
-                                position: store.getLocation(),
-                                icon: store.getDetails().icon,
-                                title: store.getDetails().title
-                            };
-                            return new google.maps.Marker(markerOptions);
-                        };
-
-                        // Add Click Event for later use, to get the location credentials
-                        stores.each(function (store) {
-                            view.getMarker(store).addListener("click", function () {
-                                console.log("TODO: write store info to form elements, e.g. " + this.getDetails().street);
-                            }.bind(store));
-                        });
-
-                        // Update Map
-                        if (newCenter != '') {
-                            map.setCenter(newCenter);
-                            map.setZoom(13);
-                            view.refreshView();
                         }
-
-                    } else {
-                        alert(responseData['message']);
-                    }
-                }
-            });
+                    });
+                    break;
+            }
         }
     }
 };
