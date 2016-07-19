@@ -13,3 +13,6 @@
 "Shipping per Locationfinder","Shipping per Locationfinder"
 "This address is unfortunately unknown to us. Please use another one.","This address is unfortunately unknown to us. Please use another one."
 "Use this station","Use this station"
+"Include jQuery","Include jQuery"
+"Only include jQuery if you do not already have","Only include jQuery if you do not already have"
+"Will include jQuery in v1.12.4","Will include jQuery in v1.12.4"
