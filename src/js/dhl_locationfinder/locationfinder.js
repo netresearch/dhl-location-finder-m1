@@ -21,7 +21,7 @@ DhlLocationFinder.prototype = {
 
     initDhlFields: function (elementId) {
         if (elementId) {
-            $$('#shipping-new-address-form .fieldset > ul')[0].insert({
+            $$('#shipping-new-address-form ul')[0].insert({
                 before: $(elementId)
             });
             this.formFields = $(elementId);

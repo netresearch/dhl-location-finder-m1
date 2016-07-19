@@ -75,6 +75,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
                     if ($configModel->getWillJQueryIncluded()) {
                         $includeString .=
                             '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>';
+                        $includeString .= '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
                     }
                     $includeString .= '<script type="text/javascript" src="' . Mage::getBaseUrl('js')
                         . 'googlemaps/store-locator.min.js"></script>';
