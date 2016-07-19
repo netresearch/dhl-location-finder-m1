@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-
+namespace Dhl\LocationFinder\Webservice\RequestData;
 /**
- * Dhl_LocationFinder_Test_Model_ObserverTest
+ * Coordinate
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,17 +33,45 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Model_ObserverTest
-    extends EcomDev_PHPUnit_Test_Case
+final class Coordinate
 {
-    /**
-     * @test
-     */
-    public function testAppendLocationFinderToShipping()
+    /** @var string Latitude */
+    private $lat = '';
+    /** @var string Longitude */
+    private $lng = '';
+
+    /** @var string[] services */
+    private $services = [];
+
+    public function __construct($lat = '', $lng = '', $services = [])
     {
-        $this->markTestIncomplete(
-            'Is anything for test here'
-        );
+        $this->lat = trim($lat);
+        $this->lng = trim($lng);
+
+        $this->services = $services;
     }
 
+    /**
+     * @return string
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServices()
+    {
+        return implode(', ', $this->services);
+    }
 }

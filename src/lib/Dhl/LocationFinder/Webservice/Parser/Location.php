@@ -23,9 +23,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+namespace Dhl\LocationFinder\Webservice\Parser;
+use Dhl\LocationFinder\Webservice\Parser;
+use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
+use Dhl\LocationFinder\ParcelLocation\Item as ParcelLocation;
+use Dhl\Psf\Api\psfParcellocation;
 
 /**
- * Dhl_LocationFinder_Test_Model_ObserverTest
+ * Location
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,17 +38,23 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Model_ObserverTest
-    extends EcomDev_PHPUnit_Test_Case
+class Location implements Parser
 {
     /**
-     * @test
+     * @param psfParcellocation[] $parcelLocations
+     * @return ParcelLocationCollection
      */
-    public function testAppendLocationFinderToShipping()
+    public function parse($parcelLocations)
     {
-        $this->markTestIncomplete(
-            'Is anything for test here'
-        );
-    }
+        $collection = new ParcelLocationCollection();
+        foreach ($parcelLocations as $parcelLocation) {
+            // TODO(nr): fetch further properties for frontend display
+            $collection->addItem(new ParcelLocation([
+                'id' => $parcelLocation->getPrimaryKeyDeliverySystem(),
+                'shop_type' => $parcelLocation->getShopType(),
+            ]));
+        }
 
+        return $collection;
+    }
 }

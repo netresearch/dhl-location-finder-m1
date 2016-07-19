@@ -8,4 +8,5 @@ src/skin/frontend/base/default/css/dhl_locationfinder               skin/fronten
 src/skin/frontend/base/default/images/dhl_locationfinder            skin/frontend/base/default/images/dhl_locationfinder
 src/js/dhl_locationfinder                                           js/dhl_locationfinder
 src/js/googlemaps                                                   js/googlemaps
+src/lib/Dhl/LocationFinder/                                         lib/Dhl/LocationFinder/
 src/lib/Dhl/Psf/                                                    lib/Dhl/Psf/

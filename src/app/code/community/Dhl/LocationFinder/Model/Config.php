@@ -44,6 +44,15 @@ class Dhl_LocationFinder_Model_Config
     const URL_PATH_FACILITY_CONTROLLER       = 'dhlpsf/facilities/';
 
     /**
+     * @return bool
+     */
+    public function isAutoloadEnabled()
+    {
+        //TODO(nr): read from config
+        return true;
+    }
+
+    /**
      * Obtain username for HTTP Basic Auth
      *
      * @param mixed $store

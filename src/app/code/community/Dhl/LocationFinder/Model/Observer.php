@@ -37,6 +37,28 @@
 class Dhl_LocationFinder_Model_Observer
 {
     /**
+     * Register autoloader in order to locate the extension libraries.
+     */
+    public function registerAutoload()
+    {
+        if (!Mage::getModel('dhl_locationfinder/config')->isAutoloadEnabled()) {
+            return;
+        }
+
+        $autoloader = Mage::helper('dhl_locationfinder/autoloader');
+
+        $dhlLibs = array('LocationFinder', 'Psf');
+        array_walk($dhlLibs, function ($libDir) use ($autoloader) {
+            $autoloader->addNamespace(
+                "Dhl\\$libDir\\", // prefix
+                sprintf('%s/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
+            );
+        });
+
+        $autoloader->register();
+    }
+
+    /**
      * Append CTA Parcel Store Finder to html output.
      *
      * @param Varien_Event_Observer $observer
