@@ -89,6 +89,22 @@
             </div>
         </form>
         <div id="map-canvas"></div>
+        <div id="map-load-animation">
+            <div class="map-loading">
+                <div class="loading-circle1 loading-child"></div>
+                <div class="loading-circle2 loading-child"></div>
+                <div class="loading-circle3 loading-child"></div>
+                <div class="loading-circle4 loading-child"></div>
+                <div class="loading-circle5 loading-child"></div>
+                <div class="loading-circle6 loading-child"></div>
+                <div class="loading-circle7 loading-child"></div>
+                <div class="loading-circle8 loading-child"></div>
+                <div class="loading-circle9 loading-child"></div>
+                <div class="loading-circle10 loading-child"></div>
+                <div class="loading-circle11 loading-child"></div>
+                <div class="loading-circle12 loading-child"></div>
+            </div>
+        </div>
         <span onclick="locationFinder.hideLocationFinder()" class="close-map">Close</span>
     </div>
 </div>
@@ -133,7 +149,8 @@
     var locationFinder = new DhlLocationFinder(
         'sf-map-wrapper',                // Id of the Wrapper Container for the location finder
         'dhl_locationfinder_trigger',    // Id of the Element which contain the CTA
-        'additional-dhl-fields'          // ID of the Container, which contains all additional fields for address
+        'additional-dhl-fields',         // Id of the Container, which contains all additional fields for address
+        'map-load-animation'             // Id of the container with the loading animation
     );
 
     // Function to get store specific data and fill the form with it

@@ -1,9 +1,10 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, formElementId) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
         this.initDhlFields(formElementId);
+        this.loadingElement = loadingElement;
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -115,6 +116,7 @@ DhlLocationFinder.prototype = {
             var currentClass = this;
             var map = currentClass.map;
 
+            $(currentClass.loadingElement).addClassName('active');
             new Ajax.Request(actionUrl, {
                 parameters: $(formId).serialize(true),
                 onSuccess: function (data) {
@@ -235,6 +237,9 @@ DhlLocationFinder.prototype = {
                     } else {
                         alert(responseData['message']);
                     }
+                },
+                onComplete: function () {
+                    $(currentClass.loadingElement).removeClassName('active');
                 }
             });
         }
