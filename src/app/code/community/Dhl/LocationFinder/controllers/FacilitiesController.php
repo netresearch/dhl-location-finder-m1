@@ -82,10 +82,13 @@ class Dhl_LocationFinder_FacilitiesController
                     $locationBlock = Mage::getBlockSingleton('dhl_locationfinder/checkout_onepage_locationfinder');
 
                     foreach ($locations as $location) {
-                        $mapLocation       = new stdClass();
-                        $mapLocation->type = $location->getShopType();
-                        $mapLocation->name = $location->getShopName();
-                        $mapLocation->icon = $locationBlock->getMarkerIconForShopType($location->getShopType());
+                        $mapLocation          = new stdClass();
+                        $mapLocation->type    = $location->getShopType();
+                        $mapLocation->name    =
+                            !empty($location->getShopName()) ? $location->getShopName() : $location->getKeyWord();
+                        $mapLocation->icon    = $locationBlock->getMarkerIconForShopType($location->getShopType());
+                        $mapLocation->station =
+                            $location->getAdditionalInfo() ? $location->getAdditionalInfo() : $location->getKeyWord();
 
                         $mapLocation->street  = $location->getStreet();
                         $mapLocation->houseNo = $location->getHouseNo();
@@ -106,7 +109,8 @@ class Dhl_LocationFinder_FacilitiesController
                 }
             } catch (SoapFault $sf) {
                 // DHL got an unknown Address
-                $message = $sf->getMessage();
+                // TODO (nr) improvement suggest logging and ?use error message $sf->getMessage();
+                $message = $this->__('This address is unfortunately unknown to us. Please use another one.');
             }
         } else {
             $message = $this->__('Please enter a valid address.');

@@ -55,7 +55,7 @@ class Dhl_LocationFinder_Model_Observer
             $transport = $observer->getData('transport');
             $layout    = $block->getLayout();
             $html      = $transport->getHtml();
-            /** @var string $parcelFinderHtml */
+            /** @var string $locationFinderHtml */
             $locationFinderHtml =
                 $layout->createBlock('dhl_locationfinder/checkout_onepage_locationfinder', 'onepage_locationfinder')
                        ->setTemplate('dhl_locationfinder/checkout/onepage/locationfinder.phtml')

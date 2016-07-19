@@ -1,8 +1,9 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
+        this.initDhlFields(formElementId);
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -15,6 +16,15 @@ DhlLocationFinder.prototype = {
                 bottom: $(elementId)
             });
             this.mapWrapper = $(elementId);
+        }
+    },
+
+    initDhlFields: function (elementId) {
+        if (elementId) {
+            $$('#shipping-new-address-form .fieldset > ul')[0].insert({
+                before: $(elementId)
+            });
+            this.formFields = $(elementId);
         }
     },
 
@@ -60,11 +70,43 @@ DhlLocationFinder.prototype = {
 
     showLocationFinder: function () {
         this.mapWrapper.addClassName('active');
-
     },
 
     hideLocationFinder: function () {
         this.mapWrapper.removeClassName('active');
+    },
+
+    showLocationData: function (showElements) {
+        if (showElements) {
+            this.formFields.addClassName('active');
+            $$('.locationfinder-opener')[0].addClassName('active');
+            this.formFields.select('input').each(function (inputField) {
+                inputField.disabled = false;
+                inputField.value = '';
+            });
+
+            // secure DHL data
+            $('shipping:street1').readOnly = true;
+            $('shipping:city').readOnly = true;
+            $('shipping:country_id').readOnly = true;
+            $('shipping:postcode').readOnly = true;
+
+            // Add post number to required fields
+            $('shipping:postNumber').addClassName('required-entry');
+        } else {
+            this.formFields.removeClassName('active');
+            $$('.locationfinder-opener')[0].removeClassName('active');
+            this.formFields.select('input').each(function (inputField) {
+                inputField.disabled = true;
+            });
+            // unsecure DHL data
+            $('shipping:street1').readOnly = false;
+            $('shipping:city').readOnly = false;
+            $('shipping:country_id').readOnly = false;
+            $('shipping:postcode').readOnly = false;
+            // Remove post number from the required fields
+            $('shipping:postNumber').removeClassName('required-entry');
+        }
     },
 
     updateMapInLocationFinder: function (formId, actionUrl) {
@@ -73,27 +115,16 @@ DhlLocationFinder.prototype = {
             var currentClass = this;
             var map = currentClass.map;
 
-            switch (this.mapType) {
-                case 'googlemaps':
-                default:
-                    var view = currentClass.view;
-                    var dataFeed = currentClass.dataFeed;
-                    new Ajax.Request(actionUrl, {
-                        parameters: $(formId).serialize(true),
-                        onSuccess: function (data) {
-                            var responseData = JSON.parse(data.responseText);
-                            // Check if stores was found
-                            if (responseData['success']) {
-                                /*
-                                 // Add Address of store in shipping form
-                                 var store = responseData['locations'][0];
-                                 $('shipping:street1').setValue(store['street'] + ' ' + store['houseNo']);
-                                 $('shipping:city').setValue(store['city']);
-                                 $('shipping:country_id').setValue(store['country']);
-                                 $('shipping:postcode').setValue(store['zipCode']);
+            new Ajax.Request(actionUrl, {
+                parameters: $(formId).serialize(true),
+                onSuccess: function (data) {
+                    var responseData = JSON.parse(data.responseText);
+                    // Check if stores was found
+                    if (responseData['success']) {
 
-                                 alert('Adressdaten wurden übertragen');
-                                 */
+                        switch (currentClass.mapType) {
+                            case 'googlemaps':
+                            default:
 
                                 // Set results as stores
                                 var stores = [];
@@ -107,33 +138,62 @@ DhlLocationFinder.prototype = {
                                         null,
                                         {
                                             title: location['name'],
-                                            address: location['street'] + ' ' + location['houseNo'] + ' ' + location['zipCode'] + ' ' + location['city'],
+                                            address1: location['street'] + ' ' + location['houseNo'],
+                                            address2: location['zipCode'] + ' ' + location['city'],
                                             icon: location['icon'],
-                                            street: location['street'] // custom info from webservice response, see below
+                                            street: location['street'] + ' ' + location['houseNo'],
+                                            city: location['city'],
+                                            country: location['country'],
+                                            zipCode: location['zipCode'],
+                                            type: location['type'],
+                                            station: location['station'] + ' ' + location['id']
                                         }
                                     );
+                                    // Set InfoWindow information for later use, to get the location credentials
+                                    store.getInfoWindowContent = function () {
+                                        var details = this.getDetails();
+                                        return '<div class="store-infos">' +
+                                            '<h3>' + details.title + '</h3>' +
+                                            '<p>' + details.address1 + '</p>' +
+                                            '<p>' + details.address2 + '</p>' +
+                                            '<p>' + details.station + '</p>' +
+                                            '<p>' +
+                                            '<a class="store-selector" ' +
+                                            'href="javascript:void(0)" ' +
+                                            'onclick="transmitFormData(this)" ' +
+                                            'data-street="' + details.street + '" ' +
+                                            'data-city="' + details.city + '" ' +
+                                            'data-country="' + details.country + '" ' +
+                                            'data-zipCode="' + details.zipCode + '" ' +
+                                            'data-type="' + details.type + '" ' +
+                                            'data-station="' + details.station + '" >' +
+                                            Translator.translate("Use this station") +
+                                            '</a>' +
+                                            '</p>' +
+                                            '</div>';
+                                    };
                                     if (newCenter == '') {
                                         newCenter = coordinates;
                                     }
                                     stores.push(store);
                                 });
 
-                                if (typeof view === "undefined") {
+                                if (typeof currentClass.view === "undefined") {
 
                                     // Add the Stores to a dataset
-                                    dataFeed = new storeLocator.StaticDataFeed();
-                                    dataFeed.setStores(stores);
+                                    currentClass.dataFeed = new storeLocator.StaticDataFeed();
+                                    currentClass.dataFeed.setStores(stores);
 
                                     // Create View on the map
-                                    view = new storeLocator.View(
+                                    currentClass.view = new storeLocator.View(
                                         map,
-                                        dataFeed,
+                                        currentClass.dataFeed,
                                         {
                                             geolocation: false
                                         }
                                     );
 
-                                    view.createMarker = function (store) {
+                                    currentClass.view.createMarker = function (store) {
                                         var markerOptions = {
                                             position: store.getLocation(),
                                             icon: store.getDetails().icon,
@@ -142,17 +202,24 @@ DhlLocationFinder.prototype = {
                                         return new google.maps.Marker(markerOptions);
                                     };
                                 } else {
-                                    view.clearMarkers();
-                                    dataFeed.setStores(stores);
+                                    currentClass.view.clearMarkers();
+                                    currentClass.dataFeed.setStores(stores);
                                 }
-
 
                                 // Add Click Event for later use, to get the location credentials
                                 stores.each(function (store) {
                                     // For the case, a store will use multiple times (through multiple searches)
-                                    google.maps.event.clearListeners(view.getMarker(store), 'click');
-                                    view.getMarker(store).addListener("click", function () {
-                                        console.log("TODO: write store info to form elements, e.g. " + this.getDetails().street);
+                                    google.maps.event.clearListeners(currentClass.view.getMarker(store), 'dblclick');
+                                    currentClass.view.getMarker(store).addListener("dblclick", function () {
+                                        var dataObject = {
+                                            'street': this.getDetails().street,
+                                            'city': this.getDetails().city,
+                                            'country': this.getDetails().country,
+                                            'zipCode': this.getDetails().zipCode,
+                                            'type': this.getDetails().type,
+                                            'station': this.getDetails().station
+                                        };
+                                        currentClass.transmitStoreData(dataObject);
                                     }.bind(store));
                                 });
 
@@ -160,18 +227,26 @@ DhlLocationFinder.prototype = {
                                 if (newCenter != '') {
                                     map.setCenter(newCenter);
                                     map.setZoom(13);
-                                    view.refreshView();
-                                    currentClass.view = view;
-                                    currentClass.dataFeed = dataFeed;
+                                    currentClass.view.refreshView();
                                 }
-
-                            } else {
-                                alert(responseData['message']);
-                            }
+                                break;
                         }
-                    });
-                    break;
-            }
+
+                    } else {
+                        alert(responseData['message']);
+                    }
+                }
+            });
         }
+    },
+
+    transmitStoreData: function (dataObject) {
+        $('shipping:street1').setValue(dataObject.street);
+        $('shipping:city').setValue(dataObject.city);
+        $('shipping:country_id').setValue(dataObject.country);
+        $('shipping:postcode').setValue(dataObject.zipCode);
+        $('shipping:stationType').setValue(dataObject.type);
+        $('shipping:station').setValue(dataObject.station);
+        this.hideLocationFinder();
     }
 };

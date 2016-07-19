@@ -36,13 +36,22 @@
  */
 /** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $this */
 ?>
+<?php // Container with CTA Elements ?>
+<div id="dhl_locationfinder_trigger" class="control">
+    <input type="checkbox" name="shipping[useLocationFinder]" id="shipping:useLocationFinder" value=""
+           title="<?php echo $this->__('Shipping per Locationfinder'); ?>"
+           onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
+    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping per Locationfinder'); ?></label>
 
-<div id="dhl_locationfinder_trigger">
     <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap(
         '<?php echo Mage::getSingleton('dhl_locationfinder/config')->getCurrentMapProvider(); ?>',
         'map-canvas'
-        );"><?php echo $this->__('Search packing station / post office'); ?></a>
+        );" class="locationfinder-opener button">
+        <?php echo $this->__('Search packing station / post office'); ?>
+    </a>
 </div>
+
+<?php // Container with the Map Elements ?>
 <div id="sf-map-wrapper">
     <div class="map-content">
         <form action="javascript:void(0);"
@@ -84,11 +93,60 @@
     </div>
 </div>
 
+<?php // Container with the additional Fields for the location finder ?>
+<ul id="additional-dhl-fields">
+    <li class="no-display">
+        <div class="input-box">
+            <input type="hidden" name="shipping[stationType]" value=""
+                   title="<?php echo $this->__('DHL Station Type'); ?>"
+                   class="input-text readonly" id="shipping:stationType"
+                   placeholder="<?php echo $this->__('DHL Station Type'); ?>" readonly disabled/>
+        </div>
+    </li>
+    <li class="fields">
+        <div class="field">
+            <label for="shipping:postNumber" class="required"><em>*</em>
+                <?php echo $this->__('DHL Post Number'); ?>
+            </label>
+            <div class="input-box">
+                <input type="text" name="shipping[postNumber]" value=""
+                       title="<?php echo $this->__('DHL Post Number'); ?>"
+                       class="input-text" id="shipping:postNumber"
+                       placeholder="<?php echo $this->__('DHL Post Number'); ?>" disabled/>
+            </div>
+        </div>
+        <div class="field">
+            <label for="shipping:station"><?php echo $this->__('DHL Station'); ?></label>
+            <div class="input-box">
+                <input type="text" name="shipping[station]" value=""
+                       title="<?php echo $this->__('DHL Station'); ?>"
+                       class="input-text readonly" id="shipping:station"
+                       placeholder="<?php echo $this->__('DHL Station'); ?>" readonly disabled/>
+            </div>
+        </div>
+    </li>
+</ul>
+
+
 <script type="text/javascript">
     //<![CDATA[
     var locationFinder = new DhlLocationFinder(
-        'sf-map-wrapper',                        // Id of the Wrapper Container for the location finder
-        'dhl_locationfinder_trigger'             // Id of the Element which contain the CTA
+        'sf-map-wrapper',                // Id of the Wrapper Container for the location finder
+        'dhl_locationfinder_trigger',    // Id of the Element which contain the CTA
+        'additional-dhl-fields'          // ID of the Container, which contains all additional fields for address
     );
+
+    // Function to get store specific data and fill the form with it
+    function transmitFormData(element) {
+        var dataObject = {
+            'street': element.readAttribute('data-street'),
+            'city': element.readAttribute('data-city'),
+            'country': element.readAttribute('data-country'),
+            'zipCode': element.readAttribute('data-zipCode'),
+            'type': element.readAttribute('data-type'),
+            'station': element.readAttribute('data-station')
+        };
+        locationFinder.transmitStoreData(dataObject);
+    }
     //]]>
 </script>

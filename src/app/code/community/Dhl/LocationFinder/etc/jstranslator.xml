@@ -1,0 +1,5 @@
+<jstranslator>
+    <choose_store translate="message" module="dhl_locationfinder">
+        <message>Use this station</message>
+    </choose_store>
+</jstranslator>

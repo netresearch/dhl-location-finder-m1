@@ -130,6 +130,35 @@
     z-index: 1003;
 }
 
+#additional-dhl-fields {
+    display: none;
+}
+
+#additional-dhl-fields.active {
+    display: block;
+}
+
+#additional-dhl-fields .readonly,
+#co-shipping-form input:read-only{
+    cursor: not-allowed;
+    background: #eaeaea;
+}
+
+#dhl_locationfinder_trigger {
+    position: relative;
+}
+
+#dhl_locationfinder_trigger .locationfinder-opener {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#dhl_locationfinder_trigger .locationfinder-opener.active {
+    display: inline-block;
+}
+
 @media only screen and (max-width: 1124px) {
 
     #sf-map-wrapper .map-content .buttons-set {
@@ -210,6 +239,11 @@
     #sf-map-wrapper #map-canvas {
         height: 72%;
     }
+
+    #dhl_locationfinder_trigger .locationfinder-opener {
+        margin: 10px 110px 0 0;
+        position: relative;
+    }
 }
 
 @media only screen and (max-width: 375px) {
@@ -251,5 +285,9 @@
 
     #sf-map-wrapper #map-canvas {
         height: 56%;
+    }
+
+    #dhl_locationfinder_trigger .locationfinder-opener {
+        margin: 10px 0 0;
     }
 }
