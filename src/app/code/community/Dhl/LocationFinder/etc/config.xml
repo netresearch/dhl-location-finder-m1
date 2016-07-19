@@ -114,6 +114,7 @@
             <dhl_locationfinder>
                 <enable_location_finder>1</enable_location_finder>
                 <map_type>googlemaps</map_type>
+                <include_jquery>0</include_jquery>
             </dhl_locationfinder>
         </dhl>
     </default>

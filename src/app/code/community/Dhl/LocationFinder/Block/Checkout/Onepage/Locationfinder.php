@@ -70,12 +70,16 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
 
                 case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:
                 default:
-                    $externalBlock->setText(
-                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>' .
-                        '<script type="text/javascript" src="' . Mage::getBaseUrl('js')
-                        . 'googlemaps/store-locator.min.js"></script>'
+                    $includeString =
+                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>';
+                    if ($configModel->getWillJQueryIncluded()) {
+                        $includeString .=
+                            '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>';
+                    }
+                    $includeString .= '<script type="text/javascript" src="' . Mage::getBaseUrl('js')
+                        . 'googlemaps/store-locator.min.js"></script>';
 
-                    );
+                    $externalBlock->setText($includeString);
                     $head->addItem('css', 'googlemaps/storelocator.css');
                     break;
             }

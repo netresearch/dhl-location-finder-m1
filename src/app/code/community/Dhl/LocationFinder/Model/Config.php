@@ -36,11 +36,12 @@
  */
 class Dhl_LocationFinder_Model_Config
 {
-    const CONFIG_XML_PATH_WS_AUTH_USER    = 'dhl_locationfinder/webservice/auth_username';
-    const CONFIG_XML_PATH_WS_AUTH_PASS    = 'dhl_locationfinder/webservice/auth_password';
-    const CONFIG_XML_PATH_DHL_PSF_ENABLED = 'dhl/dhl_locationfinder/enable_location_finder';
-    const CONFIG_XML_PATH_DHL_MAP_TYPE    = 'dhl/dhl_locationfinder/map_type';
-    const URL_PATH_FACILITY_CONTROLLER    = 'dhlpsf/facilities/';
+    const CONFIG_XML_PATH_WS_AUTH_USER       = 'dhl_locationfinder/webservice/auth_username';
+    const CONFIG_XML_PATH_WS_AUTH_PASS       = 'dhl_locationfinder/webservice/auth_password';
+    const CONFIG_XML_PATH_DHL_PSF_ENABLED    = 'dhl/dhl_locationfinder/enable_location_finder';
+    const CONFIG_XML_PATH_DHL_MAP_TYPE       = 'dhl/dhl_locationfinder/map_type';
+    const CONFIG_XML_PATH_DHL_INCLUDE_JQUERY = 'dhl/dhl_locationfinder/include_jquery';
+    const URL_PATH_FACILITY_CONTROLLER       = 'dhlpsf/facilities/';
 
     /**
      * Obtain username for HTTP Basic Auth
@@ -88,5 +89,17 @@ class Dhl_LocationFinder_Model_Config
     public function getCurrentMapProvider($store = null)
     {
         return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_MAP_TYPE, $store);
+    }
+
+    /**
+     * Check if jQuery has to be includes (used by the google store locator)
+     *
+     * @param mixed $store
+     *
+     * @return string
+     */
+    public function getWillJQueryIncluded($store = null)
+    {
+        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_INCLUDE_JQUERY, $store);
     }
 }
