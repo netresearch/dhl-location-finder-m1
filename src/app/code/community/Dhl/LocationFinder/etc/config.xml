@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Dhl_LocationFinder>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
         </Dhl_LocationFinder>
     </modules>
     <global>
@@ -51,7 +51,11 @@
             <dhl_locationfinder_setup>
                 <setup>
                     <module>Dhl_LocationFinder</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
                 </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
             </dhl_locationfinder_setup>
         </resources>
         <events>
@@ -65,6 +69,19 @@
                 </observers>
             </controller_front_init_before>
         </events>
+        <fieldsets>
+            <sales_convert_quote_address>
+                <dhl_post_number>
+                    <to_order_address>*</to_order_address>
+                </dhl_post_number>
+                <dhl_station_type>
+                    <to_order_address>*</to_order_address>
+                </dhl_station_type>
+                <dhl_station>
+                    <to_order_address>*</to_order_address>
+                </dhl_station>
+            </sales_convert_quote_address>
+        </fieldsets>
     </global>
     <frontend>
         <routers>

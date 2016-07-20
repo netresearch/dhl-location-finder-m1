@@ -62,5 +62,6 @@ class Dhl_LocationFinder_Test_Config_ModuleTest
         $this->assertConfigNodeHasChild('default/dhl', 'dhl_locationfinder');
         $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'enable_location_finder');
         $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'map_type');
+        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'include_jquery');
     }
 }
