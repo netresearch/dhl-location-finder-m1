@@ -23,7 +23,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-
+use \Dhl\LocationFinder\ParcelLocation;
+use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
 /**
  * Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
  *
@@ -40,11 +41,57 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
      * @test
      * @loadFixture ControllerTest
      */
-    public function retrieveLocations()
+    public function httpGetAccess()
     {
-        // TODO(nr): record response, do not actually call webservice from tests
         $this->dispatch('dhlpsf/facilities/index');
+        $this->assertRequestRoute('cms/index/noRoute');
+    }
+
+    /**
+     * @test
+     * @loadFixture ControllerTest
+     */
+    public function retrieveEmptyResult()
+    {
+        $collection = new ParcelLocation\Collection();
+
+        $adapterMock = $this->getMockBuilder(SoapAdapter::class)
+            ->setMethods(['getParcelLocationByAddress'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adapterMock
+            ->method('getParcelLocationByAddress')
+            ->willReturn($collection)
+        ;
+
+        $helperMock = $this->getHelperMock('dhl_locationfinder/data', array('getWebserviceAdapter'));
+        $helperMock
+            ->expects($this->once())
+            ->method('getWebserviceAdapter')
+            ->willReturn($adapterMock);
+        $this->replaceByMock('helper', 'dhl_locationfinder/data', $helperMock);
+
+
+        $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
+
+        $this->dispatch('dhlpsf/facilities/index', array(
+            '_query' => array(
+                'locationfinder' => array(
+                    'country' => 'DE',
+                    'zipcode' => '04229',
+                    'city' => 'Leipzig',
+                    'street' => 'Nonnenstraße 11d',
+                )
+            )
+        ));
+
         $this->assertRequestRoute('dhl_locationfinder/facilities/index');
         $this->assertResponseBodyJson();
+
+        $jsonResponse = $this->getResponse()->getOutputBody();
+        $response = json_decode($jsonResponse);
+        $this->assertFalse($response->success);
+        $this->assertEquals(Dhl_LocationFinder_FacilitiesController::MSG_EMPTY_RESULT, $response->message);
+        $this->assertEmpty($response->locations);
     }
 }

@@ -76,6 +76,9 @@
                 </args>
             </dhl_locationfinder>
         </routers>
+        <secure_url>
+            <dhl_locationfinder>/dhlpsf/</dhl_locationfinder>
+        </secure_url>
         <layout>
             <updates>
                 <dhl_locationfinder>
@@ -116,9 +119,21 @@
     </adminhtml>
     <default>
         <dhl_locationfinder>
+            <dev>
+                <autoload_enabled>1</autoload_enabled>
+            </dev>
             <webservice>
                 <auth_username>magento_1</auth_username>
                 <auth_password>2de26b775e59279464d1c2f8546432e62413372421c672db36eaacfc2f</auth_password>
+                <valid_countries>
+                    <AT>Austria</AT>
+                    <BE>Belgium</BE>
+                    <CZ>Czech Republic</CZ>
+                    <DE>Germany</DE>
+                    <NL>Netherlands</NL>
+                    <PL>Poland</PL>
+                    <SK>Slovakia</SK>
+                </valid_countries>
             </webservice>
         </dhl_locationfinder>
         <dhl>

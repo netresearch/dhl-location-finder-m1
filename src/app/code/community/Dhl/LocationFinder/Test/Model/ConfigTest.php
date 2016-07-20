@@ -59,6 +59,20 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
     /**
      * @test
      */
+    public function getWsValidCountries()
+    {
+        $countries = Mage::getModel('dhl_locationfinder/config')->getWsValidCountries();
+        foreach ($countries as $countryId => $country) {
+            $this->assertInternalType('string', $countryId);
+            $this->assertEquals(2, strlen($countryId));
+
+            $this->assertInternalType('string', $country);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function getIsModuleActive()
     {
         $enabled = Mage::getModel('dhl_locationfinder/config')->getIsModuleActive();

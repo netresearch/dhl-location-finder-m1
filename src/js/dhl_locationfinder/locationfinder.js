@@ -1,10 +1,11 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
         this.initDhlFields(formElementId);
         this.loadingElement = loadingElement;
+        this.markerIcons = markerIcons;
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -115,6 +116,7 @@ DhlLocationFinder.prototype = {
 
             var currentClass = this;
             var map = currentClass.map;
+            var markerIcons = this.markerIcons;
 
             $(currentClass.loadingElement).addClassName('active');
             new Ajax.Request(actionUrl, {
@@ -142,7 +144,7 @@ DhlLocationFinder.prototype = {
                                             title: location['name'],
                                             address1: location['street'] + ' ' + location['houseNo'],
                                             address2: location['zipCode'] + ' ' + location['city'],
-                                            icon: location['icon'],
+                                            icon: markerIcons[location['type']],
                                             street: location['street'] + ' ' + location['houseNo'],
                                             city: location['city'],
                                             country: location['country'],
@@ -198,7 +200,7 @@ DhlLocationFinder.prototype = {
                                     currentClass.view.createMarker = function (store) {
                                         var markerOptions = {
                                             position: store.getLocation(),
-                                            icon: store.getDetails().icon,
+                                            icon: markerIcons[store.getDetails().type],
                                             title: store.getDetails().title
                                         };
                                         return new google.maps.Marker(markerOptions);

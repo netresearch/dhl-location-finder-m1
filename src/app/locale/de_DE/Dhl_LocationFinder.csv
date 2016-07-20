@@ -1,4 +1,6 @@
 "We could not find any stores in your area.","Wir konnten leider keine Geschäfte in Ihrer Nähe finden."
+"%s is currently not supported.","%s wird derzeit nicht unterstützt."
+"Insufficient address parts given.","Die angegebene Adresse ist zu kurz für eine Abfrage."
 "Enable Parcel Shop Finder","Aktiviere den Parcel Shop Finder"
 "Select Map Provider","Welcher Kartenanbieter soll verwendet werden?"
 "Zipcode","PLZ"

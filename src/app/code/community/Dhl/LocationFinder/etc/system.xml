@@ -39,6 +39,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_location_finder>
+                        <map_api_key translate="label" module="dhl_locationfinder">
+                            <label>Google Maps API Key</label>
+                            <comment><![CDATA[<a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Get a Key</a>]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </map_api_key>
                         <map_type translate="label" module="dhl_locationfinder">
                             <label>Select Map Provider</label>
                             <frontend_type>select</frontend_type>

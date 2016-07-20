@@ -52,7 +52,7 @@ class Soap implements Adapter
     }
 
     /**
-     * @param $requestData
+     * @param RequestData\Address $requestData
      * @param LocationParser $locationParser
      * @return ParcelLocationCollection
      */
@@ -66,7 +66,7 @@ class Soap implements Adapter
     }
 
     /**
-     * @param $requestData
+     * @param RequestData\Coordinate $requestData
      * @param LocationParser $locationParser
      * @return ParcelLocationCollection
      */
@@ -77,5 +77,31 @@ class Soap implements Adapter
 
         $response  = $this->soapClient->getParcellocationByCoordinate($requestType);
         return $locationParser->parse($response->getParcelLocation());
+    }
+
+    /**
+     * Obtain last request from webservice client, optionally with headers.
+     *
+     * @return string
+     */
+    public function getLastRequest()
+    {
+        return $this->soapClient->__getLastRequest();
+    }
+
+    /**
+     * Obtain last response from webservice client, optionally with headers.
+     *
+     * @param bool $withHeaders
+     * @return string
+     */
+    public function getLastResponse($withHeaders = true)
+    {
+        $response = $this->soapClient->__getLastResponse();
+        if ($withHeaders) {
+            $response = sprintf("%s\n\n%s", $this->soapClient->__getLastResponseHeaders(), $response);
+        }
+
+        return $response;
     }
 }

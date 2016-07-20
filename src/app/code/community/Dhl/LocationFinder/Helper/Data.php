@@ -23,6 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+use \Dhl\LocationFinder\Webservice\Adapter as AdapterInterface;
+use \Dhl\LocationFinder\Webservice\Adapter\Soap as WebserviceAdapter;
+use \Dhl\Psf\Api as LocationsApi;
 
 /**
  * Dhl_LocationFinder_Helper_Data
@@ -35,5 +38,16 @@
  */
 class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    
+    /**
+     * Obtain the adapter that should perform the webservice requests
+     * @return AdapterInterface
+     */
+    public function getWebserviceAdapter()
+    {
+        $soapClient = new LocationsApi\SoapServiceImplService([
+            'trace' => true,
+        ]);
+
+        return new WebserviceAdapter($soapClient);
+    }
 }

@@ -25,7 +25,7 @@
  */
 namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Location
+ * Collection
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -73,10 +73,22 @@ class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
+     * Obtain all items from collection, optionally filtered and limited
+     *
+     * @param Filter|null $filter
+     * @param Limiter|null $limiter
      * @return Item[]
      */
-    public function getItems()
+    public function getItems(Filter $filter = null, Limiter $limiter = null)
     {
+        if ($filter) {
+            $filter->filter($this);
+        }
+
+        if ($limiter) {
+            $limiter->limit($this);
+        }
+
         return $this->locations;
     }
 
@@ -104,5 +116,20 @@ class Collection implements \IteratorAggregate, \Countable
         }
 
         return $this->locations[$id];
+    }
+
+    /**
+     * @param Filter|null $filter
+     * @param Limiter|null $limiter
+     * @return \stdClass[]
+     */
+    public function toObjectArray(Filter $filter = null, Limiter $limiter = null)
+    {
+        $items = array_map(function (Item $location) {
+            return $location->toObject();
+        }, $this->getItems($filter, $limiter));
+
+        // get rid of ID keys
+        return array_values($items);
     }
 }

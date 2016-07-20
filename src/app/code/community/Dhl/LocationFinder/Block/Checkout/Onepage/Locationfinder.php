@@ -23,34 +23,21 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\Psf\Api as LocationsApi;
+use \Dhl\LocationFinder\ParcelLocation;
 
 /**
  * Dhl_LocationFinder_FacilitiesController
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
  * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
+ * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     extends Mage_Core_Block_Template
 {
-
-    /**
-     * Initialize the library class
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $libDir        = Mage::app()->getConfig()->getOptions()->getLibDir();
-        $autoLoaderDir = 'Dhl/Psf/Api/autoload.php';
-        require_once $libDir . DS . $autoLoaderDir;
-    }
-
     /**
      * Add the script for the selected map to the head
      *
@@ -70,8 +57,8 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
 
                 case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:
                 default:
-                    $includeString =
-                        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>';
+                    $src = sprintf('https://maps.googleapis.com/maps/api/js?key=%s', $configModel->getApiKey());
+                    $includeString = '<script type="text/javascript" src="' . $src . '"></script>';
                     if ($configModel->getWillJQueryIncluded()) {
                         $includeString .=
                             '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>';
@@ -97,7 +84,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
      */
     public function getActionUrl()
     {
-        return Mage::getBaseUrl() . Dhl_LocationFinder_Model_Config::URL_PATH_FACILITY_CONTROLLER;
+        return $this->getUrl('dhlpsf/facilities');
     }
 
     /**
@@ -131,6 +118,9 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     }
 
     /**
+     * @deprecated
+     * @see getMarkerIcons()
+     *
      * @param string $shopType
      *
      * @return string
@@ -141,14 +131,34 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     }
 
     /**
+     * Obtain skin images per location type.
+     *
+     * @return string[]
+     */
+    public function getMarkerIcons()
+    {
+        $shopTypes = array(
+            ParcelLocation\Item::TYPE_PACKSTATION => ParcelLocation\Item::TYPE_PACKSTATION,
+            ParcelLocation\Item::TYPE_POSTFILIALE => ParcelLocation\Item::TYPE_POSTFILIALE,
+            ParcelLocation\Item::TYPE_PAKETSHOP => ParcelLocation\Item::TYPE_PAKETSHOP,
+        );
+
+        $icons = array_map(function ($shopType) {
+            $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
+            return $this->getSkinUrl($file);
+        }, $shopTypes);
+
+        return $icons;
+    }
+
+    /**
      * Compare all allowed countries with the enabled ones from DHL and get the result
      *
      * @return array
      */
     protected function getAllowedCountriesForLocationFinder()
     {
-        $allowedDhlCountriesClass = new LocationsApi\allowedCountries();
-        $allowedDhlCountries      = $allowedDhlCountriesClass->getCountries();
+        $allowedDhlCountries      = Mage::getModel('dhl_locationfinder/config')->getWsValidCountries();
         $allowedMagentoCountries  = array_flip(explode(',', Mage::getStoreConfig('general/country/allow')));
 
         return array_intersect_key($allowedDhlCountries, $allowedMagentoCountries);

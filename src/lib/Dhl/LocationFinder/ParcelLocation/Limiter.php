@@ -23,13 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-namespace Dhl\LocationFinder\Webservice;
-use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
-use Dhl\LocationFinder\Webservice\Parser as LocationParser;
-use Dhl\LocationFinder\Webservice\RequestData;
-
+namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Adapter
+ * Limiter
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -37,19 +33,32 @@ use Dhl\LocationFinder\Webservice\RequestData;
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-interface Adapter
+class Limiter
 {
-    /**
-     * @param RequestData\Address $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
-     */
-    public function getParcelLocationByAddress(RequestData\Address $requestData, LocationParser $locationParser);
+    private $limit = null;
 
     /**
-     * @param RequestData\Coordinate $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
+     * Limiter constructor.
+     * @param int $limit
      */
-    public function getParcelLocationByCoordinate(RequestData\Coordinate $requestData, LocationParser $locationParser);
+    public function __construct($limit = null)
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * @param Collection $locationCollection
+     * @return Collection
+     */
+    public function limit(Collection $locationCollection)
+    {
+        if ($this->limit === null || !is_numeric($this->limit)) {
+            return $locationCollection;
+        }
+
+        $locations = $locationCollection->getItems();
+        $limitedLocations = array_slice($locations, 0, $this->limit, true);
+
+        $locationCollection->setItems($limitedLocations);
+    }
 }
