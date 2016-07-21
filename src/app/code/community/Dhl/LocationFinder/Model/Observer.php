@@ -48,12 +48,13 @@ class Dhl_LocationFinder_Model_Observer
         $autoloader = Mage::helper('dhl_locationfinder/autoloader');
 
         $dhlLibs = array('LocationFinder', 'Psf');
-        array_walk($dhlLibs, function ($libDir) use ($autoloader) {
+        array_walk($dhlLibs, function($libDir) use ($autoloader) {
             $autoloader->addNamespace(
                 "Dhl\\$libDir\\", // prefix
                 sprintf('%s/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
             );
-        });
+        }
+        );
 
         $autoloader->register();
     }
@@ -84,6 +85,29 @@ class Dhl_LocationFinder_Model_Observer
                        ->renderView();
             $html .= $locationFinderHtml;
             $transport->setHtml($html);
+        }
+    }
+
+    /**
+     * Append new DHL fields into quote address
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @event saveDHLFieldsInQuote
+     *
+     * @return void
+     */
+    public function saveDHLFieldsInQuote(Varien_Event_Observer $observer)
+    {
+        $shippingData = Mage::app()->getRequest()->getParam('shipping');
+        if (!empty($shippingData) && isset($shippingData['dhl_station_type'])) {
+            /** @var Mage_Sales_Model_Quote $quote */
+            $quote           = $observer->getData('quote');
+            $shippingAddress = $quote->getShippingAddress();
+            $shippingAddress->setData('dhl_station_type', $shippingData['dhl_station_type']);
+            $shippingAddress->setData('dhl_post_number', $shippingData['dhl_post_number']);
+            $shippingAddress->setData('dhl_station', $shippingData['dhl_station']);
+            $shippingAddress->save();
         }
     }
 }

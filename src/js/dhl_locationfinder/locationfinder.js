@@ -78,6 +78,8 @@ DhlLocationFinder.prototype = {
     },
 
     showLocationData: function (showElements) {
+
+        var saveInAddressElement = $('shipping:save_in_address_book');
         if (showElements) {
             this.formFields.addClassName('active');
             $$('.locationfinder-opener')[0].addClassName('active');
@@ -91,9 +93,15 @@ DhlLocationFinder.prototype = {
             $('shipping:city').readOnly = true;
             $('shipping:country_id').readOnly = true;
             $('shipping:postcode').readOnly = true;
+            $('shipping:same_as_billing').disabled = true;
 
             // Add post number to required fields
-            $('shipping:postNumber').addClassName('required-entry');
+            $('shipping:dhl_post_number').addClassName('required-entry');
+
+            // Prevent saving this address to customer addresses
+            if (saveInAddressElement != undefined) {
+                saveInAddressElement.disabled = true;
+            }
         } else {
             this.formFields.removeClassName('active');
             $$('.locationfinder-opener')[0].removeClassName('active');
@@ -105,8 +113,14 @@ DhlLocationFinder.prototype = {
             $('shipping:city').readOnly = false;
             $('shipping:country_id').readOnly = false;
             $('shipping:postcode').readOnly = false;
+            $('shipping:same_as_billing').disabled = false;
+
             // Remove post number from the required fields
-            $('shipping:postNumber').removeClassName('required-entry');
+            $('shipping:dhl_post_number').removeClassName('required-entry');
+
+            if (saveInAddressElement != undefined) {
+                saveInAddressElement.disabled = false;
+            }
         }
     },
 
@@ -250,8 +264,8 @@ DhlLocationFinder.prototype = {
         $('shipping:city').setValue(dataObject.city);
         $('shipping:country_id').setValue(dataObject.country);
         $('shipping:postcode').setValue(dataObject.zipCode);
-        $('shipping:stationType').setValue(dataObject.type);
-        $('shipping:station').setValue(dataObject.station);
+        $('shipping:dhl_station_type').setValue(dataObject.type);
+        $('shipping:dhl_station').setValue(dataObject.station);
         this.hideLocationFinder();
     }
 };

@@ -113,30 +113,30 @@
 <ul id="additional-dhl-fields">
     <li class="no-display">
         <div class="input-box">
-            <input type="hidden" name="shipping[stationType]" value=""
+            <input type="hidden" name="shipping[dhl_station_type]" value=""
                    title="<?php echo $this->__('DHL Station Type'); ?>"
-                   class="input-text readonly" id="shipping:stationType"
+                   class="input-text readonly" id="shipping:dhl_station_type"
                    placeholder="<?php echo $this->__('DHL Station Type'); ?>" readonly disabled/>
         </div>
     </li>
     <li class="fields">
         <div class="field">
-            <label for="shipping:postNumber" class="required"><em>*</em>
+            <label for="shipping:dhl_post_number" class="required"><em>*</em>
                 <?php echo $this->__('DHL Post Number'); ?>
             </label>
             <div class="input-box">
-                <input type="text" name="shipping[postNumber]" value=""
+                <input type="text" name="shipping[dhl_post_number]" value=""
                        title="<?php echo $this->__('DHL Post Number'); ?>"
-                       class="input-text" id="shipping:postNumber"
+                       class="input-text" id="shipping:dhl_post_number"
                        placeholder="<?php echo $this->__('DHL Post Number'); ?>" disabled/>
             </div>
         </div>
         <div class="field">
-            <label for="shipping:station"><?php echo $this->__('DHL Station'); ?></label>
+            <label for="shipping:dhl_station"><?php echo $this->__('DHL Station'); ?></label>
             <div class="input-box">
-                <input type="text" name="shipping[station]" value=""
+                <input type="text" name="shipping[dhl_station]" value=""
                        title="<?php echo $this->__('DHL Station'); ?>"
-                       class="input-text readonly" id="shipping:station"
+                       class="input-text readonly" id="shipping:dhl_station"
                        placeholder="<?php echo $this->__('DHL Station'); ?>" readonly disabled/>
             </div>
         </div>

@@ -56,7 +56,7 @@ $connection->addColumn($sales_quote_address, 'dhl_post_number', array(
 );
 $connection->addColumn($sales_quote_address, 'dhl_station_type', array(
         'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station'
+        'comment' => 'Dhl Station Type'
     )
 );
 $connection->addColumn($sales_quote_address, 'dhl_station', array(
@@ -78,7 +78,7 @@ $connection->addColumn($sales_order_address, 'dhl_post_number', array(
 );
 $connection->addColumn($sales_order_address, 'dhl_station_type', array(
         'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station'
+        'comment' => 'Dhl Station Type'
     )
 );
 $connection->addColumn($sales_order_address, 'dhl_station', array(
