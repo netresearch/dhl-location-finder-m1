@@ -40,14 +40,24 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * Obtain the adapter that should perform the webservice requests
+     *
      * @return AdapterInterface
      */
     public function getWebserviceAdapter()
     {
         $soapClient = new LocationsApi\SoapServiceImplService([
             'trace' => true,
-        ]);
+        ]
+        );
 
         return new WebserviceAdapter($soapClient);
+    }
+
+    public function getMapJsUrl()
+    {
+        /** @var Dhl_LocationFinder_Model_Config $configModel */
+        $configModel = Mage::getSingleton('dhl_locationfinder/config');
+
+        return sprintf('https://maps.googleapis.com/maps/api/js?key=%s', $configModel->getApiKey());
     }
 }

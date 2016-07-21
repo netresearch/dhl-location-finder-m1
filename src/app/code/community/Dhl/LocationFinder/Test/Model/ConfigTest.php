@@ -95,16 +95,6 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
     /**
      * @test
      */
-    public function getIsModuleActive()
-    {
-        $enabled = Mage::getModel('dhl_locationfinder/config')->getIsModuleActive();
-        $this->assertInternalType('string', $enabled);
-        $this->assertNotEmpty($enabled);
-    }
-
-    /**
-     * @test
-     */
     public function getCurrentMapProvider()
     {
         $mapProvider = Mage::getModel('dhl_locationfinder/config')->getCurrentMapProvider();

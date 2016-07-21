@@ -39,45 +39,6 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     extends Mage_Core_Block_Template
 {
     /**
-     * Add the script for the selected map to the head
-     *
-     * @return Mage_Page_Block_Html_Head
-     */
-    public function addMapToCheckout()
-    {
-        /** @var Mage_Page_Block_Html_Head $head */
-        $head = $this->getHeadBlock();
-        /** @var Dhl_LocationFinder_Model_Config $configModel */
-        $configModel = Mage::getSingleton('dhl_locationfinder/config');
-
-        if ($configModel->getIsModuleActive()) {
-
-            $externalBlock = $this->getLayout()->createBlock('core/text', 'mapForCheckout');
-            switch ($configModel->getCurrentMapProvider()) {
-
-                case Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype::MAP_TYPE_GOOGLE:
-                default:
-                    $src = sprintf('https://maps.googleapis.com/maps/api/js?key=%s', $configModel->getApiKey());
-                    $includeString = '<script type="text/javascript" src="' . $src . '"></script>';
-                    if ($configModel->getWillJQueryIncluded()) {
-                        $includeString .=
-                            '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>';
-                        $includeString .= '<script type="text/javascript">var $j = jQuery.noConflict();</script>';
-                    }
-                    $includeString .= '<script type="text/javascript" src="' . Mage::getBaseUrl('js')
-                        . 'googlemaps/store-locator.min.js"></script>';
-
-                    $externalBlock->setText($includeString);
-                    $head->addItem('css', 'googlemaps/storelocator.css');
-                    break;
-            }
-            $head->setChild('mapForCheckout', $externalBlock);
-        }
-
-        return $head;
-    }
-
-    /**
      * Get the Url for the Controller
      *
      * @return string
@@ -127,13 +88,15 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
         $shopTypes = array(
             ParcelLocation\Item::TYPE_PACKSTATION => ParcelLocation\Item::TYPE_PACKSTATION,
             ParcelLocation\Item::TYPE_POSTFILIALE => ParcelLocation\Item::TYPE_POSTFILIALE,
-            ParcelLocation\Item::TYPE_PAKETSHOP => ParcelLocation\Item::TYPE_PAKETSHOP,
+            ParcelLocation\Item::TYPE_PAKETSHOP   => ParcelLocation\Item::TYPE_PAKETSHOP,
         );
 
-        $icons = array_map(function ($shopType) {
+        $icons = array_map(function($shopType) {
             $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
+
             return $this->getSkinUrl($file);
-        }, $shopTypes);
+        }, $shopTypes
+        );
 
         return $icons;
     }
@@ -145,19 +108,9 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
      */
     protected function getAllowedCountriesForLocationFinder()
     {
-        $allowedDhlCountries      = Mage::getModel('dhl_locationfinder/config')->getWsValidCountries();
-        $allowedMagentoCountries  = array_flip(explode(',', Mage::getStoreConfig('general/country/allow')));
+        $allowedDhlCountries     = Mage::getModel('dhl_locationfinder/config')->getWsValidCountries();
+        $allowedMagentoCountries = array_flip(explode(',', Mage::getStoreConfig('general/country/allow')));
 
         return array_intersect_key($allowedDhlCountries, $allowedMagentoCountries);
-    }
-
-    /**
-     * Get the Head Block for Layout adaptions
-     *
-     * @return Mage_Core_Block_Abstract
-     */
-    protected function getHeadBlock()
-    {
-        return $this->getLayout()->getBlock('head');
     }
 }

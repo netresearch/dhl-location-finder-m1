@@ -83,6 +83,7 @@
             <updates>
                 <dhl_locationfinder>
                     <file>dhl_locationfinder.xml</file>
+                    <module>Dhl_LocationFinder</module>
                 </dhl_locationfinder>
             </updates>
         </layout>
@@ -136,13 +137,11 @@
                 </valid_countries>
             </webservice>
         </dhl_locationfinder>
-        <dhl>
+        <checkout>
             <dhl_locationfinder>
-                <enable_location_finder>1</enable_location_finder>
                 <map_type>googlemaps</map_type>
-                <include_jquery>0</include_jquery>
             </dhl_locationfinder>
-        </dhl>
+        </checkout>
     </default>
     <phpunit>
         <suite>

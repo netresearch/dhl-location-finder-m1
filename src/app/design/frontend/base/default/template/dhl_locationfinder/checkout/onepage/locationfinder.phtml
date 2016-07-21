@@ -43,10 +43,8 @@
            onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
     <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping per Locationfinder'); ?></label>
 
-    <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap(
-        '<?php echo Mage::getSingleton('dhl_locationfinder/config')->getCurrentMapProvider(); ?>',
-        'map-canvas'
-        );" class="locationfinder-opener button">
+    <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap('map-canvas');"
+       class="locationfinder-opener button">
         <?php echo $this->__('Search packing station / post office'); ?>
     </a>
 </div>

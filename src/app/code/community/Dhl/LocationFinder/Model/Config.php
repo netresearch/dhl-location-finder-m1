@@ -42,10 +42,8 @@ class Dhl_LocationFinder_Model_Config
     const CONFIG_XML_PATH_WS_AUTH_PASS       = 'dhl_locationfinder/webservice/auth_password';
     const CONFIG_XML_PATH_WS_VALID_COUNTRIES = 'dhl_locationfinder/webservice/valid_countries';
 
-    const CONFIG_XML_PATH_DHL_PSF_ENABLED    = 'dhl/dhl_locationfinder/enable_location_finder';
-    const CONFIG_XML_PATH_MAP_API_KEY        = 'dhl/dhl_locationfinder/map_api_key';
-    const CONFIG_XML_PATH_DHL_MAP_TYPE       = 'dhl/dhl_locationfinder/map_type';
-    const CONFIG_XML_PATH_DHL_INCLUDE_JQUERY = 'dhl/dhl_locationfinder/include_jquery';
+    const CONFIG_XML_PATH_MAP_API_KEY        = 'checkout/dhl_locationfinder/map_api_key';
+    const CONFIG_XML_PATH_DHL_MAP_TYPE       = 'checkout/dhl_locationfinder/map_type';
 
     /**
      * Check if custom autoloader should be registered.
@@ -103,18 +101,6 @@ class Dhl_LocationFinder_Model_Config
     }
 
     /**
-     * Check, if module is active
-     *
-     * @param mixed $store
-     *
-     * @return string
-     */
-    public function getIsModuleActive($store = null)
-    {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_PSF_ENABLED, $store);
-    }
-
-    /**
      * Obtain Map provider for the location finder
      *
      * @param mixed $store
@@ -124,17 +110,5 @@ class Dhl_LocationFinder_Model_Config
     public function getCurrentMapProvider($store = null)
     {
         return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_MAP_TYPE, $store);
-    }
-
-    /**
-     * Check if jQuery has to be includes (used by the google store locator)
-     *
-     * @param mixed $store
-     *
-     * @return string
-     */
-    public function getWillJQueryIncluded($store = null)
-    {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_INCLUDE_JQUERY, $store);
     }
 }
