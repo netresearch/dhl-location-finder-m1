@@ -255,4 +255,54 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
             $this->assertNotEmpty($item->getId());
         }
     }
+
+    /**
+     * @test
+     */
+    public function standardObjects()
+    {
+        // prepare full set of stations
+        $idOne   = '303';
+        $idTwo   = '808';
+        $idThree = '909';
+
+        $shopTypeOne   = ParcelLocation\Item::TYPE_PACKSTATION;
+        $shopTypeTwo   = ParcelLocation\Item::TYPE_POSTFILIALE;
+        $shopTypeThree = ParcelLocation\Item::TYPE_PACKSTATION;
+
+        $locationOne = new ParcelLocation\Item(array(
+            'id' => $idOne,
+            'shop_type' => $shopTypeOne,
+            'key_word' => 'foo',
+        ));
+        $locationTwo = new ParcelLocation\Item(array(
+            'id' => $idTwo,
+            'shop_type' => $shopTypeTwo,
+            'key_word' => 'bar',
+        ));
+        $locationThree = new ParcelLocation\Item(array(
+            'id' => $idThree,
+            'shop_type' => $shopTypeThree,
+            'key_word' => 'baz',
+        ));
+
+        $collection = new ParcelLocation\Collection();
+        $collection->setItems(array($locationOne, $locationTwo, $locationThree));
+
+        // set limit and filter, convert to stdClass[]
+        $type = [ParcelLocation\Item::TYPE_PACKSTATION];
+        $limit = 1;
+        $filter = new ParcelLocation\Filter($type);
+        $limiter = new ParcelLocation\Limiter($limit);
+        $objects = $collection->toObjectArray($filter, $limiter);
+
+        $this->assertInternalType('array', $objects);
+        $this->assertContainsOnly(stdClass::class, $objects);
+        $this->assertCount($limit, $objects);
+        $this->assertArrayHasKey(0, $objects);
+
+        $object = $objects[0];
+        $this->assertEquals($idOne, $object->id);
+        $this->assertEquals($type[0], $object->type);
+    }
 }

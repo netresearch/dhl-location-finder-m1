@@ -39,6 +39,28 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
     /**
      * @test
      */
+    public function isAutoloadEnabled()
+    {
+        $enabled = Mage::getModel('dhl_locationfinder/config')->isAutoloadEnabled();
+        $this->assertTrue($enabled);
+    }
+
+    /**
+     * @test
+     * @loadFixture ConfigTest
+     */
+    public function getApiKey()
+    {
+        $key = Mage::getModel('dhl_locationfinder/config')->getApiKey();
+        $this->assertEquals('foo', $key);
+
+        $key = Mage::getModel('dhl_locationfinder/config')->getApiKey('store_one');
+        $this->assertEquals('bar', $key);
+    }
+
+    /**
+     * @test
+     */
     public function getWsAuthUser()
     {
         $username = Mage::getModel('dhl_locationfinder/config')->getWsAuthUser();

@@ -72,7 +72,7 @@ final class Item
     {
         $keyWord = isset($data['key_word']) ? $data['key_word'] : '';
         $this->type = isset($data['shop_type']) ? $data['shop_type'] : '';
-        // TODO(nr): Find 3 digit station number in response
+        // TODO(nr): how to obtain 3 digit station number from response?
         $this->number = isset($data['shop_number']) ? $data['shop_number'] : '';
         $this->name = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
         $this->station = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;

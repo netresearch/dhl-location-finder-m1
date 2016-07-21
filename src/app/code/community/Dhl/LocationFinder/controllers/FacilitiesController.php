@@ -44,6 +44,20 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     const MSG_EMPTY_RESULT = 'We could not find any stores in your area.';
 
     /**
+     * @var Mage_Core_Model_Logger
+     */
+    private $logger;
+
+    /**
+     * Prepare logger. Using a wrapper seems sufficient for M1.
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->logger = Mage::getModel('dhl_locationfinder/logger');
+    }
+
+    /**
      * Only accept ajax requests to this controller
      *
      * @return $this
@@ -91,10 +105,10 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
             $locations = $adapter->getParcelLocationByAddress($address, $parser);
             if (!count($locations)) {
-                $messages[]= $this->__('We could not find any stores in your area.');
+                $messages[]= $this->__(self::MSG_EMPTY_RESULT);
             }
 
-            // TODO(nr): read limit from config
+            // TODO(nr): read limit from config (DHLPSF-19)
             $limiter = new Limiter(50);
             $mapLocations = $locations->toObjectArray(null, $limiter);
 
@@ -112,9 +126,8 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             // webservice not available?
             $messages[]= $this->__($fault->getMessage());
 
-            //TODO(nr): wrap logger
-            Mage::log($adapter->getLastRequest());
-            Mage::log($adapter->getLastResponse());
+            $this->logger->log($adapter->getLastRequest());
+            $this->logger->log($adapter->getLastResponse());
 
             $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
                 'success'   => false,
@@ -141,7 +154,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
         } catch (\Exception $e) {
 
             // anything else
-            Mage::logException($e);
+            $this->logger->logException($e);
             $this->getResponse()->setHttpResponseCode(503);
 
         }
