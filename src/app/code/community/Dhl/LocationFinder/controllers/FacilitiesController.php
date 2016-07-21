@@ -44,7 +44,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     const MSG_EMPTY_RESULT = 'We could not find any stores in your area.';
 
     /**
-     * @var Mage_Core_Model_Logger
+     * @var Dhl_LocationFinder_Model_Logger
      */
     private $logger;
 

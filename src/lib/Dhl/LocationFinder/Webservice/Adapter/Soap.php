@@ -61,7 +61,7 @@ class Soap implements Adapter
         $requestType = new LocationsApi\getParcellocationByAddress($requestData->getAddress());
         $requestType->setService($requestData->getServices());
 
-        $response  = $this->soapClient->getParcellocationByAddress($requestType);
+        $response = $this->soapClient->getParcellocationByAddress($requestType);
         return $locationParser->parse($response->getParcelLocation());
     }
 
@@ -75,7 +75,7 @@ class Soap implements Adapter
         $requestType = new LocationsApi\getParcellocationByCoordinate($requestData->getLat(), $requestData->getLng());
         $requestType->setService($requestData->getServices());
 
-        $response  = $this->soapClient->getParcellocationByCoordinate($requestType);
+        $response = $this->soapClient->getParcellocationByCoordinate($requestType);
         return $locationParser->parse($response->getParcelLocation());
     }
 

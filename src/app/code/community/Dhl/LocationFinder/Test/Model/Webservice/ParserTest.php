@@ -55,8 +55,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_ParserTest
         /** @var Location $location */
         foreach ($locationCollection as $location) {
             $this->assertNotEmpty($location->getType());
-            // TODO(nr): how to obtain 3 digit station number from response?
-//            $this->assertNotEmpty($location->getNumber());
+            $this->assertNotEmpty($location->getNumber());
             $this->assertNotEmpty($location->getName());
             $this->assertNotEmpty($location->getStation());
             $this->assertNotEmpty($location->getStreet());
