@@ -118,19 +118,6 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
     }
 
     /**
-     * @deprecated
-     * @see getMarkerIcons()
-     *
-     * @param string $shopType
-     *
-     * @return string
-     */
-    public function getMarkerIconForShopType($shopType)
-    {
-        return $this->getSkinUrl('images/dhl_locationfinder/icon-' . $shopType . '.png', array('_secure' => true));
-    }
-
-    /**
      * Obtain skin images per location type.
      *
      * @return string[]
