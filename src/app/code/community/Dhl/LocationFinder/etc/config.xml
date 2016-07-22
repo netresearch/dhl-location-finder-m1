@@ -61,11 +61,11 @@
         <events>
             <controller_front_init_before>
                 <observers>
-                    <register_autoload>
+                    <register_psf_autoload>
                         <class>dhl_locationfinder/observer</class>
                         <method>registerAutoload</method>
                         <type>singleton</type>
-                    </register_autoload>
+                    </register_psf_autoload>
                 </observers>
             </controller_front_init_before>
         </events>
@@ -142,6 +142,15 @@
                     </save_dhl_fields>
                 </observers>
             </sales_quote_save_before>
+            <dhl_versenden_set_postal_facility>
+                <observers>
+                    <save_dhl_fields>
+                        <type>singleton</type>
+                        <class>Dhl_LocationFinder_Model_Observer</class>
+                        <method>saveDHLFieldsInPostalFacility</method>
+                    </save_dhl_fields>
+                </observers>
+            </dhl_versenden_set_postal_facility>
         </events>
     </frontend>
     <adminhtml>

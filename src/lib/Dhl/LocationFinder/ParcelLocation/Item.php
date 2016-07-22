@@ -66,22 +66,23 @@ final class Item
 
     /**
      * Item constructor.
+     *
      * @param string[] $data
      */
     public function __construct(array $data)
     {
-        $keyWord = isset($data['key_word']) ? $data['key_word'] : '';
-        $this->type = isset($data['shop_type']) ? $data['shop_type'] : '';
-        $this->number = isset($data['shop_number']) ? $data['shop_number'] : '';
-        $this->name = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
-        $this->station = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;
-        $this->street = isset($data['street']) ? $data['street'] : '';
-        $this->houseNo = isset($data['house_no']) ? $data['house_no'] : '';
-        $this->zipCode = isset($data['zip_code']) ? $data['zip_code'] : '';
-        $this->city = isset($data['city']) ? $data['city'] : '';
-        $this->country = isset($data['country_code']) ? strtoupper($data['country_code']) : '';
-        $this->id = isset($data['id']) ? $data['id'] : '';
-        $this->latitude = isset($data['latitude']) ? $data['latitude'] : '';
+        $keyWord         = isset($data['key_word']) ? $data['key_word'] : '';
+        $this->type      = isset($data['shop_type']) ? $data['shop_type'] : '';
+        $this->number    = isset($data['shop_number']) ? $data['shop_number'] : '';
+        $this->name      = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
+        $this->station   = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;
+        $this->street    = isset($data['street']) ? $data['street'] : '';
+        $this->houseNo   = isset($data['house_no']) ? $data['house_no'] : '';
+        $this->zipCode   = isset($data['zip_code']) ? $data['zip_code'] : '';
+        $this->city      = isset($data['city']) ? $data['city'] : '';
+        $this->country   = isset($data['country_code']) ? strtoupper($data['country_code']) : '';
+        $this->id        = isset($data['id']) ? $data['id'] : '';
+        $this->latitude  = isset($data['latitude']) ? $data['latitude'] : '';
         $this->longitude = isset($data['longitude']) ? $data['longitude'] : '';
     }
 
@@ -188,10 +189,11 @@ final class Item
      */
     public function toObject()
     {
-        $location = new \stdClass();
+        $location          = new \stdClass();
         $location->type    = $this->getType();
         $location->name    = $this->getName();
         $location->station = $this->getStation();
+        $location->number  = $this->getNumber();
         $location->street  = $this->getStreet();
         $location->houseNo = $this->getHouseNo();
         $location->zipCode = $this->getZipCode();

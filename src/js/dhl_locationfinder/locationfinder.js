@@ -154,7 +154,7 @@ DhlLocationFinder.prototype = {
                                     country: location['country'],
                                     zipCode: location['zipCode'],
                                     type: location['type'],
-                                    station: location['station'] + ' ' + location['id']
+                                    station: location['station'] + ' ' + location['number']
                                 }
                             );
                             // Set InfoWindow information for later use, to get the location credentials

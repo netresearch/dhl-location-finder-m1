@@ -90,7 +90,7 @@ class Dhl_LocationFinder_Model_Observer
      *
      * @param Varien_Event_Observer $observer
      *
-     * @event saveDHLFieldsInQuote
+     * @event sales_quote_save_before
      *
      * @return void
      */
@@ -107,4 +107,33 @@ class Dhl_LocationFinder_Model_Observer
             $shippingAddress->save();
         }
     }
+
+    /**
+     * Append new DHL fields into postal facility for DHL Versenden
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @event dhl_versenden_set_postal_facility
+     *
+     * @return void
+     */
+    public function saveDHLFieldsInPostalFacility(Varien_Event_Observer $observer)
+    {
+        /** @var Varien_Object $facility */
+        $facility = $observer->getData('postal_facility');
+
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $observer->getData('quote_address');
+
+        if ($address->getData('dhl_station_type')) {
+            $facility->setData(
+                array(
+                    'shop_type'   => $address->getData('dhl_station_type'),
+                    'shop_number' => preg_filter('/^.*([\d]{3})$/', '$1', $address->getData('dhl_station')),
+                    'post_number' => $address->getData('dhl_post_number') ? $address->getData('dhl_post_number') : '',
+                )
+            );
+        }
+    }
+
 }
