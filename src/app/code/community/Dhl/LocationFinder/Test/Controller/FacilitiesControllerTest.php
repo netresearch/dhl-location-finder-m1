@@ -68,13 +68,12 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $collection = new ParcelLocation\Collection();
 
         $adapterMock = $this->getMockBuilder(SoapAdapter::class)
-            ->setMethods(['getParcelLocationByAddress'])
+            ->setMethods(array('getParcelLocationByAddress'))
             ->disableOriginalConstructor()
             ->getMock();
         $adapterMock
             ->method('getParcelLocationByAddress')
-            ->willReturn($collection)
-        ;
+            ->willReturn($collection);
 
         $helperMock = $this->getHelperMock('dhl_locationfinder/data', array('getWebserviceAdapter'));
         $helperMock
@@ -85,7 +84,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
 
 
         $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('dhlpsf/facilities/index', array(
+        $this->dispatch(
+            'dhlpsf/facilities/index', array(
             '_query' => array(
                 'locationfinder' => array(
                     'country' => 'DE',
@@ -94,7 +94,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
                     'street' => 'Nonnenstraße 11d',
                 )
             )
-        ));
+            )
+        );
 
         $this->assertRequestRoute('dhl_locationfinder/facilities/index');
         $this->assertResponseBodyJson();
@@ -116,7 +117,7 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $faultString = 'Unknown address.';
         $fault = new \SoapFault($faultCode, $faultString);
         $adapterMock = $this->getMockBuilder(SoapAdapter::class)
-            ->setMethods(['getParcelLocationByAddress', 'getLastRequest', 'getLastResponse'])
+            ->setMethods(array('getParcelLocationByAddress', 'getLastRequest', 'getLastResponse'))
             ->disableOriginalConstructor()
             ->getMock();
         $adapterMock
@@ -131,7 +132,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $this->replaceByMock('helper', 'dhl_locationfinder/data', $helperMock);
 
         $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('dhlpsf/facilities/index', array(
+        $this->dispatch(
+            'dhlpsf/facilities/index', array(
             '_query' => array(
                 'locationfinder' => array(
                     'country' => 'DE',
@@ -140,7 +142,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
                     'street' => 'Adenauerplatz 1',
                 )
             )
-        ));
+            )
+        );
 
         $this->assertRequestRoute('dhl_locationfinder/facilities/index');
         $this->assertResponseBodyJson();
@@ -161,7 +164,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $country = 'XX';
 
         $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('dhlpsf/facilities/index', array(
+        $this->dispatch(
+            'dhlpsf/facilities/index', array(
             '_query' => array(
                 'locationfinder' => array(
                     'country' => $country,
@@ -170,7 +174,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
                     'street' => '',
                 )
             )
-        ));
+            )
+        );
 
         $this->assertRequestRoute('dhl_locationfinder/facilities/index');
         $this->assertResponseBodyJson();
@@ -190,7 +195,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
     public function addressInsufficientException()
     {
         $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('dhlpsf/facilities/index', array(
+        $this->dispatch(
+            'dhlpsf/facilities/index', array(
             '_query' => array(
                 'locationfinder' => array(
                     'country' => '',
@@ -199,7 +205,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
                     'street' => '',
                 )
             )
-        ));
+            )
+        );
 
         $this->assertRequestRoute('dhl_locationfinder/facilities/index');
         $this->assertResponseBodyJson();
@@ -218,13 +225,12 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
     public function unknownException()
     {
         $adapterMock = $this->getMockBuilder(SoapAdapter::class)
-            ->setMethods(['getParcelLocationByAddress'])
+            ->setMethods(array('getParcelLocationByAddress'))
             ->disableOriginalConstructor()
             ->getMock();
         $adapterMock
             ->method('getParcelLocationByAddress')
-            ->willThrowException(new \Exception("I've got a bad feeling about this…"))
-        ;
+            ->willThrowException(new \Exception("I've got a bad feeling about this…"));
 
         $helperMock = $this->getHelperMock('dhl_locationfinder/data', array('getWebserviceAdapter'));
         $helperMock
@@ -234,7 +240,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $this->replaceByMock('helper', 'dhl_locationfinder/data', $helperMock);
 
         $this->getRequest()->setHeader('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('dhlpsf/facilities/index', array(
+        $this->dispatch(
+            'dhlpsf/facilities/index', array(
             '_query' => array(
                 'locationfinder' => array(
                     'country' => 'DE',
@@ -243,7 +250,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
                     'street' => 'Nonnenstraße 11d',
                 )
             )
-        ));
+            )
+        );
 
         $this->assertResponseHttpCode(503);
     }

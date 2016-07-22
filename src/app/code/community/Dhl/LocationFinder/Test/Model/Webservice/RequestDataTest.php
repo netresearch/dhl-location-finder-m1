@@ -60,7 +60,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
      */
     public function address()
     {
-        $validCountries = ['AT' => 'Austria'];
+        $validCountries = array('AT' => 'Austria');
         $street = 'myStreet';
         $houseNo = 'myHouseNo';
         $zipCode = 'myZip';
@@ -88,7 +88,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
         $this->setExpectedException(RequestData\AddressException::class);
 
         $country = 'myCountry';
-        $address = new RequestData\Address(['FO' => 'Bar'], $country);
+        $address = new RequestData\Address(array('FO' => 'Bar'), $country);
         $address->getAddress();
     }
 
@@ -99,7 +99,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
     {
         $this->setExpectedException(RequestData\AddressException::class);
 
-        $address = new RequestData\Address(['FO' => 'Bar']);
+        $address = new RequestData\Address(array('FO' => 'Bar'));
         $address->getAddress();
     }
 }
