@@ -1,10 +1,11 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
         this.initDhlFields(formElementId);
         this.loadingElement = loadingElement;
+        this.markerIcons = markerIcons;
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -29,42 +30,36 @@ DhlLocationFinder.prototype = {
         }
     },
 
-    initMap: function (mapType, elementId) {
-        if (!this.map && mapType && elementId) {
+    initMap: function (elementId) {
+        if (!this.map && elementId) {
 
-            this.mapType = mapType;
             this.mapElement = $(elementId);
 
-            switch (this.mapType) {
-                case 'googlemaps':
-                default:
-                    var map = new google.maps.Map(
-                        this.mapElement,
-                        {
-                            center: new google.maps.LatLng(52.4945047, 13.4006041),
-                            zoom: 11,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                        }
-                    );
+            var map = new google.maps.Map(
+                this.mapElement,
+                {
+                    center: new google.maps.LatLng(52.4945047, 13.4006041),
+                    zoom: 11,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+            );
 
-                    /** set map center based on a given address -> Wont work if i try it before the map was loaded,
-                     * because the geocoder will be called after the map was loaded
-                     * see https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple
-                     * Get initial center from billing address
-                     */
-                    var geoCoder = new google.maps.Geocoder();
-                    geoCoder.geocode(
-                        {'address': $('billing:postcode').value + ', ' + $('billing:city').value},
-                        function (results, status) {
-                            if (status === google.maps.GeocoderStatus.OK) {
-                                map.setCenter(results[0].geometry.location);
-                            } else {
-                                console.log('Geocode was not successful for the following reason: ' + status);
-                            }
-                        }
-                    );
-                    break;
-            }
+            /** set map center based on a given address -> Wont work if i try it before the map was loaded,
+             * because the geocoder will be called after the map was loaded
+             * see https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple
+             * Get initial center from billing address
+             */
+            var geoCoder = new google.maps.Geocoder();
+            geoCoder.geocode(
+                {'address': $('billing:postcode').value + ', ' + $('billing:city').value},
+                function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                    } else {
+                        console.log('Geocode was not successful for the following reason: ' + status);
+                    }
+                }
+            );
             this.map = map;
         }
     },
@@ -129,6 +124,7 @@ DhlLocationFinder.prototype = {
 
             var currentClass = this;
             var map = currentClass.map;
+            var markerIcons = this.markerIcons;
 
             $(currentClass.loadingElement).addClassName('active');
             new Ajax.Request(actionUrl, {
@@ -138,114 +134,108 @@ DhlLocationFinder.prototype = {
                     // Check if stores was found
                     if (responseData['success']) {
 
-                        switch (currentClass.mapType) {
-                            case 'googlemaps':
-                            default:
+                        // Set results as stores
+                        var stores = [];
+                        var newCenter = '';
+                        responseData['locations'].each(function (location) {
 
-                                // Set results as stores
-                                var stores = [];
-                                var newCenter = '';
-                                responseData['locations'].each(function (location) {
-
-                                    var coordinates = new google.maps.LatLng(location['lat'], location['long']);
-                                    var store = new storeLocator.Store(
-                                        location['id'],
-                                        coordinates,
-                                        null,
-                                        {
-                                            title: location['name'],
-                                            address1: location['street'] + ' ' + location['houseNo'],
-                                            address2: location['zipCode'] + ' ' + location['city'],
-                                            icon: location['icon'],
-                                            street: location['street'] + ' ' + location['houseNo'],
-                                            city: location['city'],
-                                            country: location['country'],
-                                            zipCode: location['zipCode'],
-                                            type: location['type'],
-                                            station: location['station'] + ' ' + location['id']
-                                        }
-                                    );
-                                    // Set InfoWindow information for later use, to get the location credentials
-                                    store.getInfoWindowContent = function () {
-                                        var details = this.getDetails();
-                                        return '<div class="store-infos">' +
-                                            '<h3>' + details.title + '</h3>' +
-                                            '<p>' + details.address1 + '</p>' +
-                                            '<p>' + details.address2 + '</p>' +
-                                            '<p>' + details.station + '</p>' +
-                                            '<p>' +
-                                            '<a class="store-selector" ' +
-                                            'href="javascript:void(0)" ' +
-                                            'onclick="transmitFormData(this)" ' +
-                                            'data-street="' + details.street + '" ' +
-                                            'data-city="' + details.city + '" ' +
-                                            'data-country="' + details.country + '" ' +
-                                            'data-zipCode="' + details.zipCode + '" ' +
-                                            'data-type="' + details.type + '" ' +
-                                            'data-station="' + details.station + '" >' +
-                                            Translator.translate("Use this station") +
-                                            '</a>' +
-                                            '</p>' +
-                                            '</div>';
-                                    };
-                                    if (newCenter == '') {
-                                        newCenter = coordinates;
-                                    }
-                                    stores.push(store);
-                                });
-
-                                if (typeof currentClass.view === "undefined") {
-
-                                    // Add the Stores to a dataset
-                                    currentClass.dataFeed = new storeLocator.StaticDataFeed();
-                                    currentClass.dataFeed.setStores(stores);
-
-                                    // Create View on the map
-                                    currentClass.view = new storeLocator.View(
-                                        map,
-                                        currentClass.dataFeed,
-                                        {
-                                            geolocation: false
-                                        }
-                                    );
-
-                                    currentClass.view.createMarker = function (store) {
-                                        var markerOptions = {
-                                            position: store.getLocation(),
-                                            icon: store.getDetails().icon,
-                                            title: store.getDetails().title
-                                        };
-                                        return new google.maps.Marker(markerOptions);
-                                    };
-                                } else {
-                                    currentClass.view.clearMarkers();
-                                    currentClass.dataFeed.setStores(stores);
+                            var coordinates = new google.maps.LatLng(location['lat'], location['long']);
+                            var store = new storeLocator.Store(
+                                location['id'],
+                                coordinates,
+                                null,
+                                {
+                                    title: location['name'],
+                                    address1: location['street'] + ' ' + location['houseNo'],
+                                    address2: location['zipCode'] + ' ' + location['city'],
+                                    icon: markerIcons[location['type']],
+                                    street: location['street'] + ' ' + location['houseNo'],
+                                    city: location['city'],
+                                    country: location['country'],
+                                    zipCode: location['zipCode'],
+                                    type: location['type'],
+                                    station: location['station'] + ' ' + location['id']
                                 }
+                            );
+                            // Set InfoWindow information for later use, to get the location credentials
+                            store.getInfoWindowContent = function () {
+                                var details = this.getDetails();
+                                return '<div class="store-infos">' +
+                                    '<h3>' + details.title + '</h3>' +
+                                    '<p>' + details.address1 + '</p>' +
+                                    '<p>' + details.address2 + '</p>' +
+                                    '<p>' + details.station + '</p>' +
+                                    '<p>' +
+                                    '<a class="store-selector" ' +
+                                    'href="javascript:void(0)" ' +
+                                    'onclick="transmitFormData(this)" ' +
+                                    'data-street="' + details.street + '" ' +
+                                    'data-city="' + details.city + '" ' +
+                                    'data-country="' + details.country + '" ' +
+                                    'data-zipCode="' + details.zipCode + '" ' +
+                                    'data-type="' + details.type + '" ' +
+                                    'data-station="' + details.station + '" >' +
+                                    Translator.translate("Use this station") +
+                                    '</a>' +
+                                    '</p>' +
+                                    '</div>';
+                            };
+                            if (newCenter == '') {
+                                newCenter = coordinates;
+                            }
+                            stores.push(store);
+                        });
 
-                                // Add Click Event for later use, to get the location credentials
-                                stores.each(function (store) {
-                                    // For the case, a store will use multiple times (through multiple searches)
-                                    google.maps.event.clearListeners(currentClass.view.getMarker(store), 'dblclick');
-                                    currentClass.view.getMarker(store).addListener("dblclick", function () {
-                                        var dataObject = {
-                                            'street': this.getDetails().street,
-                                            'city': this.getDetails().city,
-                                            'country': this.getDetails().country,
-                                            'zipCode': this.getDetails().zipCode,
-                                            'type': this.getDetails().type,
-                                            'station': this.getDetails().station
-                                        };
-                                        currentClass.transmitStoreData(dataObject);
-                                    }.bind(store));
-                                });
+                        if (typeof currentClass.view === "undefined") {
 
-                                // Update Map
-                                if (newCenter != '') {
-                                    map.setCenter(newCenter);
-                                    map.setZoom(13);
-                                    currentClass.view.refreshView();
+                            // Add the Stores to a dataset
+                            currentClass.dataFeed = new storeLocator.StaticDataFeed();
+                            currentClass.dataFeed.setStores(stores);
+
+                            // Create View on the map
+                            currentClass.view = new storeLocator.View(
+                                map,
+                                currentClass.dataFeed,
+                                {
+                                    geolocation: false
                                 }
-                                break;
+                            );
+
+                            currentClass.view.createMarker = function (store) {
+                                var markerOptions = {
+                                    position: store.getLocation(),
+                                    icon: markerIcons[store.getDetails().type],
+                                    title: store.getDetails().title
+                                };
+                                return new google.maps.Marker(markerOptions);
+                            };
+                        } else {
+                            currentClass.view.clearMarkers();
+                            currentClass.dataFeed.setStores(stores);
+                        }
+
+                        // Add Click Event for later use, to get the location credentials
+                        stores.each(function (store) {
+                            // For the case, a store will use multiple times (through multiple searches)
+                            google.maps.event.clearListeners(currentClass.view.getMarker(store), 'dblclick');
+                            currentClass.view.getMarker(store).addListener("dblclick", function () {
+                                var dataObject = {
+                                    'street': this.getDetails().street,
+                                    'city': this.getDetails().city,
+                                    'country': this.getDetails().country,
+                                    'zipCode': this.getDetails().zipCode,
+                                    'type': this.getDetails().type,
+                                    'station': this.getDetails().station
+                                };
+                                currentClass.transmitStoreData(dataObject);
+                            }.bind(store));
+                        });
+
+                        // Update Map
+                        if (newCenter != '') {
+                            map.setCenter(newCenter);
+                            map.setZoom(13);
+                            currentClass.view.refreshView();
                         }
 
                     } else {

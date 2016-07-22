@@ -23,6 +23,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+use \Dhl\LocationFinder\ParcelLocation\Limiter;
+use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
+use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
+use \Dhl\LocationFinder\Webservice\RequestData;
 use \Dhl\Psf\Api as LocationsApi;
 
 /**
@@ -35,94 +39,124 @@ use \Dhl\Psf\Api as LocationsApi;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-class Dhl_LocationFinder_FacilitiesController
-    extends Mage_Core_Controller_Front_Action
+class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front_Action
 {
+    const MSG_EMPTY_RESULT = 'We could not find any stores in your area.';
+
+    /**
+     * @var Dhl_LocationFinder_Model_Logger
+     */
+    private $logger;
+
+    /**
+     * Prepare logger. Using a wrapper seems sufficient for M1.
+     */
     protected function _construct()
     {
         parent::_construct();
-
-        $libDir        = Mage::app()->getConfig()->getOptions()->getLibDir();
-        $autoLoaderDir = 'Dhl/Psf/Api/autoload.php';
-        require_once $libDir . DS . $autoLoaderDir;
+        $this->logger = Mage::getModel('dhl_locationfinder/logger');
     }
 
-    public function indexAction()
+    /**
+     * Only accept ajax requests to this controller
+     *
+     * @return $this
+     */
+    public function preDispatch()
     {
-        $mapLocations = [];
-        $success      = false;
-        $message      = '';
+        parent::preDispatch();
 
-        // Build Address Data from Billing Form
-        $searchAddress = $this->getRequest()->getParam('locationfinder');
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            $this->getResponse()
+                ->setHeader('HTTP/1.1','404 Not Found')
+                ->setHeader('Status','404 File not found');
 
-        // Use required string for searched country
-        $allowedCountries = new LocationsApi\allowedCountries();
-        $allowedCountries = $allowedCountries->getCountries();
-
-        $soapAddress = '';
-        isset($searchAddress['country']) ? $soapAddress .= $allowedCountries[$searchAddress['country']]
-            : null;
-        isset($searchAddress['city']) ? $soapAddress .= ' ' . $searchAddress['city'] : null;
-        isset($searchAddress['zipcode']) ? $soapAddress .= ' ' . $searchAddress['zipcode'] : null;
-        isset($searchAddress['street']) ? $soapAddress .= ' ' . $searchAddress['street'] : null;
-
-        if ($soapAddress != '') {
-
-            $service     = new LocationsApi\SoapServiceImplService(['trace' => true,]);
-            $requestType = new LocationsApi\getParcellocationByAddress($soapAddress);
-
-            try {
-                $response  = $service->getParcellocationByAddress($requestType);
-                $locations = $response->getParcelLocation();
-                if ($locations) {
-
-                    // Get Icons for the store marker
-                    /** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $locationBlock */
-                    $locationBlock = Mage::getBlockSingleton('dhl_locationfinder/checkout_onepage_locationfinder');
-
-                    foreach ($locations as $location) {
-                        $mapLocation          = new stdClass();
-                        $mapLocation->type    = $location->getShopType();
-                        $mapLocation->name    =
-                            !empty($location->getShopName()) ? $location->getShopName() : $location->getKeyWord();
-                        $mapLocation->icon    = $locationBlock->getMarkerIconForShopType($location->getShopType());
-                        $mapLocation->station =
-                            $location->getAdditionalInfo() ? $location->getAdditionalInfo() : $location->getKeyWord();
-
-                        $mapLocation->street  = $location->getStreet();
-                        $mapLocation->houseNo = $location->getHouseNo();
-                        $mapLocation->zipCode = $location->getZipCode();
-                        $mapLocation->city    = $location->getCity();
-                        $mapLocation->country = strtoupper($location->getCountryCode());
-                        $mapLocation->id      = $location->getPrimaryKeyDeliverySystem();
-
-                        $coordinates       = $location->getLocation();
-                        $mapLocation->lat  = $coordinates->getLatitude();
-                        $mapLocation->long = $coordinates->getLongitude();
-
-                        $mapLocations[] = $mapLocation;
-                    }
-                    $success = true;
-                } else {
-                    $message = $this->__('We could not find any stores in your area.');
-                }
-            } catch (SoapFault $sf) {
-                // DHL got an unknown Address
-                // TODO (nr) improvement suggest logging and ?use error message $sf->getMessage();
-                $message = $this->__('This address is unfortunately unknown to us. Please use another one.');
-            }
-        } else {
-            $message = $this->__('Please enter a valid address.');
+            $this->_forward('defaultNoRoute');
+            $this->setFlag('', self::FLAG_NO_DISPATCH, true);
         }
 
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
-        $this->getResponse()
-             ->setBody(Mage::helper('core/data')
-                           ->jsonEncode(['success'   => $success,
-                                         'message'   => $message,
-                                         'locations' => $mapLocations]
-                           )
-             );
+        return $this;
+    }
+
+    /**
+     * Request facilities
+     */
+    public function indexAction()
+    {
+        $messages     = array();
+        $mapLocations = array();
+
+        /** @var SoapAdapter $adapter */
+        $adapter = Mage::helper('dhl_locationfinder/data')->getWebserviceAdapter();
+        $parser = new LocationParser();
+
+        $requestAddress = $this->getRequest()->getParam('locationfinder', array());
+        $address = new RequestData\Address(
+            Mage::getModel('dhl_locationfinder/config')->getWsValidCountries(),
+            $requestAddress['country'],
+            $requestAddress['zipcode'],
+            $requestAddress['city'],
+            '',
+            $requestAddress['street']
+        );
+
+
+        try {
+
+            $locations = $adapter->getParcelLocationByAddress($address, $parser);
+            if (!count($locations)) {
+                $messages[]= $this->__(self::MSG_EMPTY_RESULT);
+            }
+
+            // TODO(nr): read limit from config (DHLPSF-19)
+            $limiter = new Limiter(50);
+            $mapLocations = $locations->toObjectArray(null, $limiter);
+
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+                'success'   => (count($locations) > 0),
+                'message'   => implode(' ', $messages),
+                'locations' => $mapLocations,
+            ));
+            $this->getResponse()->setHeader('Content-Type', 'application/json');
+            $this->getResponse()->setBody($jsonResponse);
+
+        } catch (SoapFault $fault) {
+
+            // unknown address error?
+            // webservice not available?
+            $messages[]= $this->__($fault->getMessage());
+
+            $this->logger->log($adapter->getLastRequest());
+            $this->logger->log($adapter->getLastResponse());
+
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+                'success'   => false,
+                'message'   => implode(' ', $messages),
+                'locations' => $mapLocations,
+            ));
+            $this->getResponse()->setHeader('Content-Type', 'application/json');
+            $this->getResponse()->setBody($jsonResponse);
+
+        } catch (RequestData\AddressException $e) {
+
+            // given address too short?
+            // no country given?
+            $messages[]= $this->__($e->getMessage());
+
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+                'success'   => false,
+                'message'   => implode(' ', $messages),
+                'locations' => $mapLocations,
+            ));
+            $this->getResponse()->setHeader('Content-Type', 'application/json');
+            $this->getResponse()->setBody($jsonResponse);
+
+        } catch (\Exception $e) {
+
+            // anything else
+            $this->logger->logException($e);
+            $this->getResponse()->setHttpResponseCode(503);
+
+        }
     }
 }

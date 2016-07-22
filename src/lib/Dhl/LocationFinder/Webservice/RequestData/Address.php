@@ -35,6 +35,12 @@ namespace Dhl\LocationFinder\Webservice\RequestData;
  */
 final class Address
 {
+    const MSG_INVALID_COUNTRY = '%s is currently not supported.';
+    const MSG_INVALID_ADDRESS = 'Insufficient address parts given.';
+
+    /** @var string[] Supported Countries */
+    private $validCountries = [];
+
     /** @var string Street */
     private $street = '';
     /** @var string HouseNo */
@@ -54,6 +60,7 @@ final class Address
     /**
      * Address constructor.
      *
+     * @param string[] $validCountries
      * @param string $country
      * @param string $zipCode
      * @param string $city
@@ -63,9 +70,12 @@ final class Address
      * @param string[] $services
      */
     public function __construct(
+        $validCountries,
         $country = '', $zipCode = '', $city = '', $district = '', $street = '', $houseNo = '',
         $services = []
     ) {
+        $this->validCountries = $validCountries;
+
         $this->country = strtoupper(trim($country));
         $this->zipCode = trim($zipCode);
         $this->city = trim($city);
@@ -80,23 +90,13 @@ final class Address
      * Retrieve address prepared for webservice request.
      *
      * @return string
-     * @throws \Exception
+     * @throws AddressException
      */
     public function getAddress()
     {
-        $validCountries = [
-            'AT' => 'Austria',
-            'BE' => 'Belgium',
-            'CZ' => 'Czech Republic',
-            'DE' => 'Germany',
-            'NL' => 'Netherlands',
-            'PL' => 'Poland',
-            'SK' => 'Slovakia',
-        ];
-
-        if ($this->country && !isset($validCountries[$this->country])) {
-            $message = sprintf('%s is currently not supported.', $this->country);
-            throw new \Exception($message);
+        if ($this->country && !isset($this->validCountries[$this->country])) {
+            $message = sprintf(self::MSG_INVALID_COUNTRY, $this->country);
+            throw new AddressException($message);
         }
 
         $address = [];
@@ -116,12 +116,12 @@ final class Address
             $address[]= $this->houseNo;
         }
         if ($this->country) {
-            $address[]= $this->country;
+            $address[]= $this->validCountries[$this->country];
         }
 
         $address = implode(' ', $address);
         if (strlen($address) < 2) {
-            throw new \Exception('Insufficient address parts given');
+            throw new AddressException(self::MSG_INVALID_ADDRESS);
         }
 
         return $address;

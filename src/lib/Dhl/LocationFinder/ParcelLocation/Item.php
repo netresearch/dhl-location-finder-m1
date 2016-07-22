@@ -25,7 +25,7 @@
  */
 namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Location
+ * Item
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -35,8 +35,14 @@ namespace Dhl\LocationFinder\ParcelLocation;
  */
 final class Item
 {
+    const TYPE_PACKSTATION = 'packStation';
+    const TYPE_PAKETSHOP   = 'parcelShop';
+    const TYPE_POSTFILIALE = 'postOffice';
+
     /** @var string ShopType */
     private $type = '';
+    /** @var string ShopNumber */
+    private $number = '';
     /** @var string ShopName or KeyWord */
     private $name = '';
     /** @var string AdditionalInfo or KeyWord */
@@ -66,7 +72,6 @@ final class Item
     {
         $keyWord = isset($data['key_word']) ? $data['key_word'] : '';
         $this->type = isset($data['shop_type']) ? $data['shop_type'] : '';
-        // TODO(nr): Find 3 digit station number in response
         $this->number = isset($data['shop_number']) ? $data['shop_number'] : '';
         $this->name = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
         $this->station = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;
@@ -86,6 +91,14 @@ final class Item
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 
     /**
@@ -166,5 +179,28 @@ final class Item
     public function getLongitude()
     {
         return $this->longitude;
+    }
+
+    /**
+     * Obtain serializable location representation.
+     *
+     * @return \stdClass
+     */
+    public function toObject()
+    {
+        $location = new \stdClass();
+        $location->type    = $this->getType();
+        $location->name    = $this->getName();
+        $location->station = $this->getStation();
+        $location->street  = $this->getStreet();
+        $location->houseNo = $this->getHouseNo();
+        $location->zipCode = $this->getZipCode();
+        $location->city    = $this->getCity();
+        $location->country = $this->getCountry();
+        $location->id      = $this->getId();
+        $location->lat     = $this->getLatitude();
+        $location->long    = $this->getLongitude();
+
+        return $location;
     }
 }

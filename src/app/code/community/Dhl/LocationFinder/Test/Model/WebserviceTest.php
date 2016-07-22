@@ -25,6 +25,7 @@
  */
 use \Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
 use \Dhl\LocationFinder\ParcelLocation\Item as ParcelLocation;
+use \Dhl\LocationFinder\ParcelLocation\Limiter as ParcelLocationLimiter;
 use \Dhl\LocationFinder\Webservice;
 use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
 use \Dhl\LocationFinder\Webservice\RequestData;
@@ -42,21 +43,68 @@ class Dhl_LocationFinder_Test_Model_WebserviceTest extends EcomDev_PHPUnit_Test_
 {
     /**
      * @test
+     * @dataProvider dataProvider
+     *
+     * @param string $serializedResponse
      */
-    public function getParcelLocationByAddress()
+    public function getParcelLocationByAddress($serializedResponse)
     {
-        // TODO(nr): record response, do not actually call webservice from tests
-        $soapClient = new LocationsApi\SoapServiceImplService([
-            'trace' => true,
-        ]);
-        $parser = new LocationParser();
-        $address = new RequestData\Address('de', '04229', 'Leipzig', 'Plagwitz', 'Nonnenstr.', '11d');
+        $response = unserialize($serializedResponse);
 
-        $adapter = new Webservice\Adapter\Soap($soapClient);
+        $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
+            ->setMethods(['getParcellocationByAddress'])
+            ->getMock();
+        $clientStub
+            ->method('getParcellocationByAddress')
+            ->willReturn($response)
+        ;
+        $parser = new LocationParser();
+        $address = new RequestData\Address(['DE' => 'Germany'], 'de', '04229', 'Leipzig', 'Plagwitz', 'Nonnenstr.', '11d');
+
+        $adapter = new Webservice\Adapter\Soap($clientStub);
         $result = $adapter->getParcelLocationByAddress($address, $parser);
 
         $this->assertInstanceOf(ParcelLocationCollection::class, $result);
-        array_walk($result->getIterator()->getArrayCopy(), function (ParcelLocation $parcelLocation) {
+
+        $parcelLocations = $result->getItems(
+            null,
+            new ParcelLocationLimiter(2)
+        );
+        array_walk($parcelLocations, function (ParcelLocation $parcelLocation) {
+            $this->assertNotEmpty($parcelLocation->getType());
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider dataProvider
+     *
+     * @param string $serializedResponse
+     */
+    public function getParcelLocationByCoordinate($serializedResponse)
+    {
+        $response = unserialize($serializedResponse);
+
+        $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
+            ->setMethods(['getParcelLocationByCoordinate'])
+            ->getMock();
+        $clientStub
+            ->method('getParcelLocationByCoordinate')
+            ->willReturn($response)
+        ;
+        $parser = new LocationParser();
+        $coordinate = new RequestData\Coordinate('51.34', '12.375');
+
+        $adapter = new Webservice\Adapter\Soap($clientStub);
+        $result = $adapter->getParcelLocationByCoordinate($coordinate, $parser);
+
+        $this->assertInstanceOf(ParcelLocationCollection::class, $result);
+
+        $parcelLocations = $result->getItems(
+            null,
+            new ParcelLocationLimiter(2)
+        );
+        array_walk($parcelLocations, function (ParcelLocation $parcelLocation) {
             $this->assertNotEmpty($parcelLocation->getType());
         });
     }

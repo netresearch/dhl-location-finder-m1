@@ -23,13 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-namespace Dhl\LocationFinder\Webservice;
-use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
-use Dhl\LocationFinder\Webservice\Parser as LocationParser;
-use Dhl\LocationFinder\Webservice\RequestData;
-
+namespace Dhl\LocationFinder\Webservice\RequestData;
 /**
- * Adapter
+ * AddressException
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -37,19 +33,6 @@ use Dhl\LocationFinder\Webservice\RequestData;
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-interface Adapter
+class AddressException extends \Exception
 {
-    /**
-     * @param RequestData\Address $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
-     */
-    public function getParcelLocationByAddress(RequestData\Address $requestData, LocationParser $locationParser);
-
-    /**
-     * @param RequestData\Coordinate $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
-     */
-    public function getParcelLocationByCoordinate(RequestData\Coordinate $requestData, LocationParser $locationParser);
 }

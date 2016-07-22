@@ -1,4 +1,6 @@
 "We could not find any stores in your area.","We could not find any stores in your area."
+"%s is currently not supported.","%s is currently not supported."
+"Insufficient address parts given.","Insufficient address parts given."
 "Enable Parcel Shop Finder","Enable Parcel Shop Finder"
 "Select Map Provider","Select Map Provider"
 "Zipcode","Zipcode"

@@ -23,13 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-namespace Dhl\LocationFinder\Webservice;
-use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
-use Dhl\LocationFinder\Webservice\Parser as LocationParser;
-use Dhl\LocationFinder\Webservice\RequestData;
-
+namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Adapter
+ * Filter
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -37,19 +33,37 @@ use Dhl\LocationFinder\Webservice\RequestData;
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-interface Adapter
+class Filter
 {
     /**
-     * @param RequestData\Address $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
+     * @var string[]
      */
-    public function getParcelLocationByAddress(RequestData\Address $requestData, LocationParser $locationParser);
+    private $shopTypes = [
+        Item::TYPE_PACKSTATION,
+        Item::TYPE_POSTFILIALE,
+        Item::TYPE_PAKETSHOP,
+    ];
 
     /**
-     * @param RequestData\Coordinate $requestData
-     * @param LocationParser $locationParser
-     * @return ParcelLocationCollection
+     * Filter constructor.
+     * @param string[] $shopTypes
      */
-    public function getParcelLocationByCoordinate(RequestData\Coordinate $requestData, LocationParser $locationParser);
+    public function __construct($shopTypes = [])
+    {
+        $this->shopTypes = $shopTypes;
+    }
+
+    /**
+     * @param Collection $locationCollection
+     * @return Collection
+     */
+    public function filter(Collection $locationCollection)
+    {
+        $locations = $locationCollection->getItems();
+        $filteredLocations = array_filter($locations, function (Item $location) {
+            return (in_array($location->getType(), $this->shopTypes));
+        });
+
+        $locationCollection->setItems($filteredLocations);
+    }
 }

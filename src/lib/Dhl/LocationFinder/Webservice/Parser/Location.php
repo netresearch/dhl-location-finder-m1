@@ -48,10 +48,20 @@ class Location implements Parser
     {
         $collection = new ParcelLocationCollection();
         foreach ($parcelLocations as $parcelLocation) {
-            // TODO(nr): fetch further properties for frontend display
             $collection->addItem(new ParcelLocation([
-                'id' => $parcelLocation->getPrimaryKeyDeliverySystem(),
+                'key_word' => $parcelLocation->getKeyWord(),
                 'shop_type' => $parcelLocation->getShopType(),
+                'shop_number' => $parcelLocation->getPrimaryKeyZipRegion(),
+                'shop_name' => $parcelLocation->getShopName(),
+                'additional_info' => $parcelLocation->getAdditionalInfo(),
+                'street' => $parcelLocation->getStreet(),
+                'house_no' => $parcelLocation->getHouseNo(),
+                'zip_code' => $parcelLocation->getZipCode(),
+                'city' => $parcelLocation->getCity(),
+                'country_code' => $parcelLocation->getCountryCode(),
+                'id' => $parcelLocation->getPrimaryKeyDeliverySystem(),
+                'latitude' => $parcelLocation->getLocation()->getLatitude(),
+                'longitude' => $parcelLocation->getLocation()->getLongitude(),
             ]));
         }
 

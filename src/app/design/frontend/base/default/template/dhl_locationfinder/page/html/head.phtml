@@ -1,0 +1,10 @@
+<?php
+// If necessary include jQuery
+
+//<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+//<script type="text/javascript">var $j = jQuery.noConflict();</script>
+/** @var Mage_Page_Block_Html_Head $this */
+?>
+
+<script type="text/javascript" src="<?php echo $this->helper('dhl_locationfinder/data')->getMapJsUrl(); ?>"></script>
+<?php echo $this->getCssJsHtml() ?>
