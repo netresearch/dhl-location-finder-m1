@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <complexType name="salesOrderAddressEntity">
+                <all>
+                    <element name="dhl_post_number" type="xsd:string" minOccurs="0"/>
+                    <element name="dhl_station_type" type="xsd:string" minOccurs="0"/>
+                    <element name="dhl_station" type="xsd:string" minOccurs="0"/>
+                </all>
+            </complexType>
+        </schema>
+    </types>
+</definitions>

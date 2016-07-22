@@ -124,7 +124,7 @@ DhlLocationFinder.prototype = {
 
             var currentClass = this;
             var map = currentClass.map;
-            var markerIcons = this.markerIcons;
+            var markerIcons = currentClass.markerIcons;
 
             $(currentClass.loadingElement).addClassName('active');
             new Ajax.Request(actionUrl, {
