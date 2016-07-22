@@ -86,6 +86,20 @@ final class Item
     }
 
     /**
+     * Obtain all possible parcel location types.
+     *
+     * @return string[]
+     */
+    public static function getLocationTypes()
+    {
+        return [
+            self::TYPE_PACKSTATION,
+            self::TYPE_POSTFILIALE,
+            self::TYPE_PAKETSHOP,
+        ];
+    }
+
+    /**
      * @return string
      */
     public function getType()

@@ -86,20 +86,16 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
      */
     public function getMarkerIcons()
     {
-        $shopTypes = array(
-            ParcelLocation\Item::TYPE_PACKSTATION => ParcelLocation\Item::TYPE_PACKSTATION,
-            ParcelLocation\Item::TYPE_POSTFILIALE => ParcelLocation\Item::TYPE_POSTFILIALE,
-            ParcelLocation\Item::TYPE_PAKETSHOP   => ParcelLocation\Item::TYPE_PAKETSHOP,
+        $shopTypes = array_combine(
+            ParcelLocation\Item::getLocationTypes(),
+            ParcelLocation\Item::getLocationTypes()
         );
-    
-        $icons = array_map(
-            function ($shopType) {
-                $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
-            
-                return $this->getSkinUrl($file);
-            },
-            $shopTypes
-        );
+
+        $getSkinImages = function ($shopType) {
+            $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
+            return $this->getSkinUrl($file);
+        };
+        $icons = array_map($getSkinImages, $shopTypes);
 
         return $icons;
     }

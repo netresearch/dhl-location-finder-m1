@@ -59,6 +59,26 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     }
 
     /**
+     * Set status, messages and parcel locations for AJAX response.
+     *
+     * @param bool $success
+     * @param string[] $messages
+     * @param stdClass[] $locations
+     */
+    protected function setJsonResponse($success, $messages, $locations)
+    {
+        $jsonResponse = Mage::helper('core/data')->jsonEncode(
+            array(
+                'success'   => $success,
+                'message'   => implode(' ', $messages),
+                'locations' => $locations,
+            )
+        );
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setBody($jsonResponse);
+    }
+
+    /**
      * Only accept ajax requests to this controller
      *
      * @return $this
@@ -113,15 +133,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             $limiter = new Limiter(50);
             $mapLocations = $locations->toObjectArray(null, $limiter);
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(
-                array(
-                'success'   => (count($locations) > 0),
-                'message'   => implode(' ', $messages),
-                'locations' => $mapLocations,
-                )
-            );
-            $this->getResponse()->setHeader('Content-Type', 'application/json');
-            $this->getResponse()->setBody($jsonResponse);
+            $this->setJsonResponse((count($locations) > 0), $messages, $mapLocations);
 
         } catch (SoapFault $fault) {
 
@@ -132,15 +144,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             $this->logger->log($adapter->getLastRequest());
             $this->logger->log($adapter->getLastResponse());
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(
-                array(
-                'success'   => false,
-                'message'   => implode(' ', $messages),
-                'locations' => $mapLocations,
-                )
-            );
-            $this->getResponse()->setHeader('Content-Type', 'application/json');
-            $this->getResponse()->setBody($jsonResponse);
+            $this->setJsonResponse(false, $messages, $mapLocations);
 
         } catch (RequestData\AddressException $e) {
 
@@ -148,15 +152,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             // no country given?
             $messages[]= $this->__($e->getMessage());
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(
-                array(
-                'success'   => false,
-                'message'   => implode(' ', $messages),
-                'locations' => $mapLocations,
-                )
-            );
-            $this->getResponse()->setHeader('Content-Type', 'application/json');
-            $this->getResponse()->setBody($jsonResponse);
+            $this->setJsonResponse(false, $messages, $mapLocations);
 
         } catch (\Exception $e) {
 

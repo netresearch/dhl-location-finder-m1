@@ -38,11 +38,7 @@ class Filter
     /**
      * @var string[]
      */
-    private $shopTypes = [
-        Item::TYPE_PACKSTATION,
-        Item::TYPE_POSTFILIALE,
-        Item::TYPE_PAKETSHOP,
-    ];
+    private $shopTypes = [];
 
     /**
      * Filter constructor.
