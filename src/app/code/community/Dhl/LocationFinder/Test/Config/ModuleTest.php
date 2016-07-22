@@ -58,9 +58,7 @@ class Dhl_LocationFinder_Test_Config_ModuleTest
         $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
         $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
 
-        $this->assertConfigNodeHasChild('default', 'dhl');
-        $this->assertConfigNodeHasChild('default/dhl', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'enable_location_finder');
-        $this->assertConfigNodeHasChild('default/dhl/dhl_locationfinder', 'map_type');
+        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
+        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
     }
 }

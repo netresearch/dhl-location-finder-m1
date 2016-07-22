@@ -38,12 +38,39 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
 {
     /**
      * @test
+     *
+     * @loadFixture ObserverTest
      */
-    public function testAppendLocationFinderToShipping()
+    public function registerAutoload()
     {
-        $this->markTestIncomplete(
-            'Is anything for test here'
-        );
+        $observer = new Dhl_LocationFinder_Model_Observer();
+
+        $this->assertEmpty($observer->registerAutoload());
+    }
+
+    /**
+     * @test
+     */
+    public function appendLocationFinderToShipping()
+    {
+        $blockMock = $this->getBlockMock('checkout/onepage_shipping', array('getCheckout'), false, array(), '', false);
+        $blockMock->expects($this->any())->method('getCheckout')->will($this->returnValue(new Varien_Object()));
+        $this->replaceByMock('block', 'checkout/onepage_shipping', $blockMock);
+
+        $observer  = new Varien_Event_Observer();
+        $block     = Mage::app()->getLayout()->createBlock('checkout/onepage_shipping');
+        $transport = new Varien_Object();
+        $transport->setData('html', '');
+
+        $observer->setData('block', $block);
+        $observer->setData('transport', $transport);
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->appendLocationFinderToShipping($observer);
+
+        $changedObject = $observer->getData('transport');
+
+        $this->assertInternalType('string', $changedObject['html']);
     }
 
 }

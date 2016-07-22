@@ -37,39 +37,6 @@
 class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
     extends EcomDev_PHPUnit_Test_Case
 {
-    /**
-     * @test
-     */
-    public function testaddMapToCheckout()
-    {
-        $block = new Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder();
-
-        $config = $this->getModelMock(
-            'dhl_locationfinder/config',
-            array('getIsModuleActive', 'getCurrentMapProvider')
-        );
-        $config->expects($this->any())
-               ->method('getIsModuleActive')
-               ->will($this->returnValue(1));
-        $config->expects($this->any())
-               ->method('getCurrentMapProvider')
-               ->will($this->returnValue('googlemaps'));
-        $this->replaceByMock('model', 'dhl_locationfinder/config', $config);
-
-        $config = $this->getBlockMock(
-            'dhl_locationfinder/checkout_onepage_locationfinder',
-            array('getHeadBlock')
-        );
-        $config->expects($this->once())
-               ->method('getHeadBlock')
-               ->will($this->returnValue(new Mage_Page_Block_Html_Head()));
-        $this->replaceByMock('block', 'dhl_locationfinder/checkout_onepage_locationfinder', $config);
-
-        $this->markTestIncomplete(
-            'Could not Mock Private method'
-        );
-        $this->assertNotNull($block->addMapToCheckout()->getChild('mapForCheckout')->getData('text'));
-    }
 
     /**
      * @test
@@ -92,7 +59,7 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
 
     /**
      * @test
-     * @loadFixture ConfigTest
+     * @loadFixture LocationfinderTest
      */
     public function checkValidCountries()
     {
@@ -126,10 +93,6 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
      */
     public function getActionUrl()
     {
-
-        $session = new Varien_Object();
-        $session->setData('dhl_token', 11);
-
         $coreSessionMock = $this->getModelMock('core/session', array('init', 'start'));
         $this->replaceByMock('model', 'core/session', $coreSessionMock);
 

@@ -25,32 +25,27 @@
  */
 
 /**
- * Dhl_LocationFinder_FacilitiesController
+ * Dhl_LocationFinder_Test_Model_ConfigTest
  *
- * @category  Dhl
- * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
- * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.netresearch.de/
+ * @category Dhl
+ * @package  Dhl_LocationFinder
+ * @author   Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author   Benjamin Heuer <benjamin.heuer@netresearch.de>
+ * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Maptype
+class Dhl_LocationFinder_Test_Helper_DataTest
+    extends EcomDev_PHPUnit_Test_Case
 {
-    const MAP_TYPE_GOOGLE       = 'googlemaps';
-    const MAP_TYPE_GOOGLE_TITLE = 'Google Maps';
-
     /**
-     * Obtain array with label format options.
-     *
-     * @return mixed[]
+     * @test
      */
-    public function toOptionArray()
+    public function getMapJsUrl()
     {
-        return [
-            [
-                'value' => self::MAP_TYPE_GOOGLE,
-                'label' => self::MAP_TYPE_GOOGLE_TITLE
-            ]
-        ];
+        $helper = new Dhl_LocationFinder_Helper_Data();
+        $result = $helper->getMapJsUrl();
+
+        $this->assertInternalType('string', $result);
     }
+
 }

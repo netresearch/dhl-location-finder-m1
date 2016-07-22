@@ -16,5 +16,5 @@ scope:
       is_active: 1
 
 config:
-  default/dhl/dhl_locationfinder/map_api_key:          "foo"
-  stores/store_one/dhl/dhl_locationfinder/map_api_key: "bar"
+  default/checkout/dhl_locationfinder/map_api_key:          "foo"
+  stores/store_one/checkout/dhl_locationfinder/map_api_key: "bar"
