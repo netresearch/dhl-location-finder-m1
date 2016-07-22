@@ -75,13 +75,17 @@ class Dhl_LocationFinder_Model_Observer
             $transport = $observer->getData('transport');
             $layout    = $block->getLayout();
             $html      = $transport->getHtml();
-            /** @var string $locationFinderHtml */
-            $locationFinderHtml =
-                $layout->createBlock('dhl_locationfinder/checkout_onepage_locationfinder', 'onepage_locationfinder')
-                       ->setTemplate('dhl_locationfinder/checkout/onepage/locationfinder.phtml')
-                       ->renderView();
-            $html .= $locationFinderHtml;
-            $transport->setHtml($html);
+
+            /** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $locationFinder */
+            $locationFinder = $layout->createBlock(
+                'dhl_locationfinder/checkout_onepage_locationfinder',
+                'onepage_locationfinder',
+                array(
+                    'template' => 'dhl_locationfinder/checkout/onepage/locationfinder.phtml',
+                )
+            );
+
+            $transport->setHtml($html . $locationFinder->toHtml());
         }
     }
 }

@@ -47,6 +47,10 @@ class Location implements Parser
     public function parse($parcelLocations)
     {
         $collection = new ParcelLocationCollection();
+        if (!$parcelLocations) {
+            return $collection;
+        }
+
         foreach ($parcelLocations as $parcelLocation) {
             $collection->addItem(new ParcelLocation([
                 'key_word' => $parcelLocation->getKeyWord(),

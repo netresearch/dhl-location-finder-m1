@@ -148,7 +148,7 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
         $jsonResponse = $this->getResponse()->getOutputBody();
         $response = json_decode($jsonResponse);
         $this->assertFalse($response->success);
-        $this->assertEquals($faultString, $response->message);
+        $this->assertEquals('Please enter a valid address.', $response->message);
         $this->assertEmpty($response->locations);
     }
 

@@ -68,4 +68,17 @@ class Dhl_LocationFinder_Test_Model_Webservice_ParserTest
             $this->assertNotEmpty($location->getLongitude());
         }
     }
+
+    /**
+     * @test
+     */
+    public function noParcelLocations()
+    {
+        $psfLocations = null;
+
+        $parser = new LocationParser();
+        $locationCollection = $parser->parse($psfLocations);
+        $this->assertInstanceOf(LocationCollection::class, $locationCollection);
+        $this->assertCount(0, $locationCollection);
+    }
 }
