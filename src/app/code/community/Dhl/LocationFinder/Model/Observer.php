@@ -19,13 +19,14 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
 /**
- * Dhl_LocationFinder_Model_Config
+ * Dhl_LocationFinder_Model_Observer
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
@@ -53,8 +54,7 @@ class Dhl_LocationFinder_Model_Observer
                 "Dhl\\$libDir\\", // prefix
                 sprintf('%s/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
             );
-        }
-        );
+        });
 
         $autoloader->register();
     }
@@ -75,13 +75,17 @@ class Dhl_LocationFinder_Model_Observer
             $transport = $observer->getData('transport');
             $layout    = $block->getLayout();
             $html      = $transport->getHtml();
-            /** @var string $locationFinderHtml */
-            $locationFinderHtml =
-                $layout->createBlock('dhl_locationfinder/checkout_onepage_locationfinder', 'onepage_locationfinder')
-                       ->setTemplate('dhl_locationfinder/checkout/onepage/locationfinder.phtml')
-                       ->renderView();
-            $html .= $locationFinderHtml;
-            $transport->setHtml($html);
+
+            /** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $locationFinder */
+            $locationFinder = $layout->createBlock(
+                'dhl_locationfinder/checkout_onepage_locationfinder',
+                'onepage_locationfinder',
+                array(
+                    'template' => 'dhl_locationfinder/checkout/onepage/locationfinder.phtml',
+                )
+            );
+
+            $transport->setHtml($html . $locationFinder->toHtml());
         }
     }
 

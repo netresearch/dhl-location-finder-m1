@@ -18,18 +18,17 @@
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
 /**
- * Dhl_LocationFinder_FacilitiesController
+ * Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
  * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
@@ -37,7 +36,6 @@
 class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
     extends EcomDev_PHPUnit_Test_Case
 {
-
     /**
      * @test
      */
@@ -101,7 +99,6 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
         $result = $block->getActionUrl();
         $this->assertContains('http', $result);
         $this->assertContains('dhlpsf', $result);
-
     }
 
     /**
@@ -109,7 +106,6 @@ class Dhl_LocationFinder_Test_Block_Checkout_Onepage_LocationfinderTest
      */
     public function getMarkerIcons()
     {
-
         $block = new Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder();
 
         $result = $block->getMarkerIcons();

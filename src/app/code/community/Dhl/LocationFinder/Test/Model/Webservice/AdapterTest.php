@@ -85,6 +85,5 @@ class Dhl_LocationFinder_Test_Model_Webservice_AdapterTest
         $this->assertNotEquals($responseBody, $responseWithHeaders);
         $this->assertStringStartsWith($responseHeaders, $responseWithHeaders);
         $this->assertStringEndsWith($responseBody, $responseWithHeaders);
-
     }
 }

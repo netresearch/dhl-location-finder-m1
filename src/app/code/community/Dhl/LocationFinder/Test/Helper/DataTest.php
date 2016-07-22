@@ -19,13 +19,14 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
 /**
- * Dhl_LocationFinder_Test_Model_ConfigTest
+ * Dhl_LocationFinder_Test_Helper_DataTest
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -43,9 +44,27 @@ class Dhl_LocationFinder_Test_Helper_DataTest
     public function getMapJsUrl()
     {
         $helper = new Dhl_LocationFinder_Helper_Data();
-        $result = $helper->getMapJsUrl();
+        $jsUrl = $helper->getMapJsUrl();
 
-        $this->assertInternalType('string', $result);
+        $this->assertInternalType('string', $jsUrl);
+        $this->assertNotContains('key=', $jsUrl);
     }
 
+    /**
+     * @test
+     */
+    public function getMapJsUrlWithApiKey()
+    {
+        $configMock = $this->getModelMock('dhl_locationfinder/config', array('getApiKey'));
+        $configMock->expects($this->once())
+            ->method('getApiKey')
+            ->willReturn('foo');
+        $this->replaceByMock('model', 'dhl_locationfinder/config', $configMock);
+
+        $helper = new Dhl_LocationFinder_Helper_Data();
+        $jsUrl = $helper->getMapJsUrl();
+
+        $this->assertInternalType('string', $jsUrl);
+        $this->assertContains('key=', $jsUrl);
+    }
 }

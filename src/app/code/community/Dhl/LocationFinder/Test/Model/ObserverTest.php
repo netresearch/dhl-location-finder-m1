@@ -19,6 +19,7 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
@@ -30,6 +31,7 @@
  * @category Dhl
  * @package  Dhl_LocationFinder
  * @author   Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author   Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
@@ -38,14 +40,34 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
 {
     /**
      * @test
-     *
-     * @loadFixture ObserverTest
+     * @loadFixture
      */
-    public function registerAutoload()
+    public function registerAutoloadDisabled()
     {
-        $observer = new Dhl_LocationFinder_Model_Observer();
+        $helperMock = $this->getHelperMock('dhl_locationfinder/autoloader', array('register'));
+        $helperMock
+            ->expects($this->never())
+            ->method('register');
+        $this->replaceByMock('helper', 'dhl_locationfinder/autoloader', $helperMock);
 
-        $this->assertEmpty($observer->registerAutoload());
+        $observer = new Dhl_LocationFinder_Model_Observer();
+        $observer->registerAutoload();
+    }
+
+    /**
+     * @test
+     * @loadFixture
+     */
+    public function registerAutoloadEnabled()
+    {
+        $helperMock = $this->getHelperMock('dhl_locationfinder/autoloader', array('register'));
+        $helperMock
+            ->expects($this->once())
+            ->method('register');
+        $this->replaceByMock('helper', 'dhl_locationfinder/autoloader', $helperMock);
+
+        $observer = new Dhl_LocationFinder_Model_Observer();
+        $observer->registerAutoload();
     }
 
     /**

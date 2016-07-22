@@ -18,6 +18,7 @@
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -26,7 +27,7 @@
 use \Dhl\LocationFinder\ParcelLocation;
 
 /**
- * Dhl_LocationFinder_FacilitiesController
+ * Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
@@ -95,8 +96,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
             $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
 
             return $this->getSkinUrl($file);
-        }, $shopTypes
-        );
+        }, $shopTypes);
 
         return $icons;
     }
