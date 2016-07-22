@@ -60,9 +60,12 @@ class Filter
     public function filter(Collection $locationCollection)
     {
         $locations = $locationCollection->getItems();
-        $filteredLocations = array_filter($locations, function (Item $location) {
-            return (in_array($location->getType(), $this->shopTypes));
-        });
+        $filteredLocations = array_filter(
+            $locations,
+            function (Item $location) {
+                return (in_array($location->getType(), $this->shopTypes));
+            }
+        );
 
         $locationCollection->setItems($filteredLocations);
     }

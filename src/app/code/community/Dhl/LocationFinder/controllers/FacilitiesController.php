@@ -69,8 +69,8 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $this->getResponse()
-                ->setHeader('HTTP/1.1','404 Not Found')
-                ->setHeader('Status','404 File not found');
+                ->setHeader('HTTP/1.1', '404 Not Found')
+                ->setHeader('Status', '404 File not found');
 
             $this->_forward('defaultNoRoute');
             $this->setFlag('', self::FLAG_NO_DISPATCH, true);
@@ -113,11 +113,13 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             $limiter = new Limiter(50);
             $mapLocations = $locations->toObjectArray(null, $limiter);
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(
+                array(
                 'success'   => (count($locations) > 0),
                 'message'   => implode(' ', $messages),
                 'locations' => $mapLocations,
-            ));
+                )
+            );
             $this->getResponse()->setHeader('Content-Type', 'application/json');
             $this->getResponse()->setBody($jsonResponse);
 
@@ -130,11 +132,13 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             $this->logger->log($adapter->getLastRequest());
             $this->logger->log($adapter->getLastResponse());
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(
+                array(
                 'success'   => false,
                 'message'   => implode(' ', $messages),
                 'locations' => $mapLocations,
-            ));
+                )
+            );
             $this->getResponse()->setHeader('Content-Type', 'application/json');
             $this->getResponse()->setBody($jsonResponse);
 
@@ -144,11 +148,13 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             // no country given?
             $messages[]= $this->__($e->getMessage());
 
-            $jsonResponse = Mage::helper('core/data')->jsonEncode(array(
+            $jsonResponse = Mage::helper('core/data')->jsonEncode(
+                array(
                 'success'   => false,
                 'message'   => implode(' ', $messages),
                 'locations' => $mapLocations,
-            ));
+                )
+            );
             $this->getResponse()->setHeader('Content-Type', 'application/json');
             $this->getResponse()->setBody($jsonResponse);
 
