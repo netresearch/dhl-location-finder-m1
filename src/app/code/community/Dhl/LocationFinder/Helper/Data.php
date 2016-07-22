@@ -49,7 +49,7 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $soapClient = new LocationsApi\SoapServiceImplService(
             array(
-            'trace' => true,
+                'trace' => true,
             )
         );
 

@@ -47,15 +47,15 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     /**
      * @var Dhl_LocationFinder_Model_Logger
      */
-    private $logger;
+    private $_logger;
 
     /**
-     * Prepare logger. Using a wrapper seems sufficient for M1.
+     * Prepare _logger. Using a wrapper seems sufficient for M1.
      */
     protected function _construct()
     {
         parent::_construct();
-        $this->logger = Mage::getModel('dhl_locationfinder/logger');
+        $this->_logger = Mage::getModel('dhl_locationfinder/_logger');
     }
 
     /**
@@ -141,8 +141,8 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             // webservice not available?
             $messages[]= $this->__($fault->getMessage());
 
-            $this->logger->log($adapter->getLastRequest());
-            $this->logger->log($adapter->getLastResponse());
+            $this->_logger->log($adapter->getLastRequest());
+            $this->_logger->log($adapter->getLastResponse());
 
             $this->setJsonResponse(false, $messages, $mapLocations);
 
@@ -157,7 +157,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
         } catch (\Exception $e) {
 
             // anything else
-            $this->logger->logException($e);
+            $this->_logger->logException($e);
             $this->getResponse()->setHttpResponseCode(503);
 
         }

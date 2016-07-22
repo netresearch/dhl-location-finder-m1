@@ -52,23 +52,23 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $locationOne = new ParcelLocation\Item(
             array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
             )
         );
         $locationTwo = new ParcelLocation\Item(
             array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
+                'id'        => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word'  => 'bar',
             )
         );
         $locationThree = new ParcelLocation\Item(
             array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
             )
         );
 
@@ -120,18 +120,18 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $location = new ParcelLocation\Item(
             array(
-            'shop_type' => $type,
-            'shop_number' => $shopNumber,
-            'shop_name' => $name,
-            'additional_info' => $station,
-            'street' => $street,
-            'house_no' => $houseNo,
-            'zip_code' => $zipCode,
-            'city' => $city,
-            'country_code' => $country,
-            'id' => $id,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
+                'shop_type' => $type,
+                'shop_number' => $shopNumber,
+                'shop_name' => $name,
+                'additional_info' => $station,
+                'street' => $street,
+                'house_no' => $houseNo,
+                'zip_code' => $zipCode,
+                'city' => $city,
+                'country_code' => $country,
+                'id' => $id,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
             )
         );
 
@@ -160,14 +160,14 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $locationOne = new ParcelLocation\Item(
             array(
-            'id' => $idOne,
-            'key_word' => 'foo',
+                'id' => $idOne,
+                'key_word' => 'foo',
             )
         );
         $locationTwo = new ParcelLocation\Item(
             array(
-            'id' => $idTwo,
-            'key_word' => 'bar',
+                'id' => $idTwo,
+                'key_word' => 'bar',
             )
         );
         $collection = new ParcelLocation\Collection();
@@ -203,23 +203,23 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $locationOne = new ParcelLocation\Item(
             array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
             )
         );
         $locationTwo = new ParcelLocation\Item(
             array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
+                'id' => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word' => 'bar',
             )
         );
         $locationThree = new ParcelLocation\Item(
             array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
             )
         );
 
@@ -259,14 +259,14 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $locationOne = new ParcelLocation\Item(
             array(
-            'id' => $idOne,
-            'key_word' => 'foo',
+                'id' => $idOne,
+                'key_word' => 'foo',
             )
         );
         $locationTwo = new ParcelLocation\Item(
             array(
-            'id' => $idTwo,
-            'key_word' => 'bar',
+                'id' => $idTwo,
+                'key_word' => 'bar',
             )
         );
         $collection = new ParcelLocation\Collection();
@@ -294,23 +294,23 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
 
         $locationOne = new ParcelLocation\Item(
             array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
             )
         );
         $locationTwo = new ParcelLocation\Item(
             array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
+                'id' => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word' => 'bar',
             )
         );
         $locationThree = new ParcelLocation\Item(
             array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
             )
         );
 
