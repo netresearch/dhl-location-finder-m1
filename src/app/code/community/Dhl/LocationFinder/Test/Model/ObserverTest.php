@@ -73,4 +73,70 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $this->assertInternalType('string', $changedObject['html']);
     }
 
+    /**
+     * @test
+     */
+    public function saveDHLFieldsInQuote()
+    {
+        Mage::app()->getRequest()->setParam('shipping',
+            array('dhl_station_type' => 'Stationtyp', 'dhl_post_number' => 'Postnumber', 'dhl_station' => 'Station')
+        );
+
+        $modelMock = $this->getModelMock('sales/quote_address', array('save'));
+        $modelMock->expects($this->once())
+                  ->method('save')
+                  ->will($this->returnSelf());
+        $this->replaceByMock('model', 'sales/quote_address', $modelMock);
+
+        $observer = new Varien_Event_Observer();
+        $quote    = new Varien_Object();
+        $quote->setData('shipping_address', Mage::getModel('sales/quote_address'));
+
+        $observer->setData('quote', $quote);
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->saveDHLFieldsInQuote($observer);
+
+        $changedObject = $observer->getData('quote')->getShippingAddress()->getData();
+
+        $this->assertArrayHasKey('dhl_station_type', $changedObject);
+    }
+
+    /**
+     * @test
+     */
+    public function saveDHLFieldsInPostalFacility()
+    {
+        $observer       = new Varien_Event_Observer();
+        $postalFacility = $quoteAddress = new Varien_Object();
+
+        $quoteAddress->setData(
+            array(
+                'dhl_station_type' => 'Stationtyp',
+                'dhl_post_number'  => 'Postnumber',
+                'dhl_station'      => 'Station'
+            )
+        );
+
+        $observer->setData('postal_facility', $postalFacility);
+        $observer->setData('quote_address', $quoteAddress);
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->saveDHLFieldsInPostalFacility($observer);
+
+        $changedObject = $observer->getData('postal_facility')->getData();
+
+        $this->assertArrayHasKey('shop_type', $changedObject);
+
+        // negative case
+        $observer->getData('quote_address')->setData('dhl_station_type', false);
+        $observer->setData('postal_facility', new Varien_Object());
+
+        $observerModel->saveDHLFieldsInPostalFacility($observer);
+
+        $changedObject = $observer->getData('postal_facility')->getData();
+
+        $this->assertArrayNotHasKey('shop_type', $changedObject);
+    }
+
 }
