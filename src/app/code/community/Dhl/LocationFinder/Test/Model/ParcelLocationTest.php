@@ -25,7 +25,7 @@
  */
 use \Dhl\LocationFinder\ParcelLocation;
 /**
- * Dhl_LocationFinder_Test_Model_ParcelLocation_CollectionTest
+ * Dhl_LocationFinder_Test_Model_ParcelLocationTest
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
