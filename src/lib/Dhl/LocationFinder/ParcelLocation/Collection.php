@@ -125,9 +125,12 @@ class Collection implements \IteratorAggregate, \Countable
      */
     public function toObjectArray(Filter $filter = null, Limiter $limiter = null)
     {
-        $items = array_map(function (Item $location) {
-            return $location->toObject();
-        }, $this->getItems($filter, $limiter));
+        $items = array_map(
+            function (Item $location) {
+                return $location->toObject();
+            },
+            $this->getItems($filter, $limiter)
+        );
 
         // get rid of ID keys
         return array_values($items);

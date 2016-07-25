@@ -52,14 +52,13 @@ class Dhl_LocationFinder_Test_Model_WebserviceTest extends EcomDev_PHPUnit_Test_
         $response = unserialize($serializedResponse);
 
         $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
-            ->setMethods(['getParcellocationByAddress'])
+            ->setMethods(array('getParcellocationByAddress'))
             ->getMock();
         $clientStub
             ->method('getParcellocationByAddress')
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
         $parser = new LocationParser();
-        $address = new RequestData\Address(['DE' => 'Germany'], 'de', '04229', 'Leipzig', 'Plagwitz', 'Nonnenstr.', '11d');
+        $address = new RequestData\Address(array('DE' => 'Germany'), 'de', '04229', 'Leipzig', 'Plagwitz', 'Nonnenstr.', '11d');
 
         $adapter = new Webservice\Adapter\Soap($clientStub);
         $result = $adapter->getParcelLocationByAddress($address, $parser);
@@ -70,9 +69,11 @@ class Dhl_LocationFinder_Test_Model_WebserviceTest extends EcomDev_PHPUnit_Test_
             null,
             new ParcelLocationLimiter(2)
         );
-        array_walk($parcelLocations, function (ParcelLocation $parcelLocation) {
+        array_walk(
+            $parcelLocations, function (ParcelLocation $parcelLocation) {
             $this->assertNotEmpty($parcelLocation->getType());
-        });
+            }
+        );
     }
 
     /**
@@ -86,12 +87,11 @@ class Dhl_LocationFinder_Test_Model_WebserviceTest extends EcomDev_PHPUnit_Test_
         $response = unserialize($serializedResponse);
 
         $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
-            ->setMethods(['getParcelLocationByCoordinate'])
+            ->setMethods(array('getParcelLocationByCoordinate'))
             ->getMock();
         $clientStub
             ->method('getParcelLocationByCoordinate')
-            ->willReturn($response)
-        ;
+            ->willReturn($response);
         $parser = new LocationParser();
         $coordinate = new RequestData\Coordinate('51.34', '12.375');
 
@@ -104,8 +104,10 @@ class Dhl_LocationFinder_Test_Model_WebserviceTest extends EcomDev_PHPUnit_Test_
             null,
             new ParcelLocationLimiter(2)
         );
-        array_walk($parcelLocations, function (ParcelLocation $parcelLocation) {
+        array_walk(
+            $parcelLocations, function (ParcelLocation $parcelLocation) {
             $this->assertNotEmpty($parcelLocation->getType());
-        });
+            }
+        );
     }
 }

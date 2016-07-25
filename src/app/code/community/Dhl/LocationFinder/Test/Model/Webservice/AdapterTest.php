@@ -45,7 +45,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_AdapterTest
         $requestBody = 'body';
 
         $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
-            ->setMethods(['__getLastRequest'])
+            ->setMethods(array('__getLastRequest'))
             ->getMock();
 
         $clientStub
@@ -65,17 +65,15 @@ class Dhl_LocationFinder_Test_Model_Webservice_AdapterTest
         $responseBody = 'body';
 
         $clientStub = $this->getMockBuilder(LocationsApi\SoapServiceImplService::class)
-            ->setMethods(['__getLastResponse', '__getLastResponseHeaders'])
+            ->setMethods(array('__getLastResponse', '__getLastResponseHeaders'))
             ->getMock();
 
         $clientStub
             ->method('__getLastResponseHeaders')
-            ->willReturn($responseHeaders)
-        ;
+            ->willReturn($responseHeaders);
         $clientStub
             ->method('__getLastResponse')
-            ->willReturn($responseBody)
-        ;
+            ->willReturn($responseBody);
 
         $adapter = new SoapAdapter($clientStub);
         $this->assertSame($responseBody, $adapter->getLastResponse(false));

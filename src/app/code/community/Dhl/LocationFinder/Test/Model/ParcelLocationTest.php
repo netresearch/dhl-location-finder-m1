@@ -50,28 +50,34 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $shopTypeTwo   = ParcelLocation\Item::TYPE_POSTFILIALE;
         $shopTypeThree = ParcelLocation\Item::TYPE_PACKSTATION;
 
-        $locationOne = new ParcelLocation\Item(array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
-        ));
-        $locationTwo = new ParcelLocation\Item(array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
-        ));
-        $locationThree = new ParcelLocation\Item(array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
-        ));
+        $locationOne = new ParcelLocation\Item(
+            array(
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
+            )
+        );
+        $locationTwo = new ParcelLocation\Item(
+            array(
+                'id'        => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word'  => 'bar',
+            )
+        );
+        $locationThree = new ParcelLocation\Item(
+            array(
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
+            )
+        );
 
         $collection = new ParcelLocation\Collection();
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
         $this->assertCount(3, $collection);
 
         // filter Packstation types
-        $filter = new ParcelLocation\Filter([ParcelLocation\Item::TYPE_PACKSTATION]);
+        $filter = new ParcelLocation\Filter(array(ParcelLocation\Item::TYPE_PACKSTATION));
         $filter->filter($collection);
 
         $this->assertCount(2, $collection);
@@ -112,20 +118,22 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $latitude = 'myLat';
         $longitude = 'myLng';
 
-        $location = new ParcelLocation\Item(array(
-            'shop_type' => $type,
-            'shop_number' => $shopNumber,
-            'shop_name' => $name,
-            'additional_info' => $station,
-            'street' => $street,
-            'house_no' => $houseNo,
-            'zip_code' => $zipCode,
-            'city' => $city,
-            'country_code' => $country,
-            'id' => $id,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-        ));
+        $location = new ParcelLocation\Item(
+            array(
+                'shop_type' => $type,
+                'shop_number' => $shopNumber,
+                'shop_name' => $name,
+                'additional_info' => $station,
+                'street' => $street,
+                'house_no' => $houseNo,
+                'zip_code' => $zipCode,
+                'city' => $city,
+                'country_code' => $country,
+                'id' => $id,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            )
+        );
 
         $this->assertEquals($type, $location->getType());
         $this->assertEquals($name, $location->getName());
@@ -150,14 +158,18 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $idTwo = '808';
         $idThree = '909';
 
-        $locationOne = new ParcelLocation\Item(array(
-            'id' => $idOne,
-            'key_word' => 'foo',
-        ));
-        $locationTwo = new ParcelLocation\Item(array(
-            'id' => $idTwo,
-            'key_word' => 'bar',
-        ));
+        $locationOne = new ParcelLocation\Item(
+            array(
+                'id' => $idOne,
+                'key_word' => 'foo',
+            )
+        );
+        $locationTwo = new ParcelLocation\Item(
+            array(
+                'id' => $idTwo,
+                'key_word' => 'bar',
+            )
+        );
         $collection = new ParcelLocation\Collection();
 
         $collection->addItem($locationOne);
@@ -189,21 +201,27 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $shopTypeTwo   = ParcelLocation\Item::TYPE_POSTFILIALE;
         $shopTypeThree = ParcelLocation\Item::TYPE_PACKSTATION;
 
-        $locationOne = new ParcelLocation\Item(array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
-        ));
-        $locationTwo = new ParcelLocation\Item(array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
-        ));
-        $locationThree = new ParcelLocation\Item(array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
-        ));
+        $locationOne = new ParcelLocation\Item(
+            array(
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
+            )
+        );
+        $locationTwo = new ParcelLocation\Item(
+            array(
+                'id' => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word' => 'bar',
+            )
+        );
+        $locationThree = new ParcelLocation\Item(
+            array(
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
+            )
+        );
 
         $collection = new ParcelLocation\Collection();
 
@@ -220,7 +238,7 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $this->assertEquals($locationThree, $items[$idThree]);
 
 
-        $type = [ParcelLocation\Item::TYPE_PACKSTATION];
+        $type = array(ParcelLocation\Item::TYPE_PACKSTATION);
         $limit = 1;
         $filter = new ParcelLocation\Filter($type);
         $limiter = new ParcelLocation\Limiter($limit);
@@ -239,14 +257,18 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $idOne = '303';
         $idTwo = '808';
 
-        $locationOne = new ParcelLocation\Item(array(
-            'id' => $idOne,
-            'key_word' => 'foo',
-        ));
-        $locationTwo = new ParcelLocation\Item(array(
-            'id' => $idTwo,
-            'key_word' => 'bar',
-        ));
+        $locationOne = new ParcelLocation\Item(
+            array(
+                'id' => $idOne,
+                'key_word' => 'foo',
+            )
+        );
+        $locationTwo = new ParcelLocation\Item(
+            array(
+                'id' => $idTwo,
+                'key_word' => 'bar',
+            )
+        );
         $collection = new ParcelLocation\Collection();
         $collection->setItems(array($locationOne, $locationTwo));
 
@@ -270,27 +292,33 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $shopTypeTwo   = ParcelLocation\Item::TYPE_POSTFILIALE;
         $shopTypeThree = ParcelLocation\Item::TYPE_PACKSTATION;
 
-        $locationOne = new ParcelLocation\Item(array(
-            'id' => $idOne,
-            'shop_type' => $shopTypeOne,
-            'key_word' => 'foo',
-        ));
-        $locationTwo = new ParcelLocation\Item(array(
-            'id' => $idTwo,
-            'shop_type' => $shopTypeTwo,
-            'key_word' => 'bar',
-        ));
-        $locationThree = new ParcelLocation\Item(array(
-            'id' => $idThree,
-            'shop_type' => $shopTypeThree,
-            'key_word' => 'baz',
-        ));
+        $locationOne = new ParcelLocation\Item(
+            array(
+                'id' => $idOne,
+                'shop_type' => $shopTypeOne,
+                'key_word' => 'foo',
+            )
+        );
+        $locationTwo = new ParcelLocation\Item(
+            array(
+                'id' => $idTwo,
+                'shop_type' => $shopTypeTwo,
+                'key_word' => 'bar',
+            )
+        );
+        $locationThree = new ParcelLocation\Item(
+            array(
+                'id' => $idThree,
+                'shop_type' => $shopTypeThree,
+                'key_word' => 'baz',
+            )
+        );
 
         $collection = new ParcelLocation\Collection();
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
 
         // set limit and filter, convert to stdClass[]
-        $type = [ParcelLocation\Item::TYPE_PACKSTATION];
+        $type = array(ParcelLocation\Item::TYPE_PACKSTATION);
         $limit = 1;
         $filter = new ParcelLocation\Filter($type);
         $limiter = new ParcelLocation\Limiter($limit);
