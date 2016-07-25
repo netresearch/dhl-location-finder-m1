@@ -104,7 +104,7 @@ class Dhl_LocationFinder_Model_Observer
     public function saveDHLFieldsInQuote(Varien_Event_Observer $observer)
     {
         $shippingData = Mage::app()->getRequest()->getParam('shipping');
-        if (!empty($shippingData) && isset($shippingData['dhl_station_type'])) {
+        if (!empty($shippingData)) {
             /** @var Mage_Sales_Model_Quote $quote */
             $quote  = $observer->getData('quote');
             $fields = array(
@@ -115,7 +115,7 @@ class Dhl_LocationFinder_Model_Observer
 
             $shippingAddress = $quote->getShippingAddress();
             foreach ($fields as $field) {
-                $shippingAddress->setData($field, $shippingData[$field]);
+                $shippingAddress->setData($field, isset($shippingData[$field]) ? $shippingData[$field] : '');
             }
         }
     }
