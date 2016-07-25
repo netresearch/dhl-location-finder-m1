@@ -81,32 +81,34 @@ class MapPopupFormatter extends Formatter
                 }
             }
 
-            // convert the opening hours data into a string for the frontend
-            $this->translations['dash'] = '-';
-            $this->translations['|']    = '<br/>';
-            $this->translations['-']    = ' - ';
-            $needleData                 = array_keys($this->translations);
-            $replaceData                = array_values($this->translations);
+            if (isset($workData['rows']) && isset($workData['cols'])) {
+                // convert the opening hours data into a string for the frontend
+                $this->translations['dash'] = '-';
+                $this->translations['|']    = '<br/>';
+                $this->translations['-']    = ' - ';
+                $needleData                 = array_keys($this->translations);
+                $replaceData                = array_values($this->translations);
 
-            $resultString .= '<span class="opening-hours h5">' . $this->translations['openHours'] . '</span>';
-            for ($i = 0; $i < $workData['rows']; $i++) {
-                for ($j = 0; $j < $workData['cols']; $j++) {
-                    $timeElement = '';
-                    // Separate columns
-                    if ($j == 0) {
-                        $timeElement .= '<span class="dayCol">';
-                    } else {
-                        $timeElement .= '<span class="timeCol">';
+                $resultString .= '<span class="opening-hours h5">' . $this->translations['openHours'] . '</span>';
+                for ($i = 0; $i < $workData['rows']; $i++) {
+                    for ($j = 0; $j < $workData['cols']; $j++) {
+                        $timeElement = '';
+                        // Separate columns
+                        if ($j == 0) {
+                            $timeElement .= '<span class="dayCol">';
+                        } else {
+                            $timeElement .= '<span class="timeCol">';
+                        }
+                        $timeElement .= $workData['hourData'][$needleString . $i . $j];
+                        if ($j == 0) {
+                            $timeElement .= ': ';
+                        }
+                        // replace non frontend values against them
+                        $timeElement = str_replace($needleData, $replaceData, $timeElement);
+                        $resultString .= $timeElement . '</span>';
                     }
-                    $timeElement .= $workData['hourData'][$needleString . $i . $j];
-                    if ($j == 0) {
-                        $timeElement .= ': ';
-                    }
-                    // replace non frontend values against them
-                    $timeElement = str_replace($needleData, $replaceData, $timeElement);
-                    $resultString .= $timeElement . '</span>';
+                    $resultString .= '<br/>';
                 }
-                $resultString .= '<br/>';
             }
         }
 
@@ -135,7 +137,7 @@ class MapPopupFormatter extends Formatter
                     $resultString .= '<li class="service">' . str_replace($needleData, $replaceData, $service)
                         . '</li>';
                 }
-                $resultString .= '</ul >';
+                $resultString .= '</ul>';
             }
 
         }
