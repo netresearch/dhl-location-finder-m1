@@ -23,9 +23,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+namespace Dhl\LocationFinder\Webservice;
+use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
+use Dhl\LocationFinder\Webservice\Parser as LocationParser;
+use Dhl\LocationFinder\Webservice\RequestData;
 
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Adapter
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,32 +37,19 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+interface Adapter
 {
     /**
-     * @test
+     * @param RequestData\Address $requestData
+     * @param LocationParser $locationParser
+     * @return ParcelLocationCollection
      */
-    public function validateCodePool()
-    {
-        $this->assertModuleCodePool('community');
-    }
+    public function getParcelLocationByAddress(RequestData\Address $requestData, LocationParser $locationParser);
 
     /**
-     * @test
+     * @param RequestData\Coordinate $requestData
+     * @param LocationParser $locationParser
+     * @return ParcelLocationCollection
      */
-    public function validateConfig()
-    {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
-
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
-
-        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
-    }
+    public function getParcelLocationByCoordinate(RequestData\Coordinate $requestData, LocationParser $locationParser);
 }

@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-
+namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Filter
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,32 +33,36 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+class Filter
 {
     /**
-     * @test
+     * @var string[]
      */
-    public function validateCodePool()
+    private $shopTypes = [];
+
+    /**
+     * Filter constructor.
+     * @param string[] $shopTypes
+     */
+    public function __construct($shopTypes = [])
     {
-        $this->assertModuleCodePool('community');
+        $this->shopTypes = $shopTypes;
     }
 
     /**
-     * @test
+     * @param Collection $locationCollection
+     * @return Collection
      */
-    public function validateConfig()
+    public function filter(Collection $locationCollection)
     {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
+        $locations = $locationCollection->getItems();
+        $filteredLocations = array_filter(
+            $locations,
+            function (Item $location) {
+                return (in_array($location->getType(), $this->shopTypes));
+            }
+        );
 
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
-
-        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
+        $locationCollection->setItems($filteredLocations);
     }
 }

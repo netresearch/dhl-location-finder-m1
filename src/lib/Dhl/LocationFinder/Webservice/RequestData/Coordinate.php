@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-
+namespace Dhl\LocationFinder\Webservice\RequestData;
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Coordinate
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,32 +33,45 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+final class Coordinate
 {
-    /**
-     * @test
-     */
-    public function validateCodePool()
+    /** @var string Latitude */
+    private $lat = '';
+    /** @var string Longitude */
+    private $lng = '';
+
+    /** @var string[] services */
+    private $services = [];
+
+    public function __construct($lat = '', $lng = '', $services = [])
     {
-        $this->assertModuleCodePool('community');
+        $this->lat = trim($lat);
+        $this->lng = trim($lng);
+
+        $this->services = $services;
     }
 
     /**
-     * @test
+     * @return string
      */
-    public function validateConfig()
+    public function getLat()
     {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
+        return $this->lat;
+    }
 
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
+    /**
+     * @return string
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
 
-        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
+    /**
+     * @return string
+     */
+    public function getServices()
+    {
+        return implode(', ', $this->services);
     }
 }

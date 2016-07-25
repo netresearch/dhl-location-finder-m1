@@ -33,8 +33,31 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Model_ConfigTest extends EcomDev_PHPUnit_Test_Case
+class Dhl_LocationFinder_Test_Model_ConfigTest
+    extends EcomDev_PHPUnit_Test_Case
 {
+    /**
+     * @test
+     */
+    public function isAutoloadEnabled()
+    {
+        $enabled = Mage::getModel('dhl_locationfinder/config')->isAutoloadEnabled();
+        $this->assertTrue($enabled);
+    }
+
+    /**
+     * @test
+     * @loadFixture ConfigTest
+     */
+    public function getApiKey()
+    {
+        $key = Mage::getModel('dhl_locationfinder/config')->getApiKey();
+        $this->assertEquals('foo', $key);
+
+        $key = Mage::getModel('dhl_locationfinder/config')->getApiKey('store_one');
+        $this->assertEquals('bar', $key);
+    }
+
     /**
      * @test
      */
@@ -53,5 +76,29 @@ class Dhl_LocationFinder_Test_Model_ConfigTest extends EcomDev_PHPUnit_Test_Case
         $password = Mage::getModel('dhl_locationfinder/config')->getWsAuthPass();
         $this->assertInternalType('string', $password);
         $this->assertNotEmpty($password);
+    }
+
+    /**
+     * @test
+     */
+    public function getWsValidCountries()
+    {
+        $countries = Mage::getModel('dhl_locationfinder/config')->getWsValidCountries();
+        foreach ($countries as $countryId => $country) {
+            $this->assertInternalType('string', $countryId);
+            $this->assertEquals(2, strlen($countryId));
+
+            $this->assertInternalType('string', $country);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function getCurrentMapProvider()
+    {
+        $mapProvider = Mage::getModel('dhl_locationfinder/config')->getCurrentMapProvider();
+        $this->assertInternalType('string', $mapProvider);
+        $this->assertNotEmpty($mapProvider);
     }
 }

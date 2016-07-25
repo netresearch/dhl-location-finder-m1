@@ -19,46 +19,52 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Dhl_LocationFinder_Test_Helper_DataTest
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
  * @author   Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author   Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+class Dhl_LocationFinder_Test_Helper_DataTest
+    extends EcomDev_PHPUnit_Test_Case
 {
     /**
      * @test
      */
-    public function validateCodePool()
+    public function getMapJsUrl()
     {
-        $this->assertModuleCodePool('community');
+        $helper = new Dhl_LocationFinder_Helper_Data();
+        $jsUrl = $helper->getMapJsUrl();
+
+        $this->assertInternalType('string', $jsUrl);
+        $this->assertNotContains('key=', $jsUrl);
     }
 
     /**
      * @test
      */
-    public function validateConfig()
+    public function getMapJsUrlWithApiKey()
     {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
+        $configMock = $this->getModelMock('dhl_locationfinder/config', array('getApiKey'));
+        $configMock->expects($this->once())
+            ->method('getApiKey')
+            ->willReturn('foo');
+        $this->replaceByMock('model', 'dhl_locationfinder/config', $configMock);
 
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
+        $helper = new Dhl_LocationFinder_Helper_Data();
+        $jsUrl = $helper->getMapJsUrl();
 
-        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
+        $this->assertInternalType('string', $jsUrl);
+        $this->assertContains('key=', $jsUrl);
     }
 }

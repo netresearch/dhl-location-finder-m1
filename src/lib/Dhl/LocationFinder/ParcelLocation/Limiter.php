@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-
+namespace Dhl\LocationFinder\ParcelLocation;
 /**
- * Dhl_LocationFinder_Test_Config_ModuleTest
+ * Limiter
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,32 +33,32 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Config_ModuleTest
-    extends EcomDev_PHPUnit_Test_Case_Config
+class Limiter
 {
+    private $limit = null;
+
     /**
-     * @test
+     * Limiter constructor.
+     * @param int $limit
      */
-    public function validateCodePool()
+    public function __construct($limit = null)
     {
-        $this->assertModuleCodePool('community');
+        $this->limit = $limit;
     }
 
     /**
-     * @test
+     * @param Collection $locationCollection
+     * @return Collection
      */
-    public function validateConfig()
+    public function limit(Collection $locationCollection)
     {
-        $this->assertConfigNodeHasChild('global', 'helpers');
-        $this->assertConfigNodeHasChild('global', 'models');
-        $this->assertConfigNodeHasChild('global', 'resources');
+        if ($this->limit === null || !is_numeric($this->limit)) {
+            return $locationCollection;
+        }
 
-        $this->assertConfigNodeHasChild('default', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder', 'webservice');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_username');
-        $this->assertConfigNodeHasChild('default/dhl_locationfinder/webservice', 'auth_password');
+        $locations = $locationCollection->getItems();
+        $limitedLocations = array_slice($locations, 0, $this->limit, true);
 
-        $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
-        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
+        $locationCollection->setItems($limitedLocations);
     }
 }

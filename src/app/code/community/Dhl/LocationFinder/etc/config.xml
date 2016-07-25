@@ -20,6 +20,7 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
@@ -54,14 +55,93 @@
                 </setup>
             </dhl_locationfinder_setup>
         </resources>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <register_autoload>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>registerAutoload</method>
+                        <type>singleton</type>
+                    </register_autoload>
+                </observers>
+            </controller_front_init_before>
+        </events>
     </global>
+    <frontend>
+        <routers>
+            <dhl_locationfinder>
+                <use>standard</use>
+                <args>
+                    <module>Dhl_LocationFinder</module>
+                    <frontName>dhlpsf</frontName>
+                </args>
+            </dhl_locationfinder>
+        </routers>
+        <secure_url>
+            <dhl_locationfinder>/dhlpsf/</dhl_locationfinder>
+        </secure_url>
+        <layout>
+            <updates>
+                <dhl_locationfinder module="Dhl_LocationFinder">
+                    <file>dhl_locationfinder.xml</file>
+                </dhl_locationfinder>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <append_location_finder_to_shipping>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>appendLocationFinderToShipping</method>
+                    </append_location_finder_to_shipping>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
         <dhl_locationfinder>
+            <dev>
+                <autoload_enabled>1</autoload_enabled>
+            </dev>
             <webservice>
                 <auth_username>magento_1</auth_username>
                 <auth_password>2de26b775e59279464d1c2f8546432e62413372421c672db36eaacfc2f</auth_password>
+                <valid_countries>
+                    <AT>Austria</AT>
+                    <BE>Belgium</BE>
+                    <CZ>Czech Republic</CZ>
+                    <DE>Germany</DE>
+                    <NL>Netherlands</NL>
+                    <PL>Poland</PL>
+                    <SK>Slovakia</SK>
+                </valid_countries>
             </webservice>
         </dhl_locationfinder>
+        <checkout>
+            <dhl_locationfinder>
+                <map_type>googlemaps</map_type>
+            </dhl_locationfinder>
+        </checkout>
     </default>
     <phpunit>
         <suite>
