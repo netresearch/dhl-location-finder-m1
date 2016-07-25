@@ -73,7 +73,8 @@ final class Address
         $validCountries,
         $country = '', $zipCode = '', $city = '', $district = '', $street = '', $houseNo = '',
         $services = []
-    ) {
+    )
+    {
         $this->validCountries = $validCountries;
 
         $this->country = strtoupper(trim($country));

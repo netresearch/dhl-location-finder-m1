@@ -38,11 +38,7 @@ class Filter
     /**
      * @var string[]
      */
-    private $shopTypes = [
-        Item::TYPE_PACKSTATION,
-        Item::TYPE_POSTFILIALE,
-        Item::TYPE_PAKETSHOP,
-    ];
+    private $shopTypes = [];
 
     /**
      * Filter constructor.
@@ -60,9 +56,12 @@ class Filter
     public function filter(Collection $locationCollection)
     {
         $locations = $locationCollection->getItems();
-        $filteredLocations = array_filter($locations, function (Item $location) {
-            return (in_array($location->getType(), $this->shopTypes));
-        });
+        $filteredLocations = array_filter(
+            $locations,
+            function (Item $location) {
+                return (in_array($location->getType(), $this->shopTypes));
+            }
+        );
 
         $locationCollection->setItems($filteredLocations);
     }

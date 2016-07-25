@@ -62,7 +62,7 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
         $defaultCountry   = Mage::getStoreConfig('general/country/default');
 
         // Translate the countries
-        foreach ($allowedCountries as $countryId => $allowedCountry) {
+        foreach (array_keys($allowedCountries) as $countryId) {
             $allowedCountries[$countryId] = Mage::app()->getLocale()->getCountryTranslation($countryId);
         }
 
@@ -86,17 +86,16 @@ class Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder
      */
     public function getMarkerIcons()
     {
-        $shopTypes = array(
-            ParcelLocation\Item::TYPE_PACKSTATION => ParcelLocation\Item::TYPE_PACKSTATION,
-            ParcelLocation\Item::TYPE_POSTFILIALE => ParcelLocation\Item::TYPE_POSTFILIALE,
-            ParcelLocation\Item::TYPE_PAKETSHOP   => ParcelLocation\Item::TYPE_PAKETSHOP,
+        $shopTypes = array_combine(
+            ParcelLocation\Item::getLocationTypes(),
+            ParcelLocation\Item::getLocationTypes()
         );
 
-        $icons = array_map(function($shopType) {
+        $getSkinImages = function ($shopType) {
             $file = sprintf('images/dhl_locationfinder/icon-%s.png', $shopType);
-
             return $this->getSkinUrl($file);
-        }, $shopTypes);
+        };
+        $icons = array_map($getSkinImages, $shopTypes);
 
         return $icons;
     }
