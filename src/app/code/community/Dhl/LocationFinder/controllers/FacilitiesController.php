@@ -48,35 +48,15 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     /**
      * @var Dhl_LocationFinder_Model_Logger
      */
-    private $_logger;
+    protected $_logger;
 
     /**
-     * Prepare _logger. Using a wrapper seems sufficient for M1.
+     * Prepare logger. Using a wrapper seems sufficient for M1.
      */
     protected function _construct()
     {
         parent::_construct();
         $this->_logger = Mage::getModel('dhl_locationfinder/logger');
-    }
-
-    /**
-     * Set status, messages and parcel locations for AJAX response.
-     *
-     * @param bool       $success
-     * @param string[]   $messages
-     * @param stdClass[] $locations
-     */
-    protected function setJsonResponse($success, $messages, $locations)
-    {
-        $jsonResponse = Mage::helper('core/data')->jsonEncode(
-            array(
-                'success'   => $success,
-                'message'   => implode(' ', $messages),
-                'locations' => $locations,
-            )
-        );
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
-        $this->getResponse()->setBody($jsonResponse);
     }
 
     /**
@@ -90,14 +70,34 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
             $this->getResponse()
-                 ->setHeader('HTTP/1.1', '404 Not Found')
-                 ->setHeader('Status', '404 File not found');
+                ->setHeader('HTTP/1.1', '404 Not Found')
+                ->setHeader('Status', '404 File not found');
 
             $this->_forward('defaultNoRoute');
             $this->setFlag('', self::FLAG_NO_DISPATCH, true);
         }
 
         return $this;
+    }
+
+    /**
+     * Set status, messages and parcel locations for AJAX response.
+     *
+     * @param bool $success
+     * @param string[] $messages
+     * @param stdClass[] $locations
+     */
+    protected function setJsonResponse($success, $messages, $locations)
+    {
+        $jsonResponse = Mage::helper('core/data')->jsonEncode(
+            array(
+                'success'   => $success,
+                'message'   => implode(' ', $messages),
+                'locations' => $locations,
+            )
+        );
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setBody($jsonResponse);
     }
 
     /**

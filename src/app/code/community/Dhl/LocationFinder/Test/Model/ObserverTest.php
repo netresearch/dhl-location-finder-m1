@@ -100,15 +100,12 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
      */
     public function saveDHLFieldsInQuote()
     {
-        Mage::app()->getRequest()->setParam('shipping',
-            array('dhl_station_type' => 'Stationtyp', 'dhl_post_number' => 'Postnumber', 'dhl_station' => 'Station')
+        $postData = array(
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE => 'Station Type',
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => 'Station Number',
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER => 'Post Number',
         );
-
-        $modelMock = $this->getModelMock('sales/quote_address', array('save'));
-        $modelMock->expects($this->once())
-                  ->method('save')
-                  ->will($this->returnSelf());
-        $this->replaceByMock('model', 'sales/quote_address', $modelMock);
+        Mage::app()->getRequest()->setParam('shipping', $postData);
 
         $observer = new Varien_Event_Observer();
         $quote    = new Varien_Object();
@@ -119,9 +116,12 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observerModel = new Dhl_LocationFinder_Model_Observer();
         $observerModel->saveDHLFieldsInQuote($observer);
 
-        $changedObject = $observer->getData('quote')->getShippingAddress()->getData();
-
-        $this->assertArrayHasKey('dhl_station_type', $changedObject);
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $quote->getShippingAddress();
+        foreach ($postData as $attributeCode => $value) {
+            $this->assertArrayHasKey($attributeCode, $address->getData());
+            $this->assertEquals($value, $address->getData($attributeCode));
+        }
     }
 
     /**
