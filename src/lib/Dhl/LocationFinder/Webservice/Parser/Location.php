@@ -24,6 +24,7 @@
  * @link      http://www.netresearch.de/
  */
 namespace Dhl\LocationFinder\Webservice\Parser;
+
 use Dhl\LocationFinder\Webservice\Parser;
 use Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
 use Dhl\LocationFinder\ParcelLocation\Item as ParcelLocation;
@@ -42,6 +43,7 @@ class Location implements Parser
 {
     /**
      * @param psfParcellocation[] $parcelLocations
+     *
      * @return ParcelLocationCollection
      */
     public function parse($parcelLocations)
@@ -53,19 +55,21 @@ class Location implements Parser
 
         foreach ($parcelLocations as $parcelLocation) {
             $collection->addItem(new ParcelLocation([
-                'key_word' => $parcelLocation->getKeyWord(),
-                'shop_type' => $parcelLocation->getShopType(),
-                'shop_number' => $parcelLocation->getPrimaryKeyZipRegion(),
-                'shop_name' => $parcelLocation->getShopName(),
+                'key_word'        => $parcelLocation->getKeyWord(),
+                'shop_type'       => $parcelLocation->getShopType(),
+                'shop_number'     => $parcelLocation->getPrimaryKeyZipRegion(),
+                'shop_name'       => $parcelLocation->getShopName(),
                 'additional_info' => $parcelLocation->getAdditionalInfo(),
-                'street' => $parcelLocation->getStreet(),
-                'house_no' => $parcelLocation->getHouseNo(),
-                'zip_code' => $parcelLocation->getZipCode(),
-                'city' => $parcelLocation->getCity(),
-                'country_code' => $parcelLocation->getCountryCode(),
-                'id' => $parcelLocation->getPrimaryKeyDeliverySystem(),
-                'latitude' => $parcelLocation->getLocation()->getLatitude(),
-                'longitude' => $parcelLocation->getLocation()->getLongitude(),
+                'other_infos'     => $parcelLocation->getPsfOtherinfos(),
+                'services'        => $parcelLocation->getPsfServicetypes(),
+                'street'          => $parcelLocation->getStreet(),
+                'house_no'        => $parcelLocation->getHouseNo(),
+                'zip_code'        => $parcelLocation->getZipCode(),
+                'city'            => $parcelLocation->getCity(),
+                'country_code'    => $parcelLocation->getCountryCode(),
+                'id'              => $parcelLocation->getPrimaryKeyDeliverySystem(),
+                'latitude'        => $parcelLocation->getLocation()->getLatitude(),
+                'longitude'       => $parcelLocation->getLocation()->getLongitude(),
             ]));
         }
 

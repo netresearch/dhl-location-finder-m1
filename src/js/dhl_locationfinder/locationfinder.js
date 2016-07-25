@@ -146,6 +146,8 @@ DhlLocationFinder.prototype = {
                                 null,
                                 {
                                     title: location['name'],
+                                    hours: location['openingHours'],
+                                    services: location['services'],
                                     address1: location['street'] + ' ' + location['houseNo'],
                                     address2: location['zipCode'] + ' ' + location['city'],
                                     icon: markerIcons[location['type']],
@@ -165,6 +167,8 @@ DhlLocationFinder.prototype = {
                                     '<p>' + details.address1 + '</p>' +
                                     '<p>' + details.address2 + '</p>' +
                                     '<p>' + details.station + '</p>' +
+                                    '<p class="opening-hours-wrapper">' + details.hours + '</p>' +
+                                    '<p>' + details.services + '</p>' +
                                     '<p>' +
                                     '<a class="store-selector" ' +
                                     'href="javascript:void(0)" ' +
