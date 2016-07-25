@@ -47,35 +47,15 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
     /**
      * @var Dhl_LocationFinder_Model_Logger
      */
-    private $_logger;
+    protected $_logger;
 
     /**
-     * Prepare _logger. Using a wrapper seems sufficient for M1.
+     * Prepare logger. Using a wrapper seems sufficient for M1.
      */
     protected function _construct()
     {
         parent::_construct();
-        $this->_logger = Mage::getModel('dhl_locationfinder/_logger');
-    }
-
-    /**
-     * Set status, messages and parcel locations for AJAX response.
-     *
-     * @param bool $success
-     * @param string[] $messages
-     * @param stdClass[] $locations
-     */
-    protected function setJsonResponse($success, $messages, $locations)
-    {
-        $jsonResponse = Mage::helper('core/data')->jsonEncode(
-            array(
-                'success'   => $success,
-                'message'   => implode(' ', $messages),
-                'locations' => $locations,
-            )
-        );
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
-        $this->getResponse()->setBody($jsonResponse);
+        $this->_logger = Mage::getModel('dhl_locationfinder/logger');
     }
 
     /**
@@ -97,6 +77,26 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
         }
 
         return $this;
+    }
+
+    /**
+     * Set status, messages and parcel locations for AJAX response.
+     *
+     * @param bool $success
+     * @param string[] $messages
+     * @param stdClass[] $locations
+     */
+    protected function setJsonResponse($success, $messages, $locations)
+    {
+        $jsonResponse = Mage::helper('core/data')->jsonEncode(
+            array(
+                'success'   => $success,
+                'message'   => implode(' ', $messages),
+                'locations' => $locations,
+            )
+        );
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setBody($jsonResponse);
     }
 
     /**

@@ -19,70 +19,24 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
-/**
- * Dhl_LocationFinder_Setup
- *
- * @category  Dhl
- * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
- * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.netresearch.de/
- */
+/** @var Mage_Sales_Model_Resource_Setup $installer */
+$installer = Mage::getResourceModel('sales/setup', 'sales_setup');
 
-/** @var Mage_Customer_Model_Entity_Setup $installer */
-$installer = $this;
-
-$installer->startSetup();
-
-
-/**
- * Adding Extra Columns to sales_flat_quote_address
- * to store the dhl location fields
- */
-$sales_quote_address = $installer->getTable('sales/quote_address');
-/** @var Magento_Db_Adapter_Pdo_Mysql $connection */
-$connection = $installer->getConnection();
-
-$connection->addColumn($sales_quote_address, 'dhl_post_number', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Post Number'
-    )
-);
-$connection->addColumn($sales_quote_address, 'dhl_station_type', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station Type'
-    )
-);
-$connection->addColumn($sales_quote_address, 'dhl_station', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station'
-    )
+$fields = array(
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER    => 'Dhl Post Number',
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE   => 'Dhl Station Type',
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => 'Dhl Station',
 );
 
-/**
- * Adding Extra Column to sales_flat_order_address
- * to store the dhl location fields
- */
-$sales_order_address = $installer->getTable('sales/order_address');
-
-$connection->addColumn($sales_order_address, 'dhl_post_number', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Post Number'
-    )
-);
-$connection->addColumn($sales_order_address, 'dhl_station_type', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station Type'
-    )
-);
-$connection->addColumn($sales_order_address, 'dhl_station', array(
-        'type'    => Varien_Db_Ddl_Table::TYPE_TEXT,
-        'comment' => 'Dhl Station'
-    )
-);
+foreach ($fields as $attributeCode => $comment) {
+    // Add location finder extra columns to sales_flat_quote_address.
+    $installer->addAttribute('quote_address', $attributeCode, array('type' => 'text', 'comment' => $comment));
+    // Add location finder extra columns to sales_flat_order_address.
+    $installer->addAttribute('order_address', $attributeCode, array('type' => 'text', 'comment' => $comment));
+}

@@ -19,57 +19,31 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
 
+/** @var Mage_Customer_Model_Resource_Setup $installer */
+$installer = Mage::getResourceModel('customer/setup', 'customer_setup');
+
+$fields = array(
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER    => 'Dhl Post Number',
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE   => 'Dhl Station Type',
+    Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => 'Dhl Station',
+);
+
 /**
- * Dhl_LocationFinder_Setup
- *
- * @category  Dhl
- * @package   Dhl_LocationFinder
- * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
- * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.netresearch.de/
+ * address renderers only render visible customer address attributes
+ * @see Mage_Customer_Block_Address_Renderer_Default::render()
  */
-
-/** @var Mage_Customer_Model_Entity_Setup $installer */
-$installer = $this;
-
-$installer->startSetup();
-
-$this->addAttribute('customer_address', 'dhl_post_number', array(
-        'type'             => Varien_Db_Ddl_Table::TYPE_VARCHAR,
-        'input'            => 'text',
-        'label'            => 'Dhl Post Number',
-        'global'           => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-        'visible'          => 1,
-        'required'         => 0,
-        'user_defined'     => 1,
-        'visible_on_front' => 1
-    )
-);
-$this->addAttribute('customer_address', 'dhl_station_type', array(
-        'type'             => Varien_Db_Ddl_Table::TYPE_VARCHAR,
-        'input'            => 'text',
-        'label'            => 'Dhl Station Type',
-        'global'           => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-        'visible'          => 1,
-        'required'         => 0,
-        'user_defined'     => 1,
-        'visible_on_front' => 1
-    )
-);
-$this->addAttribute('customer_address', 'dhl_station', array(
-        'type'             => Varien_Db_Ddl_Table::TYPE_VARCHAR,
-        'input'            => 'text',
-        'label'            => 'Dhl Station',
-        'global'           => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-        'visible'          => 1,
-        'required'         => 0,
-        'user_defined'     => 1,
-        'visible_on_front' => 1
-    )
-);
+foreach ($fields as $attributeCode => $label) {
+    $attributeOptions = array(
+        'label'    => $label,
+        'type'     => 'varchar',
+        'visible'  => true,
+        'required' => false,
+    );
+    $installer->addAttribute('customer_address', $attributeCode, $attributeOptions);
+}

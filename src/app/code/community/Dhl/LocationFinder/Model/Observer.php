@@ -106,12 +106,17 @@ class Dhl_LocationFinder_Model_Observer
         $shippingData = Mage::app()->getRequest()->getParam('shipping');
         if (!empty($shippingData) && isset($shippingData['dhl_station_type'])) {
             /** @var Mage_Sales_Model_Quote $quote */
-            $quote           = $observer->getData('quote');
+            $quote  = $observer->getData('quote');
+            $fields = array(
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER,
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER,
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE,
+            );
+
             $shippingAddress = $quote->getShippingAddress();
-            $shippingAddress->setData('dhl_station_type', $shippingData['dhl_station_type']);
-            $shippingAddress->setData('dhl_post_number', $shippingData['dhl_post_number']);
-            $shippingAddress->setData('dhl_station', $shippingData['dhl_station']);
-            $shippingAddress->save();
+            foreach ($fields as $field) {
+                $shippingAddress->setData($field, $shippingData[$field]);
+            }
         }
     }
 
@@ -132,15 +137,20 @@ class Dhl_LocationFinder_Model_Observer
         /** @var Mage_Sales_Model_Quote_Address $address */
         $address = $observer->getData('quote_address');
 
-        if ($address->getData('dhl_station_type')) {
+        if ($address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE)) {
+            $fieldMap = array(
+                'post_number' => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER,
+                'shop_number' => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER,
+                'shop_type'   => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE,
+            );
+
             $facility->setData(
                 array(
-                    'shop_type'   => $address->getData('dhl_station_type'),
-                    'shop_number' => preg_filter('/^.*([\d]{3})$/', '$1', $address->getData('dhl_station')),
-                    'post_number' => $address->getData('dhl_post_number') ? $address->getData('dhl_post_number') : '',
+                    'shop_type'   => $address->getData($fieldMap['shop_type']),
+                    'shop_number' => preg_filter('/^.*([\d]{3})$/', '$1', $address->getData($fieldMap['shop_number'])),
+                    'post_number' => $address->getData($fieldMap['post_number']),
                 )
             );
         }
     }
-
 }
