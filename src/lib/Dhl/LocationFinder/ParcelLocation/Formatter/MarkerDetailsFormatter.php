@@ -26,7 +26,6 @@
 namespace Dhl\LocationFinder\ParcelLocation\Formatter;
 
 use Dhl\LocationFinder\ParcelLocation\Item;
-use Dhl\Psf\Api\psfOtherinfo;
 
 /**
  * MarkerDetailsFormatter
@@ -64,44 +63,8 @@ class MarkerDetailsFormatter extends DetailsFormatter
     }
 
     /**
-     * @param psfOtherinfo[]  $info
-     * @param string $dimensionType
-     * @return string
-     */
-    protected function getOpeningHourDimension(array $info, $dimensionType)
-    {
-        $infoItems = array_filter($info, function (psfOtherinfo $infoItem) use ($dimensionType) {
-            return ($infoItem->getType() === $dimensionType);
-        });
-
-        $infoItem = array_shift($infoItems);
-        if (!$infoItem instanceof psfOtherinfo) {
-            return '';
-        }
-
-        return $infoItem->getContent();
-    }
-
-    /**
-     * @param psfOtherinfo[] $info
-     * @return string[]
-     */
-    protected function getOpeningHourData(array $info)
-    {
-        $data = array_reduce($info, function ($carry, psfOtherinfo $infoItem) {
-            if (preg_match('/^tt_openinghour_(\d)(\d)$/', $infoItem->getType(), $matches)) {
-                $col = $matches[1];
-                $row = $matches[2];
-                $carry[$col][$row] = $infoItem->getContent();
-            }
-
-            return $carry;
-        }, array());
-
-        return $data;
-    }
-
-    /**
+     * Convert opening hours information to markup.
+     *
      * @param \stdClass $item
      */
     protected function formatOpeningHours(\stdClass $item)
@@ -110,21 +73,14 @@ class MarkerDetailsFormatter extends DetailsFormatter
             // Only show opening hours for postOffice and parcelShops
             $item->openingHours = '';
         } else {
-            $tableRows = $this->getOpeningHourDimension($item->openingHours, 'tt_openinghour_rows');
-            $tableCols = $this->getOpeningHourDimension($item->openingHours, 'tt_openinghour_cols');
-            $tableData = $this->getOpeningHourData($item->openingHours);
+            $rowFormat = '<span class="dayCol">%s:</span><span class="timeCol">%s</span><br/>';
 
-            // compare dimensions with extracted data
-            if ( (count($tableData) == $tableRows) && (count($tableData[0]) == $tableCols) ) {
-                $rowFormat = '<span class="dayCol">%s:</span><span class="timeCol">%s</span><br/>';
+            $tableMarkup = array_map(function (array $tableRow) use ($rowFormat) {
+                return $this->replace(sprintf($rowFormat, $tableRow[0], $tableRow[1]));
+            }, $item->openingHours);
 
-                $tableMarkup = array_map(function (array $tableRow) use ($rowFormat) {
-                    return $this->replace(sprintf($rowFormat, $tableRow[0], $tableRow[1]));
-                }, $tableData);
-
-                $item->openingHours = '<span class="opening-hours h5">' . $this->translate('openHours') . '</span>';
-                $item->openingHours.= implode("", $tableMarkup);
-            }
+            $item->openingHours = '<span class="opening-hours h5">' . $this->translate('openHours') . '</span>';
+            $item->openingHours.= implode("", $tableMarkup);
         }
     }
 

@@ -47,9 +47,9 @@ final class Item
     private $name = '';
     /** @var string AdditionalInfo or KeyWord */
     private $station = '';
-    /** @var array Additional information's like opening hours and closure times */
-    private $otherInfos = array();
-    /** @var array Services the station can provide */
+    /** @var string[] Additional information's like opening hours and closure times */
+    private $openingHours = array();
+    /** @var string[] Services the station can provide */
     private $services = array();
     /** @var string Street */
     private $street = '';
@@ -75,21 +75,21 @@ final class Item
      */
     public function __construct(array $data)
     {
-        $keyWord          = isset($data['key_word']) ? $data['key_word'] : '';
-        $this->type       = isset($data['shop_type']) ? $data['shop_type'] : '';
-        $this->number     = isset($data['shop_number']) ? $data['shop_number'] : '';
-        $this->name       = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
-        $this->station    = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;
-        $this->otherInfos = isset($data['other_infos']) ? $data['other_infos'] : array();
-        $this->services   = isset($data['services']) ? $data['services'] : array();
-        $this->street     = isset($data['street']) ? $data['street'] : '';
-        $this->houseNo    = isset($data['house_no']) ? $data['house_no'] : '';
-        $this->zipCode    = isset($data['zip_code']) ? $data['zip_code'] : '';
-        $this->city       = isset($data['city']) ? $data['city'] : '';
-        $this->country    = isset($data['country_code']) ? strtoupper($data['country_code']) : '';
-        $this->id         = isset($data['id']) ? $data['id'] : '';
-        $this->latitude   = isset($data['latitude']) ? $data['latitude'] : '';
-        $this->longitude  = isset($data['longitude']) ? $data['longitude'] : '';
+        $keyWord            = isset($data['key_word']) ? $data['key_word'] : '';
+        $this->type         = isset($data['shop_type']) ? $data['shop_type'] : '';
+        $this->number       = isset($data['shop_number']) ? $data['shop_number'] : '';
+        $this->name         = isset($data['shop_name']) ? $data['shop_name'] : $keyWord;
+        $this->station      = isset($data['additional_info']) ? $data['additional_info'] : $keyWord;
+        $this->openingHours = isset($data['opening_hours']) ? $data['opening_hours'] : array();
+        $this->services     = isset($data['services']) ? $data['services'] : array();
+        $this->street       = isset($data['street']) ? $data['street'] : '';
+        $this->houseNo      = isset($data['house_no']) ? $data['house_no'] : '';
+        $this->zipCode      = isset($data['zip_code']) ? $data['zip_code'] : '';
+        $this->city         = isset($data['city']) ? $data['city'] : '';
+        $this->country      = isset($data['country_code']) ? strtoupper($data['country_code']) : '';
+        $this->id           = isset($data['id']) ? $data['id'] : '';
+        $this->latitude     = isset($data['latitude']) ? $data['latitude'] : '';
+        $this->longitude    = isset($data['longitude']) ? $data['longitude'] : '';
     }
 
     /**
@@ -139,15 +139,15 @@ final class Item
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getOtherInfos()
+    public function getOpeningHours()
     {
-        return $this->otherInfos;
+        return $this->openingHours;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getServices()
     {

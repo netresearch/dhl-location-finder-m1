@@ -99,7 +99,7 @@ class DetailsFormatter implements Formatter
             $location->name         = $item->getName();
             $location->station      = $item->getStation();
             $location->number       = $item->getNumber();
-            $location->openingHours = $item->getOtherInfos();
+            $location->openingHours = $item->getOpeningHours();
             $location->services     = $item->getServices();
             $location->street       = $item->getStreet();
             $location->houseNo      = $item->getHouseNo();
