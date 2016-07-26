@@ -144,7 +144,7 @@ DhlLocationFinder.prototype = {
             }
 
             // Add basic data into the shipping fields from the billing fields
-            shipping.syncWithBilling();
+            this.syncWithBillingAddress();
             if ($('shipping:region_id') != undefined) {
                 $('shipping:region_id').value = '';
             }
@@ -315,5 +315,20 @@ DhlLocationFinder.prototype = {
         $('shipping:dhl_station_type').setValue(dataObject.type);
         $('shipping:dhl_station').setValue(dataObject.station);
         this.hideLocationFinder();
+    },
+
+    syncWithBillingAddress: function () {
+        arrElements = Form.getElements($('co-shipping-form'));
+        for (var elemIndex in arrElements) {
+            if (arrElements[elemIndex].id) {
+                var sourceField = $(arrElements[elemIndex].id.replace(/^shipping:/, 'billing:'));
+                if (sourceField) {
+                    arrElements[elemIndex].value = sourceField.value;
+                }
+            }
+        }
+        shippingRegionUpdater.update();
+        $('shipping:region_id').value = $('billing:region_id').value;
+        $('shipping:region').value = $('billing:region').value;
     }
 };
