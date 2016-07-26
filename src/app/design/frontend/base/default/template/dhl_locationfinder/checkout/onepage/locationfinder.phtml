@@ -136,8 +136,10 @@
         'sf-map-wrapper',                // Id of the Wrapper Container for the location finder
         'dhl_locationfinder_trigger',    // Id of the Element which contain the CTA
         'additional-dhl-fields',         // Id of the Container, which contains all additional fields for address
-        'map-load-animation',             // Id of the container with the loading animation
-        <?php echo $this->helper('core/data')->jsonEncode($this->getMarkerIcons()); ?>
+        'map-load-animation',            // Id of the container with the loading animation
+        <?php echo $this->helper('core/data')->jsonEncode($this->getMarkerIcons()); ?>, // Map Icons
+        '<?php echo Mage::getModel('dhl_locationfinder/config')->getZoomMethod(); ?>',  // Zoom Method
+        <?php echo Mage::getModel('dhl_locationfinder/config')->getZoomFactor(); ?>   // Zoom Factor
     );
 
     // Function to get store specific data and fill the form with it

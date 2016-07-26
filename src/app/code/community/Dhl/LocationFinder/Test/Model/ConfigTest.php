@@ -101,4 +101,34 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
         $this->assertInternalType('string', $mapProvider);
         $this->assertNotEmpty($mapProvider);
     }
+
+    /**
+     * @test
+     */
+    public function getResultsLimit()
+    {
+        $mapProvider = Mage::getModel('dhl_locationfinder/config')->getResultsLimit();
+        $this->assertInternalType('int', $mapProvider);
+        $this->assertNotEmpty($mapProvider);
+    }
+
+    /**
+     * @test
+     */
+    public function getZoomMethod()
+    {
+        $mapProvider = Mage::getModel('dhl_locationfinder/config')->getZoomMethod();
+        $this->assertInternalType('string', $mapProvider);
+        $this->assertNotEmpty($mapProvider);
+    }
+
+    /**
+     * @test
+     */
+    public function getZoomFactor()
+    {
+        $mapProvider = Mage::getModel('dhl_locationfinder/config')->getZoomFactor();
+        $this->assertInternalType('int', $mapProvider);
+        $this->assertNotEmpty($mapProvider);
+    }
 }

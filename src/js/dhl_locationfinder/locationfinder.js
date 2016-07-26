@@ -1,11 +1,17 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons, zoomMethod, zoomFactor) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
         this.initDhlFields(formElementId);
         this.loadingElement = loadingElement;
         this.markerIcons = markerIcons;
+        this.zoomMethod = zoomMethod;
+        if(zoomFactor != undefined && zoomFactor === parseInt(zoomFactor, 10) ){
+            this.zoomFactor = zoomFactor;
+        } else {
+            this.zoomFactor = 13;
+        }
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -116,7 +122,7 @@ DhlLocationFinder.prototype = {
                 inputField.disabled = true;
                 inputField.value = '';
             });
-            
+
             // unsecure DHL data
             $('shipping:street1').readOnly = false;
             $('shipping:city').readOnly = false;
@@ -151,9 +157,11 @@ DhlLocationFinder.prototype = {
                         // Set results as stores
                         var stores = [];
                         var newCenter = '';
+                        var bounds = new google.maps.LatLngBounds();
                         responseData['locations'].each(function (location) {
 
                             var coordinates = new google.maps.LatLng(location['lat'], location['long']);
+                            bounds.extend(coordinates);
                             var store = new storeLocator.Store(
                                 location['id'],
                                 coordinates,
@@ -252,7 +260,11 @@ DhlLocationFinder.prototype = {
                         // Update Map
                         if (newCenter != '') {
                             map.setCenter(newCenter);
-                            map.setZoom(13);
+                            if (currentClass.zoomMethod == 'fix') {
+                                map.setZoom(currentClass.zoomFactor);
+                            } else {
+                                map.fitBounds(bounds);
+                            }
                             currentClass.view.refreshView();
                         }
 

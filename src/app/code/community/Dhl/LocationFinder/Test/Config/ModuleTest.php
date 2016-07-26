@@ -60,5 +60,8 @@ class Dhl_LocationFinder_Test_Config_ModuleTest
 
         $this->assertConfigNodeHasChild('default/checkout', 'dhl_locationfinder');
         $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'map_type');
+        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'limit_results');
+        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'fix_or_boundaries');
+        $this->assertConfigNodeHasChild('default/checkout/dhl_locationfinder', 'zoom_factor');
     }
 }

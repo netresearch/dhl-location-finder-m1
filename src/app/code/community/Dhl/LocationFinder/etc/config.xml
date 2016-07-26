@@ -230,6 +230,9 @@ T: {{var telephone}}
         <checkout>
             <dhl_locationfinder>
                 <map_type>googlemaps</map_type>
+                <limit_results>50</limit_results>
+                <fix_or_boundaries>boundaries</fix_or_boundaries>
+                <zoom_factor>13</zoom_factor>
             </dhl_locationfinder>
         </checkout>
     </default>
