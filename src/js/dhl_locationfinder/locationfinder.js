@@ -31,7 +31,7 @@ DhlLocationFinder.prototype = {
 
             // observe customer address book for other addresses
             var shippingAddressElement = $('shipping-address-select');
-            if (shippingAddressElement != 'undefined' && shippingAddressElement != null) {
+            if (shippingAddressElement != undefined) {
                 shippingAddressElement.observe('change', function () {
                     $('shipping:useLocationFinder').checked = false;
                     currentClass.showLocationData(false);
@@ -71,6 +71,39 @@ DhlLocationFinder.prototype = {
                 }
             );
             this.map = map;
+
+            // Call initial Ajax request with billing data
+            var selector = $('shipping:city');
+            if (selector != undefined) {
+                $('locationfinder-city').value = selector.value;
+            }
+            selector = $('shipping:postcode');
+            if (selector != undefined) {
+                $('locationfinder-zipcode').value = selector.value;
+            }
+            selector = $('shipping:street1');
+            if (selector != undefined) {
+                $('locationfinder-street').value = selector.value;
+            }
+
+            // Add only the country, if it exist for this service
+            selector = $('shipping:country_id');
+            if (selector != undefined) {
+                var exists = false;
+                $$('select#locationfinder-country option').each(function (el) {
+                    if (el.value == selector.value) {
+                        exists = true;
+                        throw $break;
+                    }
+                });
+                if (exists) {
+                    $('locationfinder-country').value = selector.value;
+                }
+            }
+
+
+            $('locationFinderForm').onsubmit();
+
         }
     },
 
@@ -109,6 +142,13 @@ DhlLocationFinder.prototype = {
                 saveInAddressElement.disabled = true;
                 saveInAddressElement.checked = false;
             }
+
+            // Add basic data into the shipping fields from the billing fields
+            shipping.syncWithBilling();
+            if ($('shipping:region_id') != undefined) {
+                $('shipping:region_id').value = '';
+            }
+
         } else {
             this.formFields.removeClassName('active');
             $$('.locationfinder-opener')[0].removeClassName('active');
@@ -116,7 +156,7 @@ DhlLocationFinder.prototype = {
                 inputField.disabled = true;
                 inputField.value = '';
             });
-            
+
             // unsecure DHL data
             $('shipping:street1').readOnly = false;
             $('shipping:city').readOnly = false;
