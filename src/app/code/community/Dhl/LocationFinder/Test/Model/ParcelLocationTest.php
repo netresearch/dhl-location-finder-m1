@@ -338,7 +338,7 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
             array('parking' => 'Parking allowed', 'openHours' => 'Open Times', 'services' => 'Services');
 
         $collection = new ParcelLocation\Collection();
-        $formatter  = new ParcelLocation\Formatter\MapPopupFormatter();
+        $formatter  = new ParcelLocation\Formatter\MarkerDetailsFormatter();
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
 
         // set limit and filter, convert to stdClass[]

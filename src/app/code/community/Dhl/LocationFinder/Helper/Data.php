@@ -78,7 +78,7 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getPopupTranslation()
+    public function getTranslationsMap()
     {
         return array(
             'mo'                => $this->__('mo'),

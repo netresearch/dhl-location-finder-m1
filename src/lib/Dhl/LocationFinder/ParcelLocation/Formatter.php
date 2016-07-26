@@ -33,39 +33,11 @@ namespace Dhl\LocationFinder\ParcelLocation;
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Formatter
+interface Formatter
 {
     /**
-     * Obtain serializable location representation.
-     *
      * @param Item[] $items
-     *
      * @return \stdClass[]
      */
-    public function format(array $items)
-    {
-        $locations = [];
-
-        foreach ($items as $item) {
-            $location               = new \stdClass();
-            $location->type         = $item->getType();
-            $location->name         = $item->getName();
-            $location->station      = $item->getStation();
-            $location->number       = $item->getNumber();
-            $location->openingHours = $item->getOtherInfos();
-            $location->services     = $item->getServices();
-            $location->street       = $item->getStreet();
-            $location->houseNo      = $item->getHouseNo();
-            $location->zipCode      = $item->getZipCode();
-            $location->city         = $item->getCity();
-            $location->country      = $item->getCountry();
-            $location->id           = $item->getId();
-            $location->lat          = $item->getLatitude();
-            $location->long         = $item->getLongitude();
-
-            $locations[] = $location;
-        }
-
-        return $locations;
-    }
+    public function format(array $items);
 }

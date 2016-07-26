@@ -25,7 +25,7 @@
  * @link      http://www.netresearch.de/
  */
 use \Dhl\LocationFinder\ParcelLocation\Limiter;
-use \Dhl\LocationFinder\ParcelLocation\Formatter\MapPopupFormatter;
+use \Dhl\LocationFinder\ParcelLocation\Formatter\MarkerDetailsFormatter;
 use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
 use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
 use \Dhl\LocationFinder\Webservice\RequestData;
@@ -135,9 +135,13 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             // TODO(nr): read limit from config (DHLPSF-19)
             $limiter   = new Limiter(50);
             $items     = $locations->getItems(null, $limiter);
-            $formatter = new MapPopupFormatter();
 
-            $mapLocations = $formatter->format($items, $locationHelper->getPopupTranslation());
+            $translationsMap = $locationHelper->getTranslationsMap();
+            $formatter = new MarkerDetailsFormatter(
+                $translationsMap,
+                array(LocationsApi\service::parking, LocationsApi\service::handicappedAccess)
+            );
+            $mapLocations = $formatter->format($items);
 
             $this->setJsonResponse((count($locations) > 0), $messages, $mapLocations);
 
