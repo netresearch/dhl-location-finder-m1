@@ -45,8 +45,8 @@ class Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
     {
         parent::setUp();
 
-        $loggerMock = $this->getModelMock('dhl_locationfinder/_logger');
-        $this->replaceByMock('model', 'dhl_locationfinder/_logger', $loggerMock);
+        $loggerMock = $this->getModelMock('dhl_locationfinder/logger');
+        $this->replaceByMock('model', 'dhl_locationfinder/logger', $loggerMock);
     }
 
     /**

@@ -91,4 +91,66 @@ class Dhl_LocationFinder_Model_Observer
             $transport->setHtml($html . $locationFinder->toHtml());
         }
     }
+
+    /**
+     * Append new DHL fields into quote address
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @event sales_quote_save_before
+     *
+     * @return void
+     */
+    public function saveDHLFieldsInQuote(Varien_Event_Observer $observer)
+    {
+        $shippingData = Mage::app()->getRequest()->getParam('shipping');
+        if (!empty($shippingData)) {
+            /** @var Mage_Sales_Model_Quote $quote */
+            $quote  = $observer->getData('quote');
+            $fields = array(
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER,
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER,
+                Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE,
+            );
+
+            $shippingAddress = $quote->getShippingAddress();
+            foreach ($fields as $field) {
+                $shippingAddress->setData($field, isset($shippingData[$field]) ? $shippingData[$field] : '');
+            }
+        }
+    }
+
+    /**
+     * Append new DHL fields into postal facility for DHL Versenden
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @event dhl_versenden_set_postal_facility
+     *
+     * @return void
+     */
+    public function saveDHLFieldsInPostalFacility(Varien_Event_Observer $observer)
+    {
+        /** @var Varien_Object $facility */
+        $facility = $observer->getData('postal_facility');
+
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $observer->getData('quote_address');
+
+        if ($address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE)) {
+            $fieldMap = array(
+                'post_number' => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER,
+                'shop_number' => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER,
+                'shop_type'   => Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE,
+            );
+
+            $facility->setData(
+                array(
+                    'shop_type'   => $address->getData($fieldMap['shop_type']),
+                    'shop_number' => preg_filter('/^.*([\d]{3})$/', '$1', $address->getData($fieldMap['shop_number'])),
+                    'post_number' => $address->getData($fieldMap['post_number']),
+                )
+            );
+        }
+    }
 }
