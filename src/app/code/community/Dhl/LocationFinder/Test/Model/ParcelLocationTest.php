@@ -19,6 +19,7 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
@@ -32,6 +33,7 @@ use \Dhl\Psf\Api;
  * @category Dhl
  * @package  Dhl_LocationFinder
  * @author   Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author   Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
@@ -294,22 +296,13 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $shopTypeTwo   = ParcelLocation\Item::TYPE_POSTFILIALE;
         $shopTypeThree = ParcelLocation\Item::TYPE_PAKETSHOP;
 
-        // build OtherInformation for location
-        $informationArray = array();
-        $informationData  = array(
-            'tt_openinghour_rows' => 1,
-            'tt_openinghour_cols' => 2,
-            'tt_openinghour_00'   => 'Mo:',
-            'tt_openinghour_01'   => '07:00 - 17:00',
-            'tt_another_thing'    => 'foo'
+        $openingHours = array(
+            array('tt_openinghour_rows', 1),
+            array('tt_openinghour_cols', 2),
+            array('tt_openinghour_00', 'Mo:'),
+            array('tt_openinghour_01', '07:00 - 17:00'),
+            array('tt_another_thing', 'foo'),
         );
-        foreach ($informationData as $key => $value) {
-            $otherInformation = new Api\psfOtherinfo();
-            $otherInformation->setContent($value);
-            $otherInformation->setType($key);
-            $informationArray[] = $otherInformation;
-        }
-
 
         $locationOne      = new ParcelLocation\Item(
             array(
@@ -327,18 +320,21 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         );
         $locationThree    = new ParcelLocation\Item(
             array(
-                'id'          => $idThree,
-                'shop_type'   => $shopTypeThree,
-                'key_word'    => 'baz',
-                'other_infos' => $informationArray,
-                'services'    => array('parking', 'COD')
+                'id'            => $idThree,
+                'shop_type'     => $shopTypeThree,
+                'key_word'      => 'baz',
+                'opening_hours' => $openingHours,
+                'services'      => array('parking', 'COD')
             )
         );
-        $translationArray =
+        $translations =
             array('parking' => 'Parking allowed', 'openHours' => 'Open Times', 'services' => 'Services');
 
         $collection = new ParcelLocation\Collection();
-        $formatter  = new ParcelLocation\Formatter\MarkerDetailsFormatter();
+        $formatter  = new ParcelLocation\Formatter\MarkerDetailsFormatter(
+            $translations,
+            array(Api\service::parking, Api\service::handicappedAccess)
+        );
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
 
         // set limit and filter, convert to stdClass[]
@@ -346,7 +342,7 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         $limit   = 1;
         $filter  = new ParcelLocation\Filter($type);
         $limiter = new ParcelLocation\Limiter($limit);
-        $objects = $formatter->format($collection->getItems($filter, $limiter), $translationArray);
+        $objects = $formatter->format($collection->getItems($filter, $limiter));
 
         $this->assertInternalType('array', $objects);
         $this->assertContainsOnly(stdClass::class, $objects);
@@ -361,7 +357,7 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         // set another filter to check the formatter methods
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
         $filter  = new ParcelLocation\Filter(array(ParcelLocation\Item::TYPE_PAKETSHOP));
-        $objects = $formatter->format($collection->getItems($filter, $limiter), $translationArray);
+        $objects = $formatter->format($collection->getItems($filter, $limiter));
         $object  = $objects[0];
 
         $this->assertContains('allowed', $object->services);
@@ -370,7 +366,7 @@ class Dhl_LocationFinder_Test_Model_ParcelLocationTest
         // set another filter to check that formatter methods skip empty values
         $collection->setItems(array($locationOne, $locationTwo, $locationThree));
         $filter  = new ParcelLocation\Filter(array(ParcelLocation\Item::TYPE_POSTFILIALE));
-        $objects = $formatter->format($collection->getItems($filter, $limiter), $translationArray);
+        $objects = $formatter->format($collection->getItems($filter, $limiter));
         $object  = $objects[0];
 
         $this->assertNotContains('allowed', $object->services);
