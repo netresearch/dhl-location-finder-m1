@@ -63,7 +63,7 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMapJsUrl()
     {
-        $jsUrl  = 'https://maps.googleapis.com/maps/api/js';
+        $jsUrl = 'https://maps.googleapis.com/maps/api/js';
 
         $apiKey = Mage::getSingleton('dhl_locationfinder/config')->getApiKey();
         if ($apiKey) {
@@ -71,5 +71,27 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $jsUrl;
+    }
+
+    /**
+     * Get translations for static map information
+     *
+     * @return array
+     */
+    public function getTranslationsMap()
+    {
+        return array(
+            'mo'                => $this->__('mo'),
+            'tu'                => $this->__('tu'),
+            'we'                => $this->__('we'),
+            'th'                => $this->__('th'),
+            'fr'                => $this->__('fr'),
+            'sa'                => $this->__('sa'),
+            'su'                => $this->__('su'),
+            'handicappedAccess' => $this->__('handicappedAccess'),
+            'parking'           => $this->__('parking'),
+            'openHours'         => $this->__('Opening Hours'),
+            'services'          => $this->__('Services')
+        );
     }
 }

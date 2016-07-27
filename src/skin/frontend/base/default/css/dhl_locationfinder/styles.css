@@ -521,3 +521,22 @@
         left: 35%;
     }
 }
+
+/* Styles for Google Map Popup Window */
+.gm-style-iw .store-infos .opening-hours {
+    margin: 8px 0 0;
+    display: inline-block;
+    width: 100%;
+}
+
+.gm-style-iw .store-infos .dayCol {
+    display: inline-block;
+    width: 30%;
+    vertical-align: top;
+}
+
+.gm-style-iw .store-infos .timeCol {
+    display: inline-block;
+    width: 69%;
+    vertical-align: top;
+}

@@ -25,6 +25,7 @@
  * @link      http://www.netresearch.de/
  */
 use \Dhl\LocationFinder\ParcelLocation\Limiter;
+use \Dhl\LocationFinder\ParcelLocation\Formatter\MarkerDetailsFormatter;
 use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
 use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
 use \Dhl\LocationFinder\Webservice\RequestData;
@@ -107,12 +108,15 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
         $messages     = array();
         $mapLocations = array();
 
+        /** @var Dhl_LocationFinder_Helper_Data $locationHelper */
+        $locationHelper = Mage::helper('dhl_locationfinder/data');
+
         /** @var SoapAdapter $adapter */
-        $adapter = Mage::helper('dhl_locationfinder/data')->getWebserviceAdapter();
-        $parser = new LocationParser();
+        $adapter = $locationHelper->getWebserviceAdapter();
+        $parser  = new LocationParser();
 
         $requestAddress = $this->getRequest()->getParam('locationfinder', array());
-        $address = new RequestData\Address(
+        $address        = new RequestData\Address(
             Mage::getModel('dhl_locationfinder/config')->getWsValidCountries(),
             $requestAddress['country'],
             $requestAddress['zipcode'],
@@ -121,17 +125,23 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
             $requestAddress['street']
         );
 
-
         try {
 
             $locations = $adapter->getParcelLocationByAddress($address, $parser);
             if (!count($locations)) {
-                $messages[]= $this->__(self::MSG_EMPTY_RESULT);
+                $messages[] = $this->__(self::MSG_EMPTY_RESULT);
             }
 
             // TODO(nr): read limit from config (DHLPSF-19)
-            $limiter = new Limiter(50);
-            $mapLocations = $locations->toObjectArray(null, $limiter);
+            $limiter   = new Limiter(50);
+            $items     = $locations->getItems(null, $limiter);
+
+            $translationsMap = $locationHelper->getTranslationsMap();
+            $formatter = new MarkerDetailsFormatter(
+                $translationsMap,
+                array(LocationsApi\service::parking, LocationsApi\service::handicappedAccess)
+            );
+            $mapLocations = $formatter->format($items);
 
             $this->setJsonResponse((count($locations) > 0), $messages, $mapLocations);
 
@@ -139,7 +149,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
             // unknown address error?
             // webservice not available?
-            $messages[]= $this->__($fault->getMessage());
+            $messages[] = $this->__($fault->getMessage());
 
             $this->_logger->log($adapter->getLastRequest());
             $this->_logger->log($adapter->getLastResponse());
@@ -150,7 +160,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
             // given address too short?
             // no country given?
-            $messages[]= $this->__($e->getMessage());
+            $messages[] = $this->__($e->getMessage());
 
             $this->setJsonResponse(false, $messages, $mapLocations);
 
