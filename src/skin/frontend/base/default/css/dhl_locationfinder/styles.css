@@ -270,7 +270,7 @@
 }
 
 #sf-map-wrapper .map-content .fieldset {
-    margin: 0 10px 0 0;
+    margin: 0 0 0 0;
     display: block;
     float: left;
     padding: 0;
@@ -279,7 +279,8 @@
 }
 
 #sf-map-wrapper .map-content .fieldset + .fieldset {
-    margin-top: 0;
+    margin-top: 10px;
+    clear: left;
 }
 
 #sf-map-wrapper .map-content .input-box {
@@ -289,7 +290,7 @@
     padding: 0;
 }
 
-#sf-map-wrapper .map-content .input-box input,
+#sf-map-wrapper .map-content .input-box input[type="text"],
 #sf-map-wrapper .map-content .input-box select {
     background: white;
     border: 1px solid #AEAEAE;
@@ -322,16 +323,18 @@
 }
 
 #sf-map-wrapper .map-content .buttons-set {
-    float: left;
     border: none;
     margin: 0;
     padding: 0;
-    clear: none;
+    float: none;
+    text-align: left;
+    padding-top: 10px;
+    clear: both;
 }
 
 #sf-map-wrapper .map-content .buttons-set button {
-    margin-left: 10px;
     float: left;
+    margin: 0;
 }
 
 #sf-map-wrapper .map-content .buttons-set button span {
@@ -345,7 +348,7 @@
     position: relative;
     display: block;
     margin-top: 15px;
-    height: 90%;
+    height: 81%;
 }
 
 #sf-map-wrapper #map-canvas > * {
@@ -381,42 +384,46 @@
     display: inline-block;
 }
 
-@media only screen and (max-width: 1124px) {
-
-    #sf-map-wrapper .map-content .buttons-set {
-        float: none;
-        text-align: left;
-        padding-top: 10px;
-        clear: both;
-    }
-
-    #sf-map-wrapper .map-content .buttons-set button {
-        margin: 0;
-        float: left;
-    }
-
-    #sf-map-wrapper #map-canvas {
-        height: 81%;
-    }
+#sf-map-wrapper .map-filtering {
+    position: absolute;
+    top: 35px;
+    right: 15px;
 }
 
-@media only screen and (max-width: 900px) and (min-width: 769px) {
+#sf-map-wrapper .map-filtering .filter{
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+}
 
-    #sf-map-wrapper .map-content .buttons-set {
-        position: absolute;
-        right: 15px;
-        top: 16px;
-        padding: 0;
-    }
+#sf-map-wrapper .map-filtering input[type=checkbox] {
+    position: absolute;
+    top: -20px;
+    right: 25px;
+}
 
-    #sf-map-wrapper .map-content .fieldset {
-        margin-right: 0;
-    }
+#sf-map-wrapper .map-filtering input[type=checkbox] + label {
+    font-size: 0;
+    padding: 0;
+}
 
-    #sf-map-wrapper .map-content .fieldset + .fieldset {
-        margin-top: 10px;
-        clear: left;
-    }
+#sf-map-wrapper .map-filtering input[type=checkbox]:disabled + label {
+    cursor: not-allowed;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox]:disabled + label img {
+    cursor: not-allowed;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox] + label img {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    cursor: pointer;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox]:checked + label img{
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
 }
 
 @media only screen and (max-width: 768px) {

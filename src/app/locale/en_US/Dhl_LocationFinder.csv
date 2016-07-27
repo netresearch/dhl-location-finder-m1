@@ -32,3 +32,6 @@
 "Set a zoom factor between 9 and 15","Set a zoom factor between 9 and 15"
 "The value is not within the specified range.","The value is not within the specified range."
 "This is a required field.","This is a required field."
+"Show packStation","Show Packstations"
+"Show postOffice","Show Postoffices"
+"Show parcelShop","Show Parcelshops"

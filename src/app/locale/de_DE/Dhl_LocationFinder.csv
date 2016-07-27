@@ -32,3 +32,6 @@
 "Set a zoom factor between 9 and 15","Setzen Sie einen Faktor zwischen 9 und 15"
 "The value is not within the specified range.","Der Wert ist nicht im geforderten Bereich."
 "This is a required field.","Geben Sie bitte einen Wert an."
+"Show packStation","Zeige Packstationen an."
+"Show postOffice","Zeige Postfilialen an."
+"Show parcelShop","Zeige Paketshops an."

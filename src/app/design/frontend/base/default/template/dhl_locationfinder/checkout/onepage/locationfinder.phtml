@@ -23,6 +23,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+/** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $this */
+$markerIcons = $this->getMarkerIcons();
 ?>
 <?php // Container with CTA Elements ?>
 <div id="dhl_locationfinder_trigger" class="control">
@@ -72,6 +74,21 @@
                         <span><span><?php echo $this->__('Search'); ?></span></span>
                     </button>
                 </div>
+            </div>
+            <div class="map-filtering">
+                <?php foreach ($markerIcons as $type => $icon) : ?>
+                    <div class="filter">
+                        <input type="checkbox" id="locationfinder:show_<?php echo $type ?>" class="checkbox"
+                               title="<?php echo $this->__('Show ' . $type); ?>"
+                               onclick="locationFinder.filterStores(this.checked,'<?php echo $type ?>')" disabled>
+                        <label for="locationfinder:show_<?php echo $type ?>">
+                            <?php echo $this->__('Show ' . $type); ?>
+                            <img src="<?php echo $icon; ?>"
+                                 alt="<?php echo $this->__('Show ' . $type); ?>"
+                                 title="<?php echo $this->__('Show ' . $type); ?>"/>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </form>
         <div id="map-canvas"></div>
@@ -137,7 +154,7 @@
         'dhl_locationfinder_trigger',    // Id of the Element which contain the CTA
         'additional-dhl-fields',         // Id of the Container, which contains all additional fields for address
         'map-load-animation',            // Id of the container with the loading animation
-        <?php echo $this->helper('core/data')->jsonEncode($this->getMarkerIcons()); ?>, // Map Icons
+        <?php echo $this->helper('core/data')->jsonEncode($markerIcons); ?>,     // Map Icons
         '<?php echo Mage::getModel('dhl_locationfinder/config')->getZoomMethod(); ?>',  // Zoom Method
         <?php echo Mage::getModel('dhl_locationfinder/config')->getZoomFactor(); ?>   // Zoom Factor
     );
