@@ -54,10 +54,13 @@
     top: 6%;
     left: 6%;
     width: 88%;
-    height: 530px;
-    padding: 16px;
+    height: 700px;
     background-color: white;
     z-index: 1002;
+}
+
+#sf-map-wrapper .map-content .content-wrapper {
+    padding: 16px;
 }
 
 #map-load-animation {
@@ -269,6 +272,10 @@
     }
 }
 
+#sf-map-wrapper .map-content .input-fields {
+    width: 65%;
+}
+
 #sf-map-wrapper .map-content .fieldset {
     margin: 0 0 0 0;
     display: block;
@@ -276,6 +283,7 @@
     padding: 0;
     background: none;
     border: none;
+    width: 100%;
 }
 
 #sf-map-wrapper .map-content .fieldset + .fieldset {
@@ -307,19 +315,19 @@
 }
 
 #sf-map-wrapper .map-content .input-box.country {
-    width: 150px;
-}
-
-#sf-map-wrapper .map-content .input-box.zipcode {
-    width: 80px;
+    width: 35%;
 }
 
 #sf-map-wrapper .map-content .input-box.city {
-    width: 210px;
+    width: 60%;
+}
+
+#sf-map-wrapper .map-content .input-box.zipcode {
+    width: 30%;
 }
 
 #sf-map-wrapper .map-content .input-box.street {
-    width: 280px;
+    width: 65%;
 }
 
 #sf-map-wrapper .map-content .buttons-set {
@@ -348,7 +356,7 @@
     position: relative;
     display: block;
     margin-top: 15px;
-    height: 81%;
+    height: 535px;
 }
 
 #sf-map-wrapper #map-canvas > * {
@@ -386,11 +394,15 @@
 
 #sf-map-wrapper .map-filtering {
     position: absolute;
-    top: 35px;
+    top: 15px;
     right: 15px;
 }
 
-#sf-map-wrapper .map-filtering .filter{
+#sf-map-wrapper .map-filtering .filter-header {
+    margin-bottom: 25px;
+}
+
+#sf-map-wrapper .map-filtering .filter {
     display: inline-block;
     position: relative;
     padding-left: 10px;
@@ -421,7 +433,7 @@
     cursor: pointer;
 }
 
-#sf-map-wrapper .map-filtering input[type=checkbox]:checked + label img{
+#sf-map-wrapper .map-filtering input[type=checkbox]:checked + label img {
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
 }
@@ -436,7 +448,7 @@
         top: 8%;
         left: 1%;
         width: 98%;
-        height: 500px;
+        height: 610px;
     }
 
     #sf-map-wrapper .map-content .fieldset {
@@ -466,7 +478,7 @@
     }
 
     #sf-map-wrapper #map-canvas {
-        height: 72%;
+        height: 445px;
     }
 
     #dhl_locationfinder_trigger .locationfinder-opener {
@@ -479,14 +491,53 @@
     }
 }
 
+@media only screen and (max-width: 660px) {
+    #sf-map-wrapper .map-content .input-fields {
+        width: 100%;
+    }
+
+    #sf-map-wrapper .map-filtering {
+        position: relative;
+        top: 0;
+        right: auto;
+        margin-top: 30px;
+    }
+
+    #sf-map-wrapper .map-filtering .filter-header {
+        margin: 0;
+        display: inline-block;
+    }
+
+    #sf-map-wrapper .map-filtering .filter {
+        padding-left: 25px;
+    }
+
+    #sf-map-wrapper .map-content {
+        height: 615px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 365px;
+    }
+}
+
 @media only screen and (max-width: 375px) {
 
+    #sf-map-wrapper .map-content {
+        height: 625px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 335px;
+    }
+
     #sf-map-wrapper .close-map {
-        top: -7%;
+        top: -6%;
     }
 
     #sf-map-wrapper .map-content .fieldset {
         display: block;
+        width: 99%;
     }
 
     #sf-map-wrapper .map-content .input-box.country {
@@ -513,11 +564,7 @@
     }
 
     #sf-map-wrapper .map-content {
-        height: 430px;
-    }
-
-    #sf-map-wrapper #map-canvas {
-        height: 56%;
+        top: 6%;
     }
 
     #dhl_locationfinder_trigger .locationfinder-opener {
@@ -526,6 +573,43 @@
 
     .map-loading {
         left: 35%;
+    }
+
+    #sf-map-wrapper .map-filtering .filter {
+        padding-left: 8px;
+    }
+}
+
+@media only screen and (max-height: 679px) {
+    #sf-map-wrapper .map-content {
+        overflow-y: scroll;
+        height: 90% !important;
+    }
+
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 610px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 445px !important;
+    }
+
+    #sf-map-wrapper .close-map {
+        position: fixed;
+        top: 1%;
+        right: 3%;
+    }
+}
+
+@media only screen and (max-height: 679px) and (max-width: 660px) {
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 690px;
+    }
+}
+
+@media only screen and (max-height: 679px) and (max-width: 375px) {
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 735px;
     }
 }
 
