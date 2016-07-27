@@ -108,7 +108,7 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
     public function getResultsLimit()
     {
         $mapProvider = Mage::getModel('dhl_locationfinder/config')->getResultsLimit();
-        $this->assertInternalType('int', $mapProvider);
+        $this->assertInternalType('string', $mapProvider);
         $this->assertNotEmpty($mapProvider);
     }
 
@@ -128,7 +128,7 @@ class Dhl_LocationFinder_Test_Model_ConfigTest
     public function getZoomFactor()
     {
         $mapProvider = Mage::getModel('dhl_locationfinder/config')->getZoomFactor();
-        $this->assertInternalType('int', $mapProvider);
+        $this->assertInternalType('string', $mapProvider);
         $this->assertNotEmpty($mapProvider);
     }
 }
