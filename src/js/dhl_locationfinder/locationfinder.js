@@ -134,8 +134,8 @@ DhlLocationFinder.prototype = {
             sameAsBillingElement.disabled = true;
             sameAsBillingElement.checked = false;
 
-            // Add post number to required fields
-            $('shipping:dhl_post_number').addClassName('required-entry');
+            // Add dhl_station to required fields
+            $('shipping:dhl_station').addClassName('required-entry');
 
             // Prevent saving this address to customer addresses
             if (saveInAddressElement != undefined) {
@@ -164,8 +164,10 @@ DhlLocationFinder.prototype = {
             $('shipping:postcode').readOnly = false;
             sameAsBillingElement.disabled = false;
 
-            // Remove post number from the required fields
+            // Remove dhl_station and post number from the required fields
+            $('shipping:dhl_station').removeClassName('required-entry');
             $('shipping:dhl_post_number').removeClassName('required-entry');
+            $$('label[for="shipping:dhl_post_number"]')[0].removeClassName('required');
 
             if (saveInAddressElement != undefined) {
                 saveInAddressElement.disabled = false;
@@ -314,6 +316,19 @@ DhlLocationFinder.prototype = {
         $('shipping:postcode').setValue(dataObject.zipCode);
         $('shipping:dhl_station_type').setValue(dataObject.type);
         $('shipping:dhl_station').setValue(dataObject.station);
+
+        // Set Post Number as required for packStation
+        var postNumberElement = $('shipping:dhl_post_number');
+        var postNumberLabelElement = $$('label[for="shipping:dhl_post_number"]')[0];
+        if (dataObject.type == 'packStation' && !postNumberElement.hasClassName('required-entry')) {
+            postNumberElement.addClassName('required-entry');
+            postNumberLabelElement.addClassName('required');
+        } else if (dataObject.type != 'packStation' && postNumberElement.hasClassName('required-entry')) {
+            postNumberElement.removeClassName('required-entry');
+            postNumberLabelElement.removeClassName('required');
+        }
+
+        // Hide Map
         this.hideLocationFinder();
     },
 
