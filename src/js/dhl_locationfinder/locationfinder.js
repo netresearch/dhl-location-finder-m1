@@ -186,14 +186,7 @@ DhlLocationFinder.prototype = {
                             // Set InfoWindow information for later use, to get the location credentials
                             store.getInfoWindowContent = function () {
                                 var details = this.getDetails();
-                                return '<div class="store-infos">' +
-                                    '<h3>' + details.title + '</h3>' +
-                                    '<p>' + details.address1 + '</p>' +
-                                    '<p>' + details.address2 + '</p>' +
-                                    '<p>' + details.station + '</p>' +
-                                    '<p class="opening-hours-wrapper">' + details.hours + '</p>' +
-                                    '<p>' + details.services + '</p>' +
-                                    '<p>' +
+                                var linkElement = '<p>' +
                                     '<a class="store-selector" ' +
                                     'href="javascript:void(0)" ' +
                                     'onclick="transmitFormData(this)" ' +
@@ -205,7 +198,17 @@ DhlLocationFinder.prototype = {
                                     'data-station="' + details.station + '" >' +
                                     Translator.translate("Use this station") +
                                     '</a>' +
-                                    '</p>' +
+                                    '</p>';
+
+                                return '<div class="store-infos">' +
+                                    '<h3>' + details.title + '</h3>' +
+                                    linkElement +
+                                    '<p>' + details.address1 + '</p>' +
+                                    '<p>' + details.address2 + '</p>' +
+                                    '<p>' + details.station + '</p>' +
+                                    '<p class="opening-hours-wrapper">' + details.hours + '</p>' +
+                                    '<p>' + details.services + '</p>' +
+                                    linkElement +
                                     '</div>';
                             };
                             if (newCenter == '') {
@@ -271,7 +274,7 @@ DhlLocationFinder.prototype = {
                         // Update Map
                         if (newCenter != '') {
                             map.setCenter(newCenter);
-                            if (currentClass.zoomMethod == 'fix') {
+                            if (currentClass.zoomMethod == 'fixed') {
                                 map.setZoom(currentClass.zoomFactor);
                             } else {
                                 map.fitBounds(bounds);
