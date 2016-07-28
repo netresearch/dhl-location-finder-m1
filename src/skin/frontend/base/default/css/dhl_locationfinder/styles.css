@@ -631,3 +631,80 @@
     width: 69%;
     vertical-align: top;
 }
+
+/* Styles for the post number tooltip */
+
+#additional-dhl-fields label {
+    position: relative;
+}
+
+#additional-dhl-fields .tooltip-inner {
+    position: absolute;
+    top: 0;
+    right: -30px;
+    border: 1px solid #9a9a9a;
+    font-family: Arial, sans-serif;
+    line-height: 13px;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px 2px 3px;
+    color: #545454;
+    background: #dadada;
+    font-style: normal;
+}
+
+#additional-dhl-fields .tooltip-inner:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 170%;
+    left: -80%;
+    background: #ddd;
+    padding: 5px 15px;
+    color: black;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 255px;
+    opacity: 0;
+    text-align: justify;
+    line-height: 1.2;
+    font-weight: normal;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+#additional-dhl-fields .tooltip-inner:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 20px solid #ddd;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    opacity: 0;
+    left: -80%;
+    bottom: 130%;
+}
+
+#additional-dhl-fields .tooltip-inner:after,
+#additional-dhl-fields .tooltip-inner:before {
+    z-index: -1;
+}
+
+#additional-dhl-fields .tooltip-inner:hover:after {
+    bottom: 150%;
+}
+
+#additional-dhl-fields .tooltip-inner:hover:before {
+    bottom: 110%;
+}
+
+#additional-dhl-fields .tooltip-inner:hover:after,
+#additional-dhl-fields .tooltip-inner:hover:before {
+    opacity: 1;
+    z-index: 1;
+}

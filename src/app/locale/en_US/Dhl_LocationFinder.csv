@@ -2,7 +2,7 @@
 "%s is currently not supported.","%s is currently not supported."
 "Insufficient address parts given.","Insufficient address parts given."
 "Zipcode","Zipcode"
-"City","City"
+"City / Town","City"
 "Street","Street"
 "Search","Search"
 "Unknown address.","Please enter a valid address."
@@ -37,3 +37,4 @@
 "Show postOffice","Show Postoffices"
 "Show parcelShop","Show Parcelshops"
 "Show:","Show:"
+"The post number is your personal identification code for DHL. Once using a DHL service you should use your post number for identification. The post number is mandatory if you want to use the Packstation.","The post number is your personal identification code for DHL. Once using a DHL service you should use your post number for identification. The post number is mandatory if you want to use the Packstation."
