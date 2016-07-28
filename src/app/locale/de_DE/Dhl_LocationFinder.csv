@@ -2,7 +2,7 @@
 "%s is currently not supported.","%s wird derzeit nicht unterstützt."
 "Insufficient address parts given.","Die angegebene Adresse ist zu kurz für eine Abfrage."
 "Zipcode","PLZ"
-"City","Stadt"
+"City / Town","Stadt"
 "Street","Straße ggf. Hausnummer"
 "Search","Suchen"
 "Unknown address.","Bitte tragen Sie eine gültige Adresse ein."

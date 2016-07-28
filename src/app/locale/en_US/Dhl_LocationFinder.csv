@@ -2,7 +2,7 @@
 "%s is currently not supported.","%s is currently not supported."
 "Insufficient address parts given.","Insufficient address parts given."
 "Zipcode","Zipcode"
-"City","City"
+"City / Town","City"
 "Street","Street"
 "Search","Search"
 "Unknown address.","Please enter a valid address."
