@@ -25,7 +25,7 @@
  */
 
 /**
- * Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Center
+ * Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Scale
  *
  * @category  Dhl
  * @package   Dhl_LocationFinder
@@ -33,7 +33,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Center
+class Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Scale
 {
     /**
      * Options getter
@@ -43,8 +43,8 @@ class Dhl_LocationFinder_Model_Adminhtml_System_Config_Source_Center
     public function toOptionArray()
     {
         $optionArray = array(
-            'boundaries' => Mage::helper('dhl_locationfinder/data')->__('Scale by stores'),
-            'fix'        => Mage::helper('dhl_locationfinder/data')->__('Fix zoom')
+            'auto'  => Mage::helper('dhl_locationfinder/data')->__('Auto'),
+            'fixed' => Mage::helper('dhl_locationfinder/data')->__('Fixed')
         );
 
         return $optionArray;

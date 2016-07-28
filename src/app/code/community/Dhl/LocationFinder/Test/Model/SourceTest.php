@@ -25,7 +25,7 @@
  */
 
 /**
- * Dhl_LocationFinder_Test_Model_AdminConfigTest
+ * Dhl_LocationFinder_Test_Model_SourceTest
  *
  * @category Dhl
  * @package  Dhl_LocationFinder
@@ -33,7 +33,7 @@
  * @license  http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link     http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Test_Model_AdminConfigTest
+class Dhl_LocationFinder_Test_Model_SourceTest
     extends EcomDev_PHPUnit_Test_Case
 {
     /**
@@ -51,8 +51,8 @@ class Dhl_LocationFinder_Test_Model_AdminConfigTest
      */
     public function centerToOptionArray()
     {
-        $optionArray = Mage::getModel('dhl_locationfinder/adminhtml_system_config_source_center')->toOptionArray();
-        $this->assertArrayHasKey('fix', $optionArray);
-        $this->assertArrayHasKey('boundaries', $optionArray);
+        $optionArray = Mage::getModel('dhl_locationfinder/adminhtml_system_config_source_scale')->toOptionArray();
+        $this->assertArrayHasKey('auto', $optionArray);
+        $this->assertArrayHasKey('fixed', $optionArray);
     }
 }

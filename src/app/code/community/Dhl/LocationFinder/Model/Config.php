@@ -43,11 +43,11 @@ class Dhl_LocationFinder_Model_Config
     const CONFIG_XML_PATH_WS_AUTH_PASS       = 'dhl_locationfinder/webservice/auth_password';
     const CONFIG_XML_PATH_WS_VALID_COUNTRIES = 'dhl_locationfinder/webservice/valid_countries';
 
-    const CONFIG_XML_PATH_MAP_API_KEY       = 'checkout/dhl_locationfinder/map_api_key';
-    const CONFIG_XML_PATH_DHL_MAP_TYPE      = 'checkout/dhl_locationfinder/map_type';
-    const CONFIG_XML_PATH_DHL_LIMIT_RESULTS = 'checkout/dhl_locationfinder/limit_results';
-    const CONFIG_XML_PATH_DHL_FIX_VS_BOUND  = 'checkout/dhl_locationfinder/fix_or_boundaries';
-    const CONFIG_XML_PATH_DHL_ZOOM_FACTOR   = 'checkout/dhl_locationfinder/zoom_factor';
+    const CONFIG_XML_PATH_MAP_API_KEY        = 'checkout/dhl_locationfinder/map_api_key';
+    const CONFIG_XML_PATH_MAP_TYPE           = 'checkout/dhl_locationfinder/map_type';
+    const CONFIG_XML_PATH_MAP_RESULTS_LIMIT  = 'checkout/dhl_locationfinder/map_results_limit';
+    const CONFIG_XML_PATH_MAP_SCALING_MODE   = 'checkout/dhl_locationfinder/map_scaling_mode';
+    const CONFIG_XML_PATH_MAP_SCALING_FACTOR = 'checkout/dhl_locationfinder/map_scaling_factor';
 
     /**
      * Check if custom autoloader should be registered.
@@ -114,7 +114,7 @@ class Dhl_LocationFinder_Model_Config
      */
     public function getCurrentMapProvider($store = null)
     {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_MAP_TYPE, $store);
+        return Mage::getStoreConfig(self::CONFIG_XML_PATH_MAP_TYPE, $store);
     }
 
     /**
@@ -126,7 +126,7 @@ class Dhl_LocationFinder_Model_Config
      */
     public function getResultsLimit($store = null)
     {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_LIMIT_RESULTS, $store);
+        return Mage::getStoreConfig(self::CONFIG_XML_PATH_MAP_RESULTS_LIMIT, $store);
     }
 
     /**
@@ -138,7 +138,7 @@ class Dhl_LocationFinder_Model_Config
      */
     public function getZoomMethod($store = null)
     {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_FIX_VS_BOUND, $store);
+        return Mage::getStoreConfig(self::CONFIG_XML_PATH_MAP_SCALING_MODE, $store);
     }
 
     /**
@@ -150,6 +150,6 @@ class Dhl_LocationFinder_Model_Config
      */
     public function getZoomFactor($store = null)
     {
-        return Mage::getStoreConfig(self::CONFIG_XML_PATH_DHL_ZOOM_FACTOR, $store);
+        return Mage::getStoreConfig(self::CONFIG_XML_PATH_MAP_SCALING_FACTOR, $store);
     }
 }
