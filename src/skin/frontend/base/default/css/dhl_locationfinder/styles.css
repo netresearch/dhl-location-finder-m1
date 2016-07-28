@@ -54,10 +54,13 @@
     top: 6%;
     left: 6%;
     width: 88%;
-    height: 530px;
-    padding: 16px;
+    height: 700px;
     background-color: white;
     z-index: 1002;
+}
+
+#sf-map-wrapper .map-content .content-wrapper {
+    padding: 16px;
 }
 
 #map-load-animation {
@@ -269,17 +272,23 @@
     }
 }
 
+#sf-map-wrapper .map-content .input-fields {
+    width: 65%;
+}
+
 #sf-map-wrapper .map-content .fieldset {
-    margin: 0 10px 0 0;
+    margin: 0 0 0 0;
     display: block;
     float: left;
     padding: 0;
     background: none;
     border: none;
+    width: 100%;
 }
 
 #sf-map-wrapper .map-content .fieldset + .fieldset {
-    margin-top: 0;
+    margin-top: 10px;
+    clear: left;
 }
 
 #sf-map-wrapper .map-content .input-box {
@@ -289,7 +298,7 @@
     padding: 0;
 }
 
-#sf-map-wrapper .map-content .input-box input,
+#sf-map-wrapper .map-content .input-box input[type="text"],
 #sf-map-wrapper .map-content .input-box select {
     background: white;
     border: 1px solid #AEAEAE;
@@ -306,32 +315,34 @@
 }
 
 #sf-map-wrapper .map-content .input-box.country {
-    width: 150px;
-}
-
-#sf-map-wrapper .map-content .input-box.zipcode {
-    width: 80px;
+    width: 35%;
 }
 
 #sf-map-wrapper .map-content .input-box.city {
-    width: 210px;
+    width: 60%;
+}
+
+#sf-map-wrapper .map-content .input-box.zipcode {
+    width: 30%;
 }
 
 #sf-map-wrapper .map-content .input-box.street {
-    width: 280px;
+    width: 65%;
 }
 
 #sf-map-wrapper .map-content .buttons-set {
-    float: left;
     border: none;
     margin: 0;
     padding: 0;
-    clear: none;
+    float: none;
+    text-align: left;
+    padding-top: 10px;
+    clear: both;
 }
 
 #sf-map-wrapper .map-content .buttons-set button {
-    margin-left: 10px;
     float: left;
+    margin: 0;
 }
 
 #sf-map-wrapper .map-content .buttons-set button span {
@@ -345,7 +356,7 @@
     position: relative;
     display: block;
     margin-top: 15px;
-    height: 90%;
+    height: 535px;
 }
 
 #sf-map-wrapper #map-canvas > * {
@@ -381,42 +392,50 @@
     display: inline-block;
 }
 
-@media only screen and (max-width: 1124px) {
-
-    #sf-map-wrapper .map-content .buttons-set {
-        float: none;
-        text-align: left;
-        padding-top: 10px;
-        clear: both;
-    }
-
-    #sf-map-wrapper .map-content .buttons-set button {
-        margin: 0;
-        float: left;
-    }
-
-    #sf-map-wrapper #map-canvas {
-        height: 81%;
-    }
+#sf-map-wrapper .map-filtering {
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
-@media only screen and (max-width: 900px) and (min-width: 769px) {
+#sf-map-wrapper .map-filtering .filter-header {
+    margin-bottom: 25px;
+}
 
-    #sf-map-wrapper .map-content .buttons-set {
-        position: absolute;
-        right: 15px;
-        top: 16px;
-        padding: 0;
-    }
+#sf-map-wrapper .map-filtering .filter {
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+}
 
-    #sf-map-wrapper .map-content .fieldset {
-        margin-right: 0;
-    }
+#sf-map-wrapper .map-filtering input[type=checkbox] {
+    position: absolute;
+    top: -20px;
+    right: 25px;
+}
 
-    #sf-map-wrapper .map-content .fieldset + .fieldset {
-        margin-top: 10px;
-        clear: left;
-    }
+#sf-map-wrapper .map-filtering input[type=checkbox] + label {
+    font-size: 0;
+    padding: 0;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox]:disabled + label {
+    cursor: not-allowed;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox]:disabled + label img {
+    cursor: not-allowed;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox] + label img {
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    cursor: pointer;
+}
+
+#sf-map-wrapper .map-filtering input[type=checkbox]:checked + label img {
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
 }
 
 @media only screen and (max-width: 768px) {
@@ -429,7 +448,7 @@
         top: 8%;
         left: 1%;
         width: 98%;
-        height: 500px;
+        height: 610px;
     }
 
     #sf-map-wrapper .map-content .fieldset {
@@ -459,7 +478,7 @@
     }
 
     #sf-map-wrapper #map-canvas {
-        height: 72%;
+        height: 445px;
     }
 
     #dhl_locationfinder_trigger .locationfinder-opener {
@@ -472,14 +491,53 @@
     }
 }
 
+@media only screen and (max-width: 660px) {
+    #sf-map-wrapper .map-content .input-fields {
+        width: 100%;
+    }
+
+    #sf-map-wrapper .map-filtering {
+        position: relative;
+        top: 0;
+        right: auto;
+        margin-top: 30px;
+    }
+
+    #sf-map-wrapper .map-filtering .filter-header {
+        margin: 0;
+        display: inline-block;
+    }
+
+    #sf-map-wrapper .map-filtering .filter {
+        padding-left: 25px;
+    }
+
+    #sf-map-wrapper .map-content {
+        height: 615px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 365px;
+    }
+}
+
 @media only screen and (max-width: 375px) {
 
+    #sf-map-wrapper .map-content {
+        height: 625px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 335px;
+    }
+
     #sf-map-wrapper .close-map {
-        top: -7%;
+        top: -6%;
     }
 
     #sf-map-wrapper .map-content .fieldset {
         display: block;
+        width: 99%;
     }
 
     #sf-map-wrapper .map-content .input-box.country {
@@ -506,11 +564,7 @@
     }
 
     #sf-map-wrapper .map-content {
-        height: 430px;
-    }
-
-    #sf-map-wrapper #map-canvas {
-        height: 56%;
+        top: 6%;
     }
 
     #dhl_locationfinder_trigger .locationfinder-opener {
@@ -519,6 +573,43 @@
 
     .map-loading {
         left: 35%;
+    }
+
+    #sf-map-wrapper .map-filtering .filter {
+        padding-left: 4px;
+    }
+}
+
+@media only screen and (max-height: 679px) {
+    #sf-map-wrapper .map-content {
+        overflow-y: scroll;
+        height: 90% !important;
+    }
+
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 610px;
+    }
+
+    #sf-map-wrapper #map-canvas {
+        height: 445px !important;
+    }
+
+    #sf-map-wrapper .close-map {
+        position: fixed;
+        top: 1%;
+        right: 3%;
+    }
+}
+
+@media only screen and (max-height: 679px) and (max-width: 660px) {
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 690px;
+    }
+}
+
+@media only screen and (max-height: 679px) and (max-width: 375px) {
+    #sf-map-wrapper .map-content .content-wrapper {
+        height: 735px;
     }
 }
 

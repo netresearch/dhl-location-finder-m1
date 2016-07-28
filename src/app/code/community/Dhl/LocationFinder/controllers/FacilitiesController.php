@@ -110,6 +110,8 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
         /** @var Dhl_LocationFinder_Helper_Data $locationHelper */
         $locationHelper = Mage::helper('dhl_locationfinder/data');
+        /** @var Dhl_LocationFinder_Model_Config $configModel */
+        $configModel = Mage::getModel('dhl_locationfinder/config');
 
         /** @var SoapAdapter $adapter */
         $adapter = $locationHelper->getWebserviceAdapter();
@@ -117,7 +119,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
         $requestAddress = $this->getRequest()->getParam('locationfinder', array());
         $address        = new RequestData\Address(
-            Mage::getModel('dhl_locationfinder/config')->getWsValidCountries(),
+            $configModel->getWsValidCountries(),
             $requestAddress['country'],
             $requestAddress['zipcode'],
             $requestAddress['city'],
@@ -132,8 +134,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
                 $messages[] = $this->__(self::MSG_EMPTY_RESULT);
             }
 
-            // TODO(nr): read limit from config (DHLPSF-19)
-            $limiter   = new Limiter(50);
+            $limiter   = new Limiter($configModel->getResultsLimit());
             $items     = $locations->getItems(null, $limiter);
 
             $translationsMap = $locationHelper->getTranslationsMap();

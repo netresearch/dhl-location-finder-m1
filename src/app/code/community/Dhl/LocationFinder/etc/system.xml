@@ -31,7 +31,7 @@
         <checkout>
             <groups>
                 <dhl_locationfinder translate="label" module="dhl_locationfinder">
-                    <label>DHL Parcel Shop Finder</label>
+                    <label>DHL Parcelshop Finder</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
                     <show_in_default>1</show_in_default>
@@ -42,11 +42,44 @@
                             <label>Google Maps API Key</label>
                             <comment><![CDATA[<a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Get a Key</a>]]></comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>15</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </map_api_key>
+                        <map_results_limit translate="label" module="dhl_locationfinder">
+                            <label>Limit Results</label>
+                            <comment>Display no more than the given number of DHL stations on the map.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dhl_locationfinder/adminhtml_system_config_source_limit</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </map_results_limit>
+                        <map_scaling_mode translate="label comment" module="dhl_locationfinder">
+                            <label>Zoom</label>
+                            <comment>Select whether to scale the map either automatically or by fixed zoom factor.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dhl_locationfinder/adminhtml_system_config_source_scale</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </map_scaling_mode>
+                        <map_scaling_factor translate="label comment" module="dhl_locationfinder">
+                            <label>Zoom Factor</label>
+                            <comment>Choose a number between 9 (wide area) and 15 (small area).</comment>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry validate-number-range number-range-9-15</validate>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <map_scaling_mode>fixed</map_scaling_mode>
+                            </depends>
+                        </map_scaling_factor>
                     </fields>
                 </dhl_locationfinder>
             </groups>

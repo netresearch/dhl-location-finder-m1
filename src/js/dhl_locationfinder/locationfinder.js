@@ -1,11 +1,17 @@
 var DhlLocationFinder = Class.create();
 
 DhlLocationFinder.prototype = {
-    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons) {
+    initialize: function (wrapperElementId, buttonElementId, formElementId, loadingElement, markerIcons, zoomMethod, zoomFactor) {
         this.initLocationFinder(wrapperElementId, buttonElementId);
         this.initDhlFields(formElementId);
         this.loadingElement = loadingElement;
         this.markerIcons = markerIcons;
+        this.zoomMethod = zoomMethod;
+        if (zoomFactor != undefined && zoomFactor === parseInt(zoomFactor, 10)) {
+            this.zoomFactor = zoomFactor;
+        } else {
+            this.zoomFactor = 13;
+        }
     },
 
     initLocationFinder: function (elementId, buttonElementId) {
@@ -122,7 +128,7 @@ DhlLocationFinder.prototype = {
         if (showElements) {
             this.formFields.addClassName('active');
             $$('.locationfinder-opener')[0].addClassName('active');
-            this.formFields.select('input').each(function (inputField) {
+            this.formFields.select('input').forEach(function (inputField) {
                 inputField.disabled = false;
             });
 
@@ -152,7 +158,7 @@ DhlLocationFinder.prototype = {
         } else {
             this.formFields.removeClassName('active');
             $$('.locationfinder-opener')[0].removeClassName('active');
-            this.formFields.select('input').each(function (inputField) {
+            this.formFields.select('input').forEach(function (inputField) {
                 inputField.disabled = true;
                 inputField.value = '';
             });
@@ -181,6 +187,7 @@ DhlLocationFinder.prototype = {
             var markerIcons = currentClass.markerIcons;
 
             $(currentClass.loadingElement).addClassName('active');
+            currentClass.deactivateStoreFilter();
             new Ajax.Request(actionUrl, {
                 parameters: $(formId).serialize(true),
                 onSuccess: function (data) {
@@ -190,10 +197,13 @@ DhlLocationFinder.prototype = {
 
                         // Set results as stores
                         var stores = [];
+                        var filter = [];
                         var newCenter = '';
-                        responseData['locations'].each(function (location) {
+                        var bounds = new google.maps.LatLngBounds();
+                        responseData['locations'].forEach(function (location) {
 
                             var coordinates = new google.maps.LatLng(location['lat'], location['long']);
+                            bounds.extend(coordinates);
                             var store = new storeLocator.Store(
                                 location['id'],
                                 coordinates,
@@ -216,14 +226,7 @@ DhlLocationFinder.prototype = {
                             // Set InfoWindow information for later use, to get the location credentials
                             store.getInfoWindowContent = function () {
                                 var details = this.getDetails();
-                                return '<div class="store-infos">' +
-                                    '<h3>' + details.title + '</h3>' +
-                                    '<p>' + details.address1 + '</p>' +
-                                    '<p>' + details.address2 + '</p>' +
-                                    '<p>' + details.station + '</p>' +
-                                    '<p class="opening-hours-wrapper">' + details.hours + '</p>' +
-                                    '<p>' + details.services + '</p>' +
-                                    '<p>' +
+                                var linkElement = '<p>' +
                                     '<a class="store-selector" ' +
                                     'href="javascript:void(0)" ' +
                                     'onclick="transmitFormData(this)" ' +
@@ -235,16 +238,33 @@ DhlLocationFinder.prototype = {
                                     'data-station="' + details.station + '" >' +
                                     Translator.translate("Use this station") +
                                     '</a>' +
-                                    '</p>' +
+                                    '</p>';
+
+                                return '<div class="store-infos">' +
+                                    '<h3>' + details.title + '</h3>' +
+                                    linkElement +
+                                    '<p>' + details.address1 + '</p>' +
+                                    '<p>' + details.address2 + '</p>' +
+                                    '<p>' + details.station + '</p>' +
+                                    '<p class="opening-hours-wrapper">' + details.hours + '</p>' +
+                                    '<p>' + details.services + '</p>' +
+                                    linkElement +
                                     '</div>';
                             };
                             if (newCenter == '') {
                                 newCenter = coordinates;
                             }
                             stores.push(store);
+
+                            // Add new added store type to filter activation, if not exist already
+                            if (filter.indexOf(location['type']) == -1) {
+                                filter.push(location['type']);
+                            }
                         });
 
-                        if (typeof currentClass.view === "undefined") {
+                        currentClass.stores = stores;
+
+                        if (typeof currentClass.view === 'undefined') {
 
                             // Add the Stores to a dataset
                             currentClass.dataFeed = new storeLocator.StaticDataFeed();
@@ -273,9 +293,11 @@ DhlLocationFinder.prototype = {
                         }
 
                         // Add Click Event for later use, to get the location credentials
-                        stores.each(function (store) {
+                        stores.forEach(function (store) {
                             // For the case, a store will use multiple times (through multiple searches)
                             google.maps.event.clearListeners(currentClass.view.getMarker(store), 'dblclick');
+                            currentClass.view.getMarker(store).setVisible(true);
+
                             currentClass.view.getMarker(store).addListener("dblclick", function () {
                                 var dataObject = {
                                     'street': this.getDetails().street,
@@ -292,9 +314,16 @@ DhlLocationFinder.prototype = {
                         // Update Map
                         if (newCenter != '') {
                             map.setCenter(newCenter);
-                            map.setZoom(13);
+                            if (currentClass.zoomMethod == 'fixed') {
+                                map.setZoom(currentClass.zoomFactor);
+                            } else {
+                                map.fitBounds(bounds);
+                            }
                             currentClass.view.refreshView();
                         }
+
+                        // Activate filter
+                        currentClass.activateStoreFilter(filter);
 
                     } else {
                         alert(responseData['message']);
@@ -305,6 +334,35 @@ DhlLocationFinder.prototype = {
                 }
             });
         }
+    },
+
+    deactivateStoreFilter: function () {
+        var typeArray = ['packStation', 'postOffice', 'parcelShop'];
+        typeArray.forEach(function (type) {
+            var selector = $('locationfinder:show_' + type);
+            if (selector != undefined) {
+                selector.disabled = true;
+                selector.checked = false;
+            }
+        });
+    },
+
+    activateStoreFilter: function (typeArray) {
+        typeArray.forEach(function (type) {
+            var selector = $('locationfinder:show_' + type);
+            if (selector != undefined) {
+                selector.disabled = false;
+                selector.checked = true;
+            }
+        });
+    },
+
+    filterStores: function (visibility, type) {
+        this.stores.forEach(function (store) {
+            if (store.getDetails().type == type) {
+                store.getMarker().setVisible(visibility);
+            }
+        });
     },
 
     transmitStoreData: function (dataObject) {

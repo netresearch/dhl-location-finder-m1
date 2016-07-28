@@ -23,6 +23,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
+/** @var Dhl_LocationFinder_Block_Checkout_Onepage_Locationfinder $this */
+$markerIcons = $this->getMarkerIcons();
 ?>
 <?php // Container with CTA Elements ?>
 <div id="dhl_locationfinder_trigger" class="control">
@@ -40,55 +42,76 @@
 <?php // Container with the Map Elements ?>
 <div id="sf-map-wrapper">
     <div class="map-content">
-        <form action="javascript:void(0);"
-              onsubmit="locationFinder.updateMapInLocationFinder(
-                  'locationFinderForm',
-                  '<?php echo $this->getActionUrl(); ?>');"
-              id="locationFinderForm"
-              method="POST"
-              class="clearfix">
-            <div class="input-fields">
-                <div class="fieldset">
-                    <div class="input-box country">
-                        <?php echo $this->getCountrySelect('locationfinder') ?>
+        <div class="content-wrapper">
+            <form action="javascript:void(0);"
+                  onsubmit="locationFinder.updateMapInLocationFinder(
+                      'locationFinderForm',
+                      '<?php echo $this->getActionUrl(); ?>');"
+                  id="locationFinderForm"
+                  method="POST"
+                  class="clearfix">
+                <div class="input-fields">
+                    <div class="fieldset">
+                        <div class="input-box country">
+                            <?php echo $this->getCountrySelect('locationfinder') ?>
+                        </div>
+                        <div class="input-box city">
+                            <input type="text" placeholder="<?php echo $this->__('City'); ?>"
+                                   id="locationfinder-city"
+                                   name="locationfinder[city]"/>
+                        </div>
                     </div>
-                    <div class="input-box city">
-                        <input type="text" placeholder="<?php echo $this->__('City'); ?>" id="locationfinder-city"
-                               name="locationfinder[city]"/>
+                    <div class="fieldset">
+                        <div class="input-box zipcode">
+                            <input type="text" placeholder="<?php echo $this->__('Zipcode'); ?>"
+                                   id="locationfinder-zipcode"
+                                   name="locationfinder[zipcode]"/>
+                        </div>
+                        <div class="input-box street">
+                            <input type="text" placeholder="<?php echo $this->__('Street'); ?>"
+                                   id="locationfinder-street"
+                                   name="locationfinder[street]"/>
+                        </div>
+                    </div>
+                    <div class="buttons-set">
+                        <button type="submit" class="button">
+                            <span><span><?php echo $this->__('Search'); ?></span></span>
+                        </button>
                     </div>
                 </div>
-                <div class="fieldset">
-                    <div class="input-box zipcode">
-                        <input type="text" placeholder="<?php echo $this->__('Zipcode'); ?>" id="locationfinder-zipcode"
-                               name="locationfinder[zipcode]"/>
-                    </div>
-                    <div class="input-box street">
-                        <input type="text" placeholder="<?php echo $this->__('Street'); ?>" id="locationfinder-street"
-                               name="locationfinder[street]"/>
-                    </div>
+                <div class="map-filtering">
+                    <div class="filter-header"><?php echo $this->__('Show:'); ?></div>
+                    <?php foreach ($markerIcons as $type => $icon) : ?>
+                        <div class="filter">
+                            <input type="checkbox" id="locationfinder:show_<?php echo $type ?>" class="checkbox"
+                                   title="<?php echo $this->__('Show ' . $type); ?>"
+                                   onclick="locationFinder.filterStores(this.checked,'<?php echo $type ?>')" disabled>
+                            <label for="locationfinder:show_<?php echo $type ?>">
+                                <?php echo $this->__('Show ' . $type); ?>
+                                <img src="<?php echo $icon; ?>"
+                                     alt="<?php echo $this->__('Show ' . $type); ?>"
+                                     title="<?php echo $this->__('Show ' . $type); ?>"/>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="buttons-set">
-                    <button type="submit" class="button">
-                        <span><span><?php echo $this->__('Search'); ?></span></span>
-                    </button>
+            </form>
+            <div id="map-canvas"></div>
+            <div id="map-load-animation">
+                <div class="map-loading">
+                    <i class="loading-circle1 loading-child"></i>
+                    <i class="loading-circle2 loading-child"></i>
+                    <i class="loading-circle3 loading-child"></i>
+                    <i class="loading-circle4 loading-child"></i>
+                    <i class="loading-circle5 loading-child"></i>
+                    <i class="loading-circle6 loading-child"></i>
+                    <i class="loading-circle7 loading-child"></i>
+                    <i class="loading-circle8 loading-child"></i>
+                    <i class="loading-circle9 loading-child"></i>
+                    <i class="loading-circle10 loading-child"></i>
+                    <i class="loading-circle11 loading-child"></i>
+                    <i class="loading-circle12 loading-child"></i>
                 </div>
-            </div>
-        </form>
-        <div id="map-canvas"></div>
-        <div id="map-load-animation">
-            <div class="map-loading">
-                <i class="loading-circle1 loading-child"></i>
-                <i class="loading-circle2 loading-child"></i>
-                <i class="loading-circle3 loading-child"></i>
-                <i class="loading-circle4 loading-child"></i>
-                <i class="loading-circle5 loading-child"></i>
-                <i class="loading-circle6 loading-child"></i>
-                <i class="loading-circle7 loading-child"></i>
-                <i class="loading-circle8 loading-child"></i>
-                <i class="loading-circle9 loading-child"></i>
-                <i class="loading-circle10 loading-child"></i>
-                <i class="loading-circle11 loading-child"></i>
-                <i class="loading-circle12 loading-child"></i>
             </div>
         </div>
         <span onclick="locationFinder.hideLocationFinder()" class="close-map">Close</span>
@@ -136,8 +159,10 @@
         'sf-map-wrapper',                // Id of the Wrapper Container for the location finder
         'dhl_locationfinder_trigger',    // Id of the Element which contain the CTA
         'additional-dhl-fields',         // Id of the Container, which contains all additional fields for address
-        'map-load-animation',             // Id of the container with the loading animation
-        <?php echo $this->helper('core/data')->jsonEncode($this->getMarkerIcons()); ?>
+        'map-load-animation',            // Id of the container with the loading animation
+        <?php echo $this->helper('core/data')->jsonEncode($markerIcons); ?>,     // Map Icons
+        '<?php echo Mage::getModel('dhl_locationfinder/config')->getZoomMethod(); ?>',  // Zoom Method
+        <?php echo Mage::getModel('dhl_locationfinder/config')->getZoomFactor(); ?>   // Zoom Factor
     );
 
     // Function to get store specific data and fill the form with it
