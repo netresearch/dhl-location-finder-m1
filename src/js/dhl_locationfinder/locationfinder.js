@@ -328,6 +328,15 @@ DhlLocationFinder.prototype = {
             postNumberLabelElement.removeClassName('required');
         }
 
+        // Remove Validation advice if necessary
+        if (dataObject.type != 'packStation' && postNumberElement.hasClassName('validation-failed')) {
+            postNumberElement.removeClassName('validation-failed');
+            var validationAdviceElement = $('advice-required-entry-shipping:dhl_post_number');
+            if (validationAdviceElement != undefined) {
+                validationAdviceElement.remove();
+            }
+        }
+
         // Hide Map
         this.hideLocationFinder();
     },

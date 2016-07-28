@@ -573,8 +573,11 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    width: 250px;
+    width: 255px;
     opacity: 0;
+    text-align: justify;
+    line-height: 1.2;
+    font-weight: normal;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
     transition: all 0.4s ease;
