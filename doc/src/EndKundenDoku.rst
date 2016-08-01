@@ -22,11 +22,11 @@
 DHL Standortsuche Europa: Packstationen und Paketshops im Checkout wählen
 =========================================================================
 
-Die Versandsoftware Parcel Shop Finder ist ein von DHL bereitgestellter Service,
-wodurch es möglich ist im Checkout Prozess eine DHL Abholstation zu wählen
-und diese als alternative Lieferadresse zu wählen.
+Die Standortsuche API Europa ist ein von DHL bereitgestellter Service,
+der es ermöglicht, im One Page Checkout eine DHL Abholstation zu wählen
+und diese als alternative Lieferadresse zu übernehmen.
 
-.. contents:: DHL Locationfinder - Endbenutzer-Dokumentation
+.. contents:: DHL LocationFinder - Endbenutzer-Dokumentation
 
 .. raw:: pdf
 
@@ -36,50 +36,27 @@ und diese als alternative Lieferadresse zu wählen.
 Voraussetzungen
 ===============
 
-Folgende Voraussetzungen müssen für den reibungslosen Betrieb des DHL-LocationFinder-Moduls erfüllt sein.
+Die nachfolgend benannten Voraussetzungen müssen für den reibungslosen Betrieb des Moduls DHL LocationFinder erfüllt sein.
 
 Magento
 -------
 
 Folgende Magento-Versionen werden vom Modul unterstützt bzw. vorausgesetzt:
 
-- Community-Edition 1.7, 1.8, 1.9
+- Magento Community Edition 1.9
+- Magento Community Edition 1.8
+- Magento Community Edition 1.7
 
-Server
-------
+PHP
+---
 
-- Auf dem Server sollte PHP in der Version 5.4.x oder 5.5.x installiert sein.
+Folgende PHP-Versionen werden vom Modul unterstützt bzw. vorausgesetzt:
 
-- Die SOAP-Extension muss auf dem Webserver installiert und aktiviert sein.
+- PHP 7.0
+- PHP 5.5
+- PHP 5.4
 
-DHL-Locationfinder
-------------------
-
-Folgende DHL-Locationfinder-Daten müssen zur Konfiguration des Moduls vorliegen:
-
-.. list-table:: Benötigte DHL-Locationfinder-Daten
-   :widths: 4 2 6
-   :header-rows: 1
-
-   * - Konfiguration
-     - Pflichtfeld / fakultativ
-     - Kommentar
-   * - Google Maps API Key
-     - Pflichtfeld
-     - Der API Key wird für alle neuen Webprojekte benötigt, da ansonsten die Google Map Api nicht genutzt werden kann.
-   * - Beschränke Ergebnisse auf
-     - fakultativ
-     - Dieses Feld legt fest, wie viele Ergebnisse auf der Karte angezeigt werden, wobei 50 die maximale von DHL zurück
-       kommende Menge darstellt.
-   * - Fester Zoom-Faktor oder skalieren nach Ergebnissen
-     - fakultativ
-     - Dieses Feld legt fest, ob nach einer erfolgreiche Stationssuche ein festgelegter Zoom-Faktor auf die Karte
-       angewandt wird, oder ob der Kartenausschnitt sich anhand der gefundenen Stationen ausrichtet.
-   * - Zoom Faktor nach der Suche
-     - fakultativ
-     - Sofern in der vorherigen Konfiguration eingestellt wurde, dass nach der Suche ein fester Zoom-Faktor verwendet
-       werden soll, kann dieser hier ausgewählt werden. Dabei sind Werte zwischen 9 und 15 möglich, wobei 15 der größte
-       Zoom-Faktor ist.
+Für die Anbindung der API muss die PHP SOAP Erweiterung auf dem Webserver installiert und aktiviert sein.
 
 .. raw:: pdf
 
@@ -88,29 +65,86 @@ Folgende DHL-Locationfinder-Daten müssen zur Konfiguration des Moduls vorliegen
 Installation und Konfiguration
 ==============================
 
-Das Modul kann auf dem bevorzugten Weg installiert werden.
+Im Folgenden wird beschrieben, wie das Modul installiert wird und welche
+Konfigurationseinstellungen vorgenommen werden müssen.
 
-Während der Installation werden drei neue Attribute in das System integriert. Sie lauten 'dhl_post_number',
-'dhl_station_type' und 'dhl_station'. Diese Attribute werden in die drei folgenden Tabellen hinzugefügt:
-'sales_flat_quote_address', 'sales_flat_order_address' und 'eav_attribute'.
+Installation
+------------
 
-Nach der Installation existiert unter "System" -> "Konfiguration" -> "Zur Kasse" ein neuer Reiter "DHL Parcel Shop Finder".
-Dieser enthält alle Modul relevanten Konfigurationen.
+Installieren Sie die Dateien gemäß Ihrer bevorzugten Installations- und
+Deployment-Strategie. Aktualisieren Sie den Konfigurations-Cache, damit die
+Änderungen wirksam werden.
+
+Beim ersten Aufruf des Moduls werden drei neue Adress-Attribute im System angelegt:
+
+- ``dhl_post_number``
+- ``dhl_station_type``
+- ``dhl_station``
+
+Diese Attribute werden in folgenden Tabellen hinzugefügt:
+
+- ``sales_flat_quote_address``
+- ``sales_flat_order_address``
+- ``eav_attribute``
+
+Konfiguration
+-------------
+
+Modulkonfiguration
+~~~~~~~~~~~~~~~~~~
+
+Öffnen Sie nach erfolgter Installation den Konfigurationsbereich:
+
+::
+
+    System → Konfiguration → Verkäufe → Zur Kasse (bzw.)
+    System → Configuration → Sales → Checkout
+
+Dort finden Sie einen neuen Reiter "DHL Parcelshop Finder" mit den für das Modul
+relevanten Konfigurationseinstellungen.
+
+.. list-table:: Konfiguration DHL LocationFinder
+   :widths: 3 2 7
+   :header-rows: 1
+
+   * - Konfiguration
+     - Pflichtfeld / fakultativ
+     - Kommentar
+   * - Google Maps API Key
+     - Pflichtfeld
+     - Zur Anzeige der DHL Abholstationen im Checkout wird die Google Maps API
+       verwendet, die einen API Key erfordert.
+   * - Suchergebnisse beschränken
+     - fakultativ
+     - Dieses Feld legt fest, wie viele Ergebnisse auf der Karte angezeigt werden.
+       Die Standortsuche API Europa selbst liefert maximal 50 Abholstationen zurück.
+   * - Zoom (Automatisch oder Festwert)
+     - Pflichtfeld
+     - Dieses Feld legt fest, ob die Karte im Checkout entsprechend der
+       Suchergebnisse eingepasst oder ein fester Zoom-Faktor verwendet wird.
+   * - Zoom-Faktor (nur bei Festwert)
+     - Pflichtfeld
+     - Sofern in der vorherigen Konfiguration eingestellt wurde, dass nach der
+       Suche ein fester Zoom-Faktor verwendet werden soll, kann dieser hier
+       ausgewählt werden. Werte zwischen 9 und 15 sind möglich, wobei 15 der
+       größte Zoom-Faktor ist.
 
 .. raw:: pdf
 
    PageBreak
 
-Integration
-===========
+Adressen
+~~~~~~~~
 
-Direkt nach der Installation ist das Modul aktiv kann verwendet werden. Dabei sind Ausgaben während des Checkout
-Prozesses bei der Versandadresse zu sehen.
+Das Modul DHL LocationFinder führt neue Adress-Attribute ein. Um diese auch im
+System anzuzeigen, ist es gegebenenfalls erforderlich, die Adress-Templates um
+die neuen Attribute zu erweitern.
 
-Damit die neuen Attribute nach einer Bestellung auch im Zusammenhang der Bestellung zu sehen sind, müssen die
-Adress-Templates angepasst werden. Eine initiale Anpassung wird bei der Installation des Modules bereits vorgenommen.
-Sollten die Templates allerdings bereits verändert worden sein, müssen die neuen Attribute noch nachträglich angepasst
-werden. Im folgenden Bild sind die Templates, nach der Anpassung durch die Installation des Modules zu sehen.
+::
+
+    System → Configuration → Customers → Customer Configuration → Address Templates
+
+Im folgenden Bild sind die mit dem Modul ausgelieferten Standard-Templates zu sehen.
 
 .. image:: images/address-templates.png
    :width: 16.5cm
@@ -121,56 +155,58 @@ werden. Im folgenden Bild sind die Templates, nach der Anpassung durch die Insta
 
    PageBreak
 
-An dieser Stelle nochmals die einzelnen Templates, für die Anpassung im System. Entscheidend für individuelle Templates
-sind die neuen Felder, welche in den Template meist diese Form haben:
+Sollten Sie diesen Konfigurations-Abschnitt bereits verändert haben, müssen Sie
+die Adress-Attribute manuell in Ihren Templates ergänzen, bspw.
 
-{{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
-{{depend dhl_station}}{{var dhl_station}}|{{/depend}}
+::
+
+    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
 
 Text:
 
-.. sourcecode:: php
+::
 
-   {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
-   {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}
-   {{depend company}}{{var company}}{{/depend}}
-   {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}{{/depend}}
-   {{depend dhl_station}}{{var dhl_station}}{{/depend}}
-   {{if street1}}{{var street1}}{{/if}}
-   {{depend street2}}{{var street2}}{{/depend}}
-   {{depend street3}}{{var street3}}{{/depend}}
-   {{depend street4}}{{var street4}}{{/depend}}
-   {{if city}}{{var city}}, {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-   {{/if}}{{var country}}
-   T: {{var telephone}}
-   {{depend fax}}F: {{var fax}}{{/depend}}
+    {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
+    {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}
+    {{depend company}}{{var company}}{{/depend}}
+    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}{{/depend}}
+    {{depend dhl_station}}{{var dhl_station}}{{/depend}}
+    {{if street1}}{{var street1}}{{/if}}
+    {{depend street2}}{{var street2}}{{/depend}}
+    {{depend street3}}{{var street3}}{{/depend}}
+    {{depend street4}}{{var street4}}{{/depend}}
+    {{if city}}{{var city}}, {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
+    {{/if}}{{var country}}
+    T: {{var telephone}}
+    {{depend fax}}F: {{var fax}}{{/depend}}
 
 Text One Line:
 
-.. sourcecode:: php
+::
 
-   {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
-   {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}{{depend dhl_post_number}},
-   Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station}}, {{var dhl_station}}{{/depend}},
-   {{var street}}, {{var city}}, {{var region}} {{var postcode}}, {{var country}}
+    {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
+    {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}{{depend dhl_post_number}},
+    Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station}}, {{var dhl_station}}{{/depend}},
+    {{var street}}, {{var city}}, {{var region}} {{var postcode}}, {{var country}}
 
 HTML:
 
-.. sourcecode:: php
+::
 
-   {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
-   {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>
-   {{depend company}}{{var company}}<br />{{/depend}}
-   {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}<br />{{/depend}}
-   {{depend dhl_station}}{{var dhl_station}}<br />{{/depend}}
-   {{if street1}}{{var street1}}<br />{{/if}}
-   {{depend street2}}{{var street2}}<br />{{/depend}}
-   {{depend street3}}{{var street3}}<br />{{/depend}}
-   {{depend street4}}{{var street4}}<br />{{/depend}}
-   {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-   {{/if}}<br/>{{var country}}<br/>
-   {{depend telephone}}T: {{var telephone}}{{/depend}}
-   {{depend fax}}<br/>F: {{var fax}}{{/depend}}
+    {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
+    {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>
+    {{depend company}}{{var company}}<br />{{/depend}}
+    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}<br />{{/depend}}
+    {{depend dhl_station}}{{var dhl_station}}<br />{{/depend}}
+    {{if street1}}{{var street1}}<br />{{/if}}
+    {{depend street2}}{{var street2}}<br />{{/depend}}
+    {{depend street3}}{{var street3}}<br />{{/depend}}
+    {{depend street4}}{{var street4}}<br />{{/depend}}
+    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
+    {{/if}}<br/>{{var country}}<br/>
+    {{depend telephone}}T: {{var telephone}}{{/depend}}
+    {{depend fax}}<br/>F: {{var fax}}{{/depend}}
 
 .. raw:: pdf
 
@@ -178,28 +214,28 @@ HTML:
 
 PDF:
 
-.. sourcecode:: php
+::
 
-   {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
-   {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}|
-   {{depend company}}{{var company}}|{{/depend}}
-   {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
-   {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
-   {{if street1}}{{var street1}}{{/if}}
-   {{depend street2}}{{var street2}}|{{/depend}}
-   {{depend street3}}{{var street3}}|{{/depend}}
-   {{depend street4}}{{var street4}}|{{/depend}}
-   {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-   {{/if}}| {{var country}}|
-   {{depend telephone}}T: {{var telephone}}{{/depend}}|
-   {{depend fax}}<br/>F: {{var fax}}{{/depend}}
+    {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
+    {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}|
+    {{depend company}}{{var company}}|{{/depend}}
+    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
+    {{if street1}}{{var street1}}{{/if}}
+    {{depend street2}}{{var street2}}|{{/depend}}
+    {{depend street3}}{{var street3}}|{{/depend}}
+    {{depend street4}}{{var street4}}|{{/depend}}
+    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
+    {{/if}}| {{var country}}|
+    {{depend telephone}}T: {{var telephone}}{{/depend}}|
+    {{depend fax}}<br/>F: {{var fax}}{{/depend}}
 
 JavaScript Template:
 
-.. sourcecode:: php
+::
 
-   #{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number},
-   #{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
+    #{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number},
+    #{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
     #{postcode}<br/>#{country_id}<br/>T: #{telephone}<br/>F: #{fax}
 
 .. raw:: pdf
@@ -212,31 +248,36 @@ Hinweise bei der Verwendung des Modules
 Erlaubte Länder
 ---------------
 
-Derzeit werden von dem DHL Service Standortsuche Europa folgende Länder unterstützt:
+Derzeit werden folgende Länder durch Standortsuche API Europa unterstützt:
 
-- Österreich
 - Belgien
-- Tschechien
 - Deutschland
 - Niederlande
+- Österreich
 - Polen
 - Slowakei
+- Tschechien
 
 Somit sind auch nur maximal diese (je nach Shop-Konfiguration) als Auswahl im Checkout bei der Standortsuche verfügbar.
 
-Übersetzungen
--------------
+Sprachunterstützung
+-------------------
 
-Alle Übersetzungen sind in den mitgelieferten CSV Dateien enthalten und somit auch durch lokale Übersetzungsdateien
-anpassbar.
+Das Modul unterstützt die Lokalisierungen ``en_US`` und ``de_DE``. Die
+Übersetzungen sind in den CSV-Übersetzungsdateien gepflegt und somit auch durch
+dritte Module anpassbar.
 
-Verwendung von jQuery
+Einbindung von jQuery
 ---------------------
 
-Die Erweiterung der Google Map API, der Store Locator, basiert auf dem JavaScript Framework jQuery. jQuery wird durch
-die Template Datei 'dhl_locationfinder/page/html/head.phtml' eingebunden. Sofern der Store jQuery bereits einbindet,
-kann ein lokales Template die Einbindung abändern. Für das standardmäßig in Magento CE 1.9 enthaltene Theme 'rwd'
-wurde bereits eine angepasste Template-Datei hinterlegt, da das Theme jQuery bereits mitliefert.
+Das im Modul DHL LocationFinder verwendete Google Maps Plugin *Store Locator*
+basiert auf der JavaScript-Bibliothek jQuery. Diese wird durch die Template-Datei
+``base/default/template/dhl_locationfinder/page/html/head.phtml`` eingebunden.
+
+Nicht nochmals eingebunden wird jQuery bei Verwendung des *rwd*-Themes. Sollten
+Sie ein angepasstes Theme einsetzen, das bereits jQuery ausliefert, übernehmen
+Sie die Datei ``rwd/default/template/dhl_locationfinder/page/html/head.phtml``
+in Ihr eigenes Theme.
 
 Bearbeiten der Bestellung im Backend
 ------------------------------------
