@@ -23,20 +23,19 @@ DHL Standortsuche Europa: Packstationen und Paketshops im Checkout wählen
 =========================================================================
 
 Die Standortsuche API Europa ist ein von DHL bereitgestellter Service,
-der es ermöglicht, im One Page Checkout eine DHL Abholstation zu wählen
+der es ermöglicht, eine DHL Abholstation im Magento One Page Checkout zu wählen
 und diese als alternative Lieferadresse zu übernehmen.
 
-.. contents:: DHL LocationFinder - Endbenutzer-Dokumentation
+.. contents:: Endbenutzer-Dokumentation
 
 .. raw:: pdf
 
    PageBreak
 
-
 Voraussetzungen
 ===============
 
-Die nachfolgend benannten Voraussetzungen müssen für den reibungslosen Betrieb des Moduls DHL LocationFinder erfüllt sein.
+Die nachfolgend benannten Voraussetzungen müssen für den reibungslosen Betrieb des Moduls DHL *LocationFinder* erfüllt sein.
 
 Magento
 -------
@@ -87,11 +86,8 @@ Diese Attribute werden in folgenden Tabellen hinzugefügt:
 - ``sales_flat_order_address``
 - ``eav_attribute``
 
-Konfiguration
--------------
-
 Modulkonfiguration
-~~~~~~~~~~~~~~~~~~
+------------------
 
 Öffnen Sie nach erfolgter Installation den Konfigurationsbereich:
 
@@ -100,7 +96,7 @@ Modulkonfiguration
     System → Konfiguration → Verkäufe → Zur Kasse (bzw.)
     System → Configuration → Sales → Checkout
 
-Dort finden Sie einen neuen Reiter "DHL Parcelshop Finder" mit den für das Modul
+Dort finden Sie einen neuen Reiter "DHL Standortsuche" mit den für das Modul
 relevanten Konfigurationseinstellungen.
 
 .. list-table:: Konfiguration DHL LocationFinder
@@ -117,11 +113,11 @@ relevanten Konfigurationseinstellungen.
    * - Suchergebnisse beschränken
      - fakultativ
      - Dieses Feld legt fest, wie viele Ergebnisse auf der Karte angezeigt werden.
-       Die Standortsuche API Europa selbst liefert maximal 50 Abholstationen zurück.
+       Die Standortsuche API Europa liefert maximal 50 Abholstationen zurück.
    * - Zoom (Automatisch oder Festwert)
      - Pflichtfeld
-     - Dieses Feld legt fest, ob die Karte im Checkout entsprechend der
-       Suchergebnisse eingepasst oder ein fester Zoom-Faktor verwendet wird.
+     - Dieses Feld legt fest, ob die Karte im Checkout entsprechend den
+       Suchergebnissen eingepasst oder ein fester Zoom-Faktor verwendet wird.
    * - Zoom-Faktor (nur bei Festwert)
      - Pflichtfeld
      - Sofern in der vorherigen Konfiguration eingestellt wurde, dass nach der
@@ -133,10 +129,10 @@ relevanten Konfigurationseinstellungen.
 
    PageBreak
 
-Adressen
-~~~~~~~~
+Einrichten der Adress-Templates
+-------------------------------
 
-Das Modul DHL LocationFinder führt neue Adress-Attribute ein. Um diese auch im
+Das Modul *DHL LocationFinder* führt neue Adress-Attribute ein. Um diese auch im
 System anzuzeigen, ist es gegebenenfalls erforderlich, die Adress-Templates um
 die neuen Attribute zu erweitern.
 
@@ -144,24 +140,22 @@ die neuen Attribute zu erweitern.
 
     System → Configuration → Customers → Customer Configuration → Address Templates
 
-Im folgenden Bild sind die mit dem Modul ausgelieferten Standard-Templates zu sehen.
+Im folgenden Ausschnitt sind die mit dem Modul ausgelieferten Standard-Templates zu sehen.
 
-.. image:: images/address-templates.png
+.. image:: images/address-templates-clip.png
    :width: 16.5cm
-   :height: 18cm
-   :align: left
-
-.. raw:: pdf
-
-   PageBreak
 
 Sollten Sie diesen Konfigurations-Abschnitt bereits verändert haben, müssen Sie
-die Adress-Attribute manuell in Ihren Templates ergänzen, bspw.
+die Adress-Attribute manuell in Ihrer Systemkonfiguration ergänzen, bspw.
 
 ::
 
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
     {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
+
+.. raw:: pdf
+
+   PageBreak
 
 Text:
 
@@ -208,9 +202,6 @@ HTML:
     {{depend telephone}}T: {{var telephone}}{{/depend}}
     {{depend fax}}<br/>F: {{var fax}}{{/depend}}
 
-.. raw:: pdf
-
-   PageBreak
 
 PDF:
 
@@ -242,8 +233,8 @@ JavaScript Template:
 
    PageBreak
 
-Hinweise bei der Verwendung des Modules
-=======================================
+Hinweise bei der Verwendung des Moduls
+======================================
 
 Erlaubte Länder
 ---------------
@@ -258,7 +249,8 @@ Derzeit werden folgende Länder durch Standortsuche API Europa unterstützt:
 - Slowakei
 - Tschechien
 
-Somit sind auch nur maximal diese (je nach Shop-Konfiguration) als Auswahl im Checkout bei der Standortsuche verfügbar.
+Somit sind auch nur maximal diese Länder (je nach Shop-Konfiguration) als
+Auswahl im Checkout bei der Standortsuche verfügbar.
 
 Sprachunterstützung
 -------------------
@@ -270,40 +262,94 @@ dritte Module anpassbar.
 Einbindung von jQuery
 ---------------------
 
-Das im Modul DHL LocationFinder verwendete Google Maps Plugin *Store Locator*
+Das im Modul *DHL LocationFinder* verwendete Google Maps Plugin *Store Locator*
 basiert auf der JavaScript-Bibliothek jQuery. Diese wird durch die Template-Datei
 ``base/default/template/dhl_locationfinder/page/html/head.phtml`` eingebunden.
 
-Nicht nochmals eingebunden wird jQuery bei Verwendung des *rwd*-Themes. Sollten
+Nicht eingebunden wird jQuery hingegen bei Verwendung des *rwd*-Themes. Sollten
 Sie ein angepasstes Theme einsetzen, das bereits jQuery ausliefert, übernehmen
 Sie die Datei ``rwd/default/template/dhl_locationfinder/page/html/head.phtml``
 in Ihr eigenes Theme.
-
-Bearbeiten der Bestellung im Backend
-------------------------------------
-
-Da die Standorte von DHL kommen und sich theoretisch jederzeit in der Adresse oder verfügbarkeit ändern können,
-wurde davon abgesehen die Lieferadressen mit ausgewählter Station für den Kunden abzuspeichern. Zuzüglich kann man die
-Informationen über die Versandstation im Backend auch nicht anpassen.
-
-Deaktivieren des Modules
-------------------------
-
-Sofern es gewünscht wird, das Modul zu deaktivieren, ohne es zu deinstallieren, kann man dies auf zwei verschiedene
-Wege lösen.
-
-1. Deaktivierung des Modules durch die 'app/etc/modules/Dhl_LocationFinder.xml' Datei. Darin den Wert für 'active' von
-   true auf false abändern.
-
-2. Deaktivieren der Frontend Ausgaben. Im Backend unter dem Menupunkt "System" -> "Konfiguration" -> "Erweitert"
-   -> "Erweitert" -> "Deaktiviere Modulausgaben" können alle Ausgaben und die Einbindung der JavaScripte deaktiviert
-   werden, wenn in der Zeile mit "Dhl_LocationFinder" der Wert "Aktiviert" auf "Deaktiviert" gesetzt wird.
 
 .. raw:: pdf
 
    PageBreak
 
-Abfrage über SOAP API
----------------------
+Magento API
+-----------
 
-Die neuen drei Attribute sind auch über die SOAP API abrufbar, wenn ein Aufruf alá "sales_order.info" statt findet.
+Die vom Modul *DHL LocationFinder* im System angelegten Adressattribute sind
+für die Verwendung in Drittsystemen über die Magento API abrufbar.
+
+SOAP V2
+~~~~~~~
+
+::
+
+    $result = $proxy->salesOrderInfo($sessionId, $incrementId);
+    var_dump($result->shipping_address);
+
+SOAP V2 (WS-I Compliance Mode)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    $result = $proxy->salesOrderInfo((object)array(
+        'sessionId' => $sessionId->result,
+        'orderIncrementId' => $incrementId,
+    ));
+    var_dump($result->result->shipping_address);
+
+REST
+~~~~
+
+::
+
+    curl --get \
+        -H 'Accept: application/xml' \
+        -H 'Authorization: [OAuth Header] \
+        "https://magentohost/api/rest/orders/:orderid/addresses"
+
+Beachten Sie, dass die neuen Attribute für den Abruf über die REST-API explizit
+freigegeben werden müssen.
+
+::
+
+    System → Web Services → REST - Attributes
+
+.. image:: images/rest-attributes.png
+   :width: 50%
+   :align: left
+
+.. raw:: pdf
+
+   PageBreak
+
+Deinstallation und Deaktivierung
+================================
+
+Gehen Sie wie folgt vor, um den *DHL LocationFinder* zu deinstallieren:
+
+1. Löschen Sie alle Moduldateien aus dem Dateisystem.
+2. Entfernen Sie die im Abschnitt `Installation`_ genannten Adressattribute.
+3. Entfernen Sie den zum Modul gehörigen Eintrag ``dhl_locationfinder_setup`` aus der Tabelle ``core_resource``.
+4. Entfernen Sie die zum Modul gehörigen Einträge ``checkout/dhl_locationfinder/*`` aus der Tabelle ``core_config_data``.
+5. Leeren Sie abschließend den Cache.
+
+Sollten Sie den *DHL LocationFinder* deaktivieren wollen, ohne ihn zu deinstallieren,
+kann dies auf zwei verschiedenen Wegen erreicht werden.
+
+1. Deaktivierung des Moduls
+
+   Das Modul wird nicht geladen, wenn der Knoten ``active`` in der Datei
+   ``app/etc/modules/Dhl_LocationFinder.xml`` von **true** auf **false**
+   abgeändert wird.
+2. Deaktivieren der Frontend-Ausgaben
+
+   Das Modul wird im Frontend nicht angezeigt, wenn in der Systemkonfiguration
+   die Modulausgaben deaktiviert werden.
+
+   ::
+
+       System → Konfiguration → Erweitert → Erweitert
+           → Deaktiviere Modulausgaben → Dhl_LocationFinder
