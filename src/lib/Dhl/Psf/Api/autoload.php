@@ -18,7 +18,6 @@
         'Dhl\Psf\Api\getParcellocationByAddress' => __DIR__ .'/getParcellocationByAddress.php',
         'Dhl\Psf\Api\getParcellocationByAddressResponse' => __DIR__ .'/getParcellocationByAddressResponse.php',
         'Dhl\Psf\Api\service' => __DIR__ .'/service.php',
-        'Dhl\Psf\Api\allowedCountries' => __DIR__ .'/allowedCountries.php',
         'Dhl\Psf\Api\closurePeriodType' => __DIR__ .'/closurePeriodType.php',
         'Dhl\Psf\Api\timeInfoType' => __DIR__ .'/timeInfoType.php',
         'Dhl\Psf\Api\ServiceException' => __DIR__ .'/ServiceException.php'
@@ -28,7 +27,7 @@
     };
 }
 
-spl_autoload_register('autoload_5f633a5198ff1fe8a8a7c19398045a95', true, true);
+spl_autoload_register('autoload_5f633a5198ff1fe8a8a7c19398045a95');
 
 // Do nothing. The rest is just leftovers from the code generation.
 {

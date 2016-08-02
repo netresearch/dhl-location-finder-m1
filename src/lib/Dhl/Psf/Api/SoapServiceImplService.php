@@ -8,7 +8,7 @@ class SoapServiceImplService extends \SoapClient
     /**
      * @var array $classmap The defined classes
      */
-    protected static $classmap = array (
+    private static $classmap = array (
       'getParcellocationByCoordinate' => 'Dhl\\Psf\\Api\\getParcellocationByCoordinate',
       'getParcellocationByCoordinateResponse' => 'Dhl\\Psf\\Api\\getParcellocationByCoordinateResponse',
       'psfParcellocation' => 'Dhl\\Psf\\Api\\psfParcellocation',
@@ -39,7 +39,7 @@ class SoapServiceImplService extends \SoapClient
       'features' => 1,
     ), $options);
       if (!$wsdl) {
-        $wsdl = __DIR__ . '/parcelshopfinder-1.0.wsdl';
+        $wsdl = 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/parcelshopfinder/1.0/parcelshopfinder-1.0-production.wsdl';
       }
       parent::__construct($wsdl, $options);
     }

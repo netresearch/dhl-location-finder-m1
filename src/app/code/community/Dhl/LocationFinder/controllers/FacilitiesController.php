@@ -110,16 +110,16 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
         /** @var Dhl_LocationFinder_Helper_Data $locationHelper */
         $locationHelper = Mage::helper('dhl_locationfinder/data');
-        /** @var Dhl_LocationFinder_Model_Config $configModel */
-        $configModel = Mage::getModel('dhl_locationfinder/config');
+        /** @var Dhl_LocationFinder_Model_Config $config */
+        $config = Mage::getModel('dhl_locationfinder/config');
 
         /** @var SoapAdapter $adapter */
-        $adapter = $locationHelper->getWebserviceAdapter();
+        $adapter = $locationHelper->getWebserviceAdapter($config);
         $parser  = new LocationParser();
 
         $requestAddress = $this->getRequest()->getParam('locationfinder', array());
         $address        = new RequestData\Address(
-            $configModel->getWsValidCountries(),
+            $config->getWsValidCountries(),
             $requestAddress['country'],
             $requestAddress['zipcode'],
             $requestAddress['city'],
@@ -134,7 +134,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
                 $messages[] = $this->__(self::MSG_EMPTY_RESULT);
             }
 
-            $limiter   = new Limiter($configModel->getResultsLimit());
+            $limiter   = new Limiter($config->getResultsLimit());
             $items     = $locations->getItems(null, $limiter);
 
             $translationsMap = $locationHelper->getTranslationsMap();
@@ -150,6 +150,7 @@ class Dhl_LocationFinder_FacilitiesController extends Mage_Core_Controller_Front
 
             // unknown address error?
             // webservice not available?
+            // Authorization Required / Security Violation?
             $messages[] = $this->__($fault->getMessage());
 
             $this->_logger->log($adapter->getLastRequest());

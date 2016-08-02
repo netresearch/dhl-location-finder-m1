@@ -45,13 +45,14 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return AdapterInterface
      */
-    public function getWebserviceAdapter()
+    public function getWebserviceAdapter(Dhl_LocationFinder_Model_Config $config)
     {
-        $soapClient = new LocationsApi\SoapServiceImplService(
-            array(
-                'trace' => true,
-            )
+        $options = array(
+            'login' => $config->getWsAuthUser(),
+            'password' => $config->getWsAuthPass(),
         );
+
+        $soapClient = new LocationsApi\SoapServiceImplService($options);
 
         return new WebserviceAdapter($soapClient);
     }
