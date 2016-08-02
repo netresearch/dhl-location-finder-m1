@@ -52,6 +52,7 @@ PHP
 Folgende PHP-Versionen werden vom Modul unterstützt bzw. vorausgesetzt:
 
 - PHP 7.0
+- PHP 5.6
 - PHP 5.5
 - PHP 5.4
 
