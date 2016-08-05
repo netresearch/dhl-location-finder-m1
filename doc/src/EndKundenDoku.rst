@@ -18,13 +18,15 @@
 
 .. sectnum::
 
-=========================================================================
-DHL Standortsuche Europa: Packstationen und Paketshops im Checkout wählen
-=========================================================================
+===============================================================
+DHL Lieferadressen: Adress-Suche von Packstationen und Filialen
+===============================================================
 
-Die Standortsuche API Europa ist ein von DHL bereitgestellter Service,
-der es ermöglicht, eine DHL Abholstation im Magento One Page Checkout zu wählen
+Das Modul *DHL Lieferadressen* für Magento ermöglicht es, durch den von der DHL bereitgestellter Service Standortsuche API Europa,
+DHL Abholstationen (Packstationen, Postfilialen und Paketshops) im Magento One Page Checkout zu wählen
 und diese als alternative Lieferadresse zu übernehmen.
+
+Als synonyme Bezeichnungen gelten auch: DHL Locationfinder, DHL Parcelshop Finder, DHL Standortsuche Europa
 
 .. contents:: Endbenutzer-Dokumentation
 
@@ -100,7 +102,7 @@ Modulkonfiguration
 Dort finden Sie einen neuen Reiter "DHL Standortsuche" mit den für das Modul
 relevanten Konfigurationseinstellungen.
 
-.. list-table:: Konfiguration DHL LocationFinder
+.. list-table:: Konfiguration DHL Locationfinder
    :widths: 3 2 7
    :header-rows: 1
 
@@ -133,7 +135,7 @@ relevanten Konfigurationseinstellungen.
 Einrichten der Adress-Templates
 -------------------------------
 
-Das Modul *DHL LocationFinder* führt neue Adress-Attribute ein. Um diese auch im
+Das Modul *DHL Locationfinder* führt neue Adress-Attribute ein. Um diese auch im
 System anzuzeigen, ist es gegebenenfalls erforderlich, die Adress-Templates um
 die neuen Attribute zu erweitern.
 
@@ -263,7 +265,7 @@ dritte Module anpassbar.
 Einbindung von jQuery
 ---------------------
 
-Das im Modul *DHL LocationFinder* verwendete Google Maps Plugin *Store Locator*
+Das im Modul *DHL Locationfinder* verwendete DHL Location Maps Plugin *Store Locator*
 basiert auf der JavaScript-Bibliothek jQuery. Diese wird durch die Template-Datei
 ``base/default/template/dhl_locationfinder/page/html/head.phtml`` eingebunden.
 
@@ -279,7 +281,7 @@ in Ihr eigenes Theme.
 Magento API
 -----------
 
-Die vom Modul *DHL LocationFinder* im System angelegten Adressattribute sind
+Die vom Modul *DHL Locationfinder* im System angelegten Adressattribute sind
 für die Verwendung in Drittsystemen über die Magento API abrufbar.
 
 SOAP V2
@@ -326,10 +328,96 @@ freigegeben werden müssen.
 
    PageBreak
 
+Funktionsweise im Frontend
+==========================
+
+Magento Checkout
+----------------
+
+- Betreten Sie den Checkout wie im Magento Standard vorgesehen
+- Geben Sie im Checkout Schritt *Rechnungsadresse* Ihre Rechnungsadresse an
+- Wählen Sie die Option *An andere Adresse verschicken* aus und gehen weiter
+
+.. image:: images/en-checkout-step-001.png
+   :width: 5.0cm
+
+Magento Checkout: Lieferadresse
+-------------------------------
+
+- Wenn Sie bereits mit Ihrem Kundenkonto eingeloggt sind und Ihr Adressbuch Dropdown zur Vefügung steht, wählen Sie die Option *Neue Adresse*
+- Wählen Sie die Checkbox *Lieferung an eine DHL Abholstation* an
+- Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Station* sowie zusätzliche Button *Packstation/ Postfiliale suchen*
+- Per Klick auf den Button *Packstation/ Postfiliale suchen* öffnen Sie die DHL Location Map
+
+.. image:: images/en-checkout-step-002-checkbox-locationfinder.png
+   :width: 16.5cm
+
+DHL Location Map: Initiales Anzeigeergebnis und neue Standortsuche
+------------------------------------------------------------------
+
+- Das initiale Anzeigeergebnis basiert stets auf der zuvor hinterlegten Rechnungsadresse
+- Die Anzahl der Standort Ergebnisse und Zoomstufe der Map definieren Sie in der *Modulkonfiguration*
+- Ändern Sie die Adressdaten gemäß Ihrer Standortsuche und starten den Prozess mit dem Button *Suchen*
+- Für eine erfolgreiche Suche benötigen Sie mind. die Angabe *Land, Stadt* oder erweitert *Land, Stadt, PLZ* oder *Land, Stadt, PLZ, Straße ggf. Hausnummer*
+- Das Dropdown Feld *Land* richtet sich nach Ihrer Systemkonfiguration gemäß ``general_country_default`` und ``general_country_allow``
+
+.. image:: images/en-checkout-step-002-map-invoiceaddress.png
+   :width: 16.5cm
+
+DHL Location Map: Mögliche Filterung des Anzeigeergebnisses
+-----------------------------------------------------------
+
+- Durch Aktivierung oder Deaktivierung der Checkboxen können Sie das Anzeigeergebnis nach *Packstationen*, *Postfilialen* oder *Paketshops* filtern
+
+.. image:: images/en-checkout-step-002-map-invoiceaddress-filtered.png
+   :width: 16.5cm
+
+.. raw:: pdf
+
+   PageBreak
+
+DHL Location Map: Zusätzliche Informationen und Übernahme des Standorts
+-----------------------------------------------------------------------
+
+- Per einfachen Klick auf das *Standort Icon* erhalten Sie zusätzliche Informationen zum Standort
+- Für Packstationen (Packstation Nummer und Standortadresse)
+- Für Postfilialen oder Paketshops (Titel, Standortadresse, Öffnungszeiten, Services)
+- Per Klick auf den Textlink *Diesen Standort verwenden* können Sie den Standort übernehmen, die DHL Location Map schließt sich
+- Per Doppel-Klick auf das *Standort Icon* können Sie den Standort direkt übernehmen, die Map schließt sich sofort
+
+.. image:: images/en-checkout-step-002-shipping-information.png
+   :width: 16.5cm
+
+.. raw:: pdf
+
+   PageBreak
+
+Magento Checkout: Lieferadresse, Überprüfung Ihrer Angaben
+----------------------------------------------------------
+
+- Die Standortdaten der/ des *Packstationen*, *Postfilialen* oder *Paketshops* wurden übernommen, Sie können diese nicht manuell editieren
+- Um einen anderen Standort zu wählen, öffen Sie wieder die DHL Location Map per Klick auf den Button *Packstation/ Postfiliale suchen*
+- Haben Sie ein *Packstation* ausgewählt ergänzen Sie bitte Ihre persönlichen *DHL Postnummer*, dies ist ein Pflichtfeld
+- Haben Sie ein/ eine *Postfiliale* oder *Paketshop* ausgewählt, benötigen Sie keine Angabe zur persönlichen *DHL Postnummer*
+- Setzen Sie den Checkout wie im Magento Standard vorgesehen fort
+
+.. image:: images/en-checkout-step-003-packstation-data.png
+   :width: 16.5cm
+
+Magento Checkout: Zusätzliche Hinweise
+--------------------------------------
+
+- Adressen von *Packstationen*, *Postfilialen* oder *Paketshops* können nicht im Adressbuch Ihres Kundenkontos gespeichert werden
+- Falls Sie im Checkout Schritt *Lieferadresse* doch noch Ihre Rechnungsadresse verwenden möchten, deaktivieren Sie zuvor die Checkbox *Lieferung an eine DHL Abholstation*
+
+.. raw:: pdf
+
+   PageBreak
+
 Deinstallation und Deaktivierung
 ================================
 
-Gehen Sie wie folgt vor, um den *DHL LocationFinder* zu deinstallieren:
+Gehen Sie wie folgt vor, um den *DHL Locationfinder* zu deinstallieren:
 
 1. Löschen Sie alle Moduldateien aus dem Dateisystem.
 2. Entfernen Sie die im Abschnitt `Installation`_ genannten Adressattribute.
@@ -337,7 +425,7 @@ Gehen Sie wie folgt vor, um den *DHL LocationFinder* zu deinstallieren:
 4. Entfernen Sie die zum Modul gehörigen Einträge ``checkout/dhl_locationfinder/*`` aus der Tabelle ``core_config_data``.
 5. Leeren Sie abschließend den Cache.
 
-Sollten Sie den *DHL LocationFinder* deaktivieren wollen, ohne ihn zu deinstallieren,
+Sollten Sie den *DHL Locationfinder* deaktivieren wollen, ohne ihn zu deinstallieren,
 kann dies auf zwei verschiedenen Wegen erreicht werden.
 
 1. Deaktivierung des Moduls
@@ -354,3 +442,4 @@ kann dies auf zwei verschiedenen Wegen erreicht werden.
 
        System → Konfiguration → Erweitert → Erweitert
            → Deaktiviere Modulausgaben → Dhl_LocationFinder
+
