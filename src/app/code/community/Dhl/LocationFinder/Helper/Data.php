@@ -50,6 +50,7 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
         $options = array(
             'login' => $config->getWsAuthUser(),
             'password' => $config->getWsAuthPass(),
+            'trace' => 1,
         );
 
         $soapClient = new LocationsApi\SoapServiceImplService($options);

@@ -214,8 +214,8 @@ T: {{var telephone}}
                 <autoload_enabled>1</autoload_enabled>
             </dev>
             <webservice>
-                <auth_username>magento_1</auth_username>
-                <auth_password>2de26b775e59279464d1c2f8546432e62413372421c672db36eaacfc2f</auth_password>
+                <auth_username>NRMAG_1</auth_username>
+                <auth_password>NoYfJrGPZYNyZXSU2BXxIHoQAtBz5m</auth_password>
                 <valid_countries>
                     <AT>Austria</AT>
                     <BE>Belgium</BE>
