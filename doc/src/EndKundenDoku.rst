@@ -22,11 +22,11 @@
 DHL Lieferadressen: Adress-Suche von Packstationen und Filialen
 ===============================================================
 
-Das Modul *DHL Lieferadressen* für Magento® ermöglicht es, DHL Abholstationen (Packstationen, Postfilialen und Paketshops) im 
-Magento® Checkout zu wählen und diese als Lieferadresse zu übernehmen. Das Modul nutzt dazu den von DHL bereitgestellten 
+Das Modul *DHL_LocationFinder* für Magento® ermöglicht es, DHL Abholstationen (Packstationen, Postfilialen und Paketshops) im
+Magento® Checkout zu wählen und diese als Lieferadresse zu übernehmen. Das Modul nutzt dazu den von DHL bereitgestellten
 Service Standortsuche API Europa.
 
-Als synonyme Bezeichnungen gelten auch: DHL Standortsuche, DHL Locationfinder, DHL Parcelshop Finder oder Postfinder.
+Als synonyme Bezeichnungen gelten auch: DHL Standortsuche, DHL Location Finder, DHL Parcelshop Finder oder Postfinder.
 
 .. contents:: Endbenutzer-Dokumentation
 
@@ -56,7 +56,6 @@ Folgende PHP-Versionen werden vom Modul unterstützt:
 - PHP 7.0
 - PHP 5.6
 - PHP 5.5
-- PHP 5.4
 
 Für die Anbindung der API muss die PHP SOAP Erweiterung auf dem Webserver installiert und aktiviert sein.
 
@@ -139,7 +138,7 @@ relevanten Konfigurationseinstellungen.
 Einrichten der Adress-Templates
 -------------------------------
 
-Das Modul führt neue Adress-Attribute ein. Um diese auch im System anzuzeigen, ist es 
+Das Modul führt neue Adress-Attribute ein. Um diese auch im System anzuzeigen, ist es
 evtl. erforderlich, die Adress-Templates um die neuen Attribute zu erweitern:
 
 ::

@@ -22,11 +22,12 @@
 DHL Locationfinder: Search Packstations and Parcel Shops
 ========================================================
 
-The module *DHL Locationfinder* allows using DHL Packstations, post offices, and parcel shops / retail outlets as 
-destination address in the Magento® checkout. The module uses the service Locationfinder API Europe (Standortsuche) 
-for this, which is provided by DHL.
+The module *DHL_LocationFinder* allows using DHL Packstations, post offices,
+and parcel shops / retail outlets as destination address in the Magento® checkout.
+The module integrates the Location search API Europe (Standortsuche API Europa),
+which is provided by DHL.
 
-This is also called DHL Parcelshop Finder, Postfinder, Locationsearch Europe (Standortsuche Europa), or DHL Lieferadressen.
+This is also called DHL Parcelshop Finder, Postfinder, Locationsearch Europe (Standortsuche Europa).
 
 .. contents:: End user documentation
 
@@ -57,9 +58,8 @@ These PHP versions are supported:
 - PHP 7.0
 - PHP 5.6
 - PHP 5.5
-- PHP 5.4
 
-To connect to the API, the PHP SOAP extension must be installed and enabled on the webserver.
+To connect to the API, the PHP SOAP extension must be installed and enabled on the web server.
 
 Google API Key
 --------------
@@ -83,13 +83,13 @@ Installation
 Install the module's files according to your preferred setup / deployment strategy. Refresh the configuration cache
 to apply the changes.
 
-When the module is first executed, these new address-attributes are created in your system:
+When the module is first executed, these new address attributes are created in your system:
 
 - ``dhl_post_number``
 - ``dhl_station_type``
 - ``dhl_station``
 
-These attributes are added in the following tables:
+The attributes are added in the following tables:
 
 - ``sales_flat_quote_address``
 - ``sales_flat_order_address``
@@ -105,7 +105,7 @@ After the installation, go to the configuration area:
 
     System → Configuration → Sales → Checkout
 
-You will find a new tag "DHL Parcelshop Finder" there which contains all the relevant configuration.
+You will find a new config group "DHL Parcelshop Finder" there which contains all the relevant configuration.
 
 .. list-table:: Configuration settings
    :widths: 4 2 6
@@ -119,14 +119,14 @@ You will find a new tag "DHL Parcelshop Finder" there which contains all the rel
      - To show DHL locations in the checkout, the Google Maps API is used which requires an API key.
    * - Limit results
      - optional
-     - This sets the number of results that are shown on the map. The DHL Locationfinder API provides a maximum of
+     - This sets the number of results that are shown on the map. The Location search API Europe provides a maximum of
        50 locations.
    * - Zoom (auto or fixed)
      - required
      - This specifies if the map is zoomed automatically according to the results, or if a fixed zoom factor is used.
    * - Zoom factor (if fixed zoom selected)
      - Optional
-     - If a fixed zoom factor should be used, the value can be defined here. Values between 9-15 are possible. 15 is 
+     - If a fixed zoom factor should be used, the value can be defined here. Values between 9-15 are possible. 15 is
        the largest zoom factor.
 
 .. raw:: pdf
@@ -241,7 +241,7 @@ Hints for using the module
 Allowed Countries
 -----------------
 
-The following countries are currently supported by the DHL Locationfinder API Europe:
+The following countries are currently supported by the Location search API Europe:
 
 - Belgium
 - Germany
@@ -257,17 +257,18 @@ on the shop configuration).
 Language support
 ----------------
 
-The module supports the locales ``en_US`` and ``de_DE``. The translations are stored in the CSV translation 
+The module supports the locales ``en_US`` and ``de_DE``. The translations are stored in the CSV translation
 files and can therefore be modified by third-party modules.
 
 Use of jQuery
 -------------
 
-The module uses the DHL Location Maps Plugin *Store Locator* which is based on the JavaScript library jQuery. This
+The module uses the Google Maps Plugin *Store Locator* which is based on the JavaScript library jQuery. This
 library will be included by the template file ``dhl_locationfinder/page/html/head.phtml``.
 
-However, jQuery will *not* be included this if your are using the *RWD* theme. If you are using a custom theme that
-already includes jQuery, please include the file ``rwd/default/template/dhl_locationfinder/page/html/head.phtml`` into your own theme.
+However, jQuery will *not* be included if you are using the *RWD* theme.
+If you are using a custom theme that already includes jQuery, please include the
+file ``rwd/default/template/dhl_locationfinder/page/html/head.phtml`` into your own theme.
 
 .. raw:: pdf
 
@@ -307,7 +308,7 @@ REST
         -H 'Authorization: [OAuth Header] \
         "https://magentohost/api/rest/orders/:orderid/addresses"
 
-Please note that the new attributs must explicitly be enabled for REST-API calls.
+Please note that the new attributes must explicitly be enabled for REST-API calls.
 To do this, go to:
 
 ::
@@ -350,10 +351,11 @@ Magento® Checkout: Shipping address
 DHL Location Map: Initial result and new location search
 --------------------------------------------------------
 
-- The initial result you see is based on the existing billing address
-- The number of shown locations and the zoom factor can be defined in the *module configuration*
+- The initial result you see is based on the previously entered billing address
+- The number of shown locations and the zoom factor can be defined in the `Module configuration`_
 - You can change the address as you wish and search again via the button *Search*
-- For a successful search, you need at least *country, city*, or for an extended search *country, city, ZIP* or *country, city, ZIP, street, and house number*
+- For a successful search, you need at least *country, city*, or for an extended search
+  either *country, city, ZIP* or *country, city, ZIP, street, and house number*
 - The dropdown field *country* depends on your system configuration for ``general_country_default`` and ``general_country_allow``
 
 .. image:: images/en-checkout-step-002-map-invoiceaddress.png
@@ -375,9 +377,9 @@ DHL Location Map: Additional information and selecting a location
 -----------------------------------------------------------------
 
 - With a *single click* on a location icon you get additional information about that location
-- For Pack Stations: Pack Station number and adress
+- For Pack Stations: Pack Station number and address
 - For Post Offices and Parcel Shops: name, address, opening hours, services
-- By clicking the textlink *Use this station* the location can be selected; the DHL Location map will be closed afterwards
+- By clicking the hyperlink *Use this station* the location can be selected; the DHL Location map will be closed afterwards
 - With a *double-click* on the location icon you can directly select the location. The map will be closed immediately.
 
 .. image:: images/en-checkout-step-002-shipping-information.png
@@ -392,7 +394,7 @@ Magento® Checkout: Shipping address - check your data
 
 - The location data for the *Pack Station*, *Post Office* or *Parcel Shop* have been entered now. You cannot edit these fields manually
 - To select another DHL location, open the DHL Location Map again by clicking *Search Pack Station / Post Office*
-- If you have selected a *Pack Station*, you must enter your personal *DHL Post Numbmer* (required field)
+- If you have selected a *Pack Station*, you must enter your personal *DHL Post Number* (required field)
 - When selecting a *Post Office* or *Parcel Shop*, your personal *DHL Postnummer* is not required (but can still be entered)
 - Continue the checkout process as usual (Magento® standard behaviour)
 
@@ -402,8 +404,8 @@ Magento® Checkout: Shipping address - check your data
 Magento® Checkout: Additional hints
 -----------------------------------
 
-- The adresses of *Pack Stations*, *Post Offices*, or *Parcel Shops* cannot be stored in the address book of the customer account
-- If you decide to enter your billing address in the checkout step *Shipping adress*, please disable the checkbox *Shipping per Locationfinder* first
+- The addresses of *Pack Stations*, *Post Offices*, or *Parcel Shops* cannot be stored in the customer's address book
+- If you decide to enter your billing address in the checkout step *Shipping address*, please disable the checkbox *Shipping per Locationfinder* first
 
 .. raw:: pdf
 
@@ -414,13 +416,13 @@ Uninstalling or disabling the module
 
 To *uninstall* the module, follow these steps:
 
-1. Delete all module files from your files system
+1. Delete all module files from your file system
 2. Remove the address attributes mentioned in the section `Installation`_
 3. Remove the module entry ``dhl_locationfinder_setup`` from the table ``core_resource``.
 4. Remove all module entries ``checkout/dhl_locationfinder/*`` from the table ``core_config_data``.
 5. Flush the cache afterwards.
 
-In case you only want to *disable* the module with uninstalling it, you have two options:
+In case you only want to *disable* the module without uninstalling it, you have two options:
 
 1. Disable the module completely
 
@@ -432,7 +434,7 @@ In case you only want to *disable* the module with uninstalling it, you have two
 
    ::
 
-       System → Configuration → Advancded → Advanced → Disable Modules Output → Dhl_LocationFinder
+       System → Configuration → Advanced → Advanced → Disable Modules Output → Dhl_LocationFinder
 
 Technical support
 =================
