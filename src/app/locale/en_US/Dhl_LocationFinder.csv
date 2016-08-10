@@ -23,6 +23,8 @@
 "handicappedAccess","Access for handicapped"
 "parking","Parking possible"
 "Services","Services"
+"DHL Parcelshop Finder","DHL Parcelshop Finder"
+"Google Maps API Key","Google Maps API Key"
 "Limit Results","Limit Results"
 "Display no more than the given number of DHL stations on the map.","Display no more than the given number of DHL stations on the map."
 "Zoom","Zoom"
