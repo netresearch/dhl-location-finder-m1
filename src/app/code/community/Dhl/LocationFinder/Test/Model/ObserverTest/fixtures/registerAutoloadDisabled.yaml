@@ -1,0 +1,2 @@
+config:
+  default/dhl_locationfinder/dev/autoload_enabled: "0"

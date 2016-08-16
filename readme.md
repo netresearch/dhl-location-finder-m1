@@ -6,12 +6,12 @@ Parcel Shops in the One Page Checkout.
 
 Facts
 -----
-- version: 0.1.0
+- version: 1.0.1
 - extension key: Dhl_LocationFinder
 - [extension on Magento Connect](http://www.magentocommerce.com/magento-connect/dhl-locationfinder-1234.html)
 - Magento Connect 2.0 extension key: http://connect20.magentocommerce.com/community/Dhl_LocationFinder
 - [extension on GitLab](https://git.netresearch.de/dhl/location-finder)
-- [direct download link](http://connect.magentocommerce.com/community/get/Dhl_LocationFinder-0.1.0.tgz)
+- [direct download link](http://connect.magentocommerce.com/community/get/Dhl_LocationFinder-1.0.1.tgz)
 
 Description
 -----------
@@ -40,11 +40,39 @@ in the documentation.
 Uninstallation
 --------------
 1. Remove all extension files from your Magento installation
-2. Remove the database columns from the shipping address entity (t.b.d.)
+2. Clean up the database.
+
+
+    ALTER TABLE `sales_flat_quote_address`
+        DROP COLUMN `dhl_post_number`,
+        DROP COLUMN `dhl_station_type`,
+        DROP COLUMN `dhl_station`
+    ;
+
+    ALTER TABLE `sales_flat_order_address`
+        DROP COLUMN `dhl_post_number`,
+        DROP COLUMN `dhl_station_type`,
+        DROP COLUMN `dhl_station`
+    ;
+
+    DELETE FROM `eav_attribute` WHERE `attribute_code` IN (
+        'dhl_post_number',
+        'dhl_station_type',
+        'dhl_station'
+    );
+
+    DELETE FROM `core_config_data` WHERE `path` LIKE 'checkout/dhl_locationfinder/%';
+    
+    DELETE FROM `core_resource` WHERE `code` = 'dhl_locationfinder_setup';
 
 Support
 -------
-If you have any issues with this extension, contact the support (t.b.d.)
+In case of questions or problems, please have a look at the
+[Support Portal (FAQ)](http://dhl.support.netresearch.de/) first.
+
+If the issue cannot be resolved, you can contact the support team via the
+[Support Portal](http://dhl.support.netresearch.de/) or by sending an email
+to <dhl.support@netresearch.de>.
 
 Developer
 ---------

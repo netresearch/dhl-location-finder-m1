@@ -20,6 +20,7 @@
  * @category  Dhl
  * @package   Dhl_LocationFinder
  * @author    Christoph Aßmann <christoph.assmann@netresearch.de>
+ * @author    Benjamin Heuer <benjamin.heuer@netresearch.de>
  * @copyright 2016 Netresearch GmbH & Co. KG
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
@@ -28,7 +29,7 @@
 <config>
     <modules>
         <Dhl_LocationFinder>
-            <version>0.1.0</version>
+            <version>1.0.1</version>
         </Dhl_LocationFinder>
     </modules>
     <global>
@@ -51,17 +52,189 @@
             <dhl_locationfinder_setup>
                 <setup>
                     <module>Dhl_LocationFinder</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
                 </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
             </dhl_locationfinder_setup>
         </resources>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <register_psf_autoload>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>registerAutoload</method>
+                        <type>singleton</type>
+                    </register_psf_autoload>
+                </observers>
+            </controller_front_init_before>
+        </events>
+        <fieldsets>
+            <sales_convert_quote_address>
+                <dhl_post_number>
+                    <to_order_address>*</to_order_address>
+                </dhl_post_number>
+                <dhl_station_type>
+                    <to_order_address>*</to_order_address>
+                </dhl_station_type>
+                <dhl_station>
+                    <to_order_address>*</to_order_address>
+                </dhl_station>
+            </sales_convert_quote_address>
+            <sales_convert_order_address>
+                <dhl_post_number>
+                    <to_quote_address>*</to_quote_address>
+                </dhl_post_number>
+                <dhl_station_type>
+                    <to_quote_address>*</to_quote_address>
+                </dhl_station_type>
+                <dhl_station>
+                    <to_quote_address>*</to_quote_address>
+                </dhl_station>
+            </sales_convert_order_address>
+        </fieldsets>
     </global>
+    <frontend>
+        <routers>
+            <dhl_locationfinder>
+                <use>standard</use>
+                <args>
+                    <module>Dhl_LocationFinder</module>
+                    <frontName>dhlpsf</frontName>
+                </args>
+            </dhl_locationfinder>
+        </routers>
+        <secure_url>
+            <dhl_locationfinder>/dhlpsf/</dhl_locationfinder>
+        </secure_url>
+        <layout>
+            <updates>
+                <dhl_locationfinder module="Dhl_LocationFinder">
+                    <file>dhl_locationfinder.xml</file>
+                </dhl_locationfinder>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <append_location_finder_to_shipping>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>appendLocationFinderToShipping</method>
+                    </append_location_finder_to_shipping>
+                </observers>
+            </core_block_abstract_to_html_after>
+            <sales_quote_save_before>
+                <observers>
+                    <save_dhl_fields>
+                        <type>singleton</type>
+                        <class>Dhl_LocationFinder_Model_Observer</class>
+                        <method>saveDHLFieldsInQuote</method>
+                    </save_dhl_fields>
+                </observers>
+            </sales_quote_save_before>
+            <dhl_versenden_set_postal_facility>
+                <observers>
+                    <save_dhl_fields>
+                        <type>singleton</type>
+                        <class>Dhl_LocationFinder_Model_Observer</class>
+                        <method>saveDHLFieldsInPostalFacility</method>
+                    </save_dhl_fields>
+                </observers>
+            </dhl_versenden_set_postal_facility>
+        </events>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <dhl_locationfinder>
+                    <files>
+                        <default>Dhl_LocationFinder.csv</default>
+                    </files>
+                </dhl_locationfinder>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
+        <customer>
+            <address_templates>
+                <text><![CDATA[{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}
+{{depend company}}{{var company}}{{/depend}}
+{{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}{{/depend}}
+{{depend dhl_station}}{{var dhl_station}}{{/depend}}
+{{if street1}}{{var street1}}{{/if}}
+{{depend street2}}{{var street2}}{{/depend}}
+{{depend street3}}{{var street3}}{{/depend}}
+{{depend street4}}{{var street4}}{{/depend}}
+{{if city}}{{var city}}, {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}{{/if}}
+{{var country}}
+T: {{var telephone}}
+{{depend fax}}F: {{var fax}}{{/depend}}]]>
+                </text>
+                <oneline><![CDATA[{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}{{depend dhl_post_number}}, Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station}}, {{var dhl_station}}{{/depend}}, {{var street}}, {{var city}}, {{var region}} {{var postcode}}, {{var country}}]]></oneline>
+                <html><![CDATA[{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>
+{{depend company}}{{var company}}<br />{{/depend}}
+{{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}<br />{{/depend}}
+{{depend dhl_station}}{{var dhl_station}}<br />{{/depend}}
+{{if street1}}{{var street1}}<br />{{/if}}
+{{depend street2}}{{var street2}}<br />{{/depend}}
+{{depend street3}}{{var street3}}<br />{{/depend}}
+{{depend street4}}{{var street4}}<br />{{/depend}}
+{{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}{{/if}}<br/>
+{{var country}}<br/>
+{{depend telephone}}T: {{var telephone}}{{/depend}}
+{{depend fax}}<br/>F: {{var fax}}{{/depend}}]]>
+                </html>
+                <pdf><![CDATA[{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}|
+{{depend company}}{{var company}}|{{/depend}}
+{{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+{{depend dhl_station}}{{var dhl_station}}|{{/depend}}
+{{if street1}}{{var street1}}{{/if}}
+{{depend street2}}{{var street2}}|{{/depend}}
+{{depend street3}}{{var street3}}|{{/depend}}
+{{depend street4}}{{var street4}}|{{/depend}}
+{{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}{{/if}}|
+{{var country}}|
+{{depend telephone}}T: {{var telephone}}{{/depend}}|
+{{depend fax}}<br/>F: {{var fax}}{{/depend}}]]></pdf>
+                <js_template><![CDATA[#{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number}, #{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region}, #{postcode}<br/>#{country_id}<br/>T: #{telephone}<br/>F: #{fax}]]></js_template>
+            </address_templates>
+        </customer>
         <dhl_locationfinder>
+            <dev>
+                <autoload_enabled>1</autoload_enabled>
+            </dev>
             <webservice>
-                <auth_username>magento_1</auth_username>
-                <auth_password>2de26b775e59279464d1c2f8546432e62413372421c672db36eaacfc2f</auth_password>
+                <auth_username>NRMAG_1</auth_username>
+                <auth_password>UlWwlRXgmQre9AP0irEF98MAVX8tCv</auth_password>
+                <valid_countries>
+                    <AT>Austria</AT>
+                    <BE>Belgium</BE>
+                    <CZ>Czech Republic</CZ>
+                    <DE>Germany</DE>
+                    <NL>Netherlands</NL>
+                    <PL>Poland</PL>
+                    <SK>Slovakia</SK>
+                </valid_countries>
             </webservice>
         </dhl_locationfinder>
+        <checkout>
+            <dhl_locationfinder>
+                <map_type>googlemaps</map_type>
+                <map_results_limit>50</map_results_limit>
+                <map_scaling_mode>auto</map_scaling_mode>
+                <map_scaling_factor>13</map_scaling_factor>
+            </dhl_locationfinder>
+        </checkout>
     </default>
     <phpunit>
         <suite>

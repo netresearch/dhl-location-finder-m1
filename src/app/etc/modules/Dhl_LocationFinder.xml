@@ -4,7 +4,6 @@
         <Dhl_LocationFinder>
             <active>true</active>
             <codePool>community</codePool>
-            <depends></depends>
         </Dhl_LocationFinder>
     </modules>
 </config>
