@@ -59,17 +59,6 @@
                 </connection>
             </dhl_locationfinder_setup>
         </resources>
-        <events>
-            <controller_front_init_before>
-                <observers>
-                    <register_psf_autoload>
-                        <class>dhl_locationfinder/observer</class>
-                        <method>registerAutoload</method>
-                        <type>singleton</type>
-                    </register_psf_autoload>
-                </observers>
-            </controller_front_init_before>
-        </events>
         <fieldsets>
             <sales_convert_quote_address>
                 <dhl_post_number>
@@ -94,6 +83,35 @@
                 </dhl_station>
             </sales_convert_order_address>
         </fieldsets>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <register_psf_autoload>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>registerAutoload</method>
+                        <type>singleton</type>
+                    </register_psf_autoload>
+                </observers>
+            </controller_front_init_before>
+            <dhl_versenden_fetch_postal_facility>
+                <observers>
+                    <load_postal_facility_fields>
+                        <class>Dhl_LocationFinder_Model_Observer</class>
+                        <method>loadPostalFacilityFields</method>
+                        <type>singleton</type>
+                    </load_postal_facility_fields>
+                </observers>
+            </dhl_versenden_fetch_postal_facility>
+            <dhl_versenden_announce_postal_facility>
+                <observers>
+                    <update_postal_facility_fields>
+                        <class>Dhl_LocationFinder_Model_Observer</class>
+                        <method>updatePostalFacilityFields</method>
+                        <type>singleton</type>
+                    </update_postal_facility_fields>
+                </observers>
+            </dhl_versenden_announce_postal_facility>
+        </events>
     </global>
     <frontend>
         <routers>
@@ -142,15 +160,6 @@
                     </save_dhl_fields>
                 </observers>
             </sales_quote_save_before>
-            <dhl_versenden_set_postal_facility>
-                <observers>
-                    <save_dhl_fields>
-                        <type>singleton</type>
-                        <class>Dhl_LocationFinder_Model_Observer</class>
-                        <method>saveDHLFieldsInPostalFacility</method>
-                    </save_dhl_fields>
-                </observers>
-            </dhl_versenden_set_postal_facility>
         </events>
     </frontend>
     <adminhtml>
@@ -163,6 +172,26 @@
                 </dhl_locationfinder>
             </modules>
         </translate>
+        <events>
+            <dhl_versenden_fetch_postal_facility>
+                <observers>
+                    <save_dhl_fields_in_address>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>loadPostalFacilityFields</method>
+                        <type>singleton</type>
+                    </save_dhl_fields_in_address>
+                </observers>
+            </dhl_versenden_fetch_postal_facility>
+            <dhl_versenden_announce_postal_facility>
+                <observers>
+                    <save_dhl_fields_in_address>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>updatePostalFacilityFields</method>
+                        <type>singleton</type>
+                    </save_dhl_fields_in_address>
+                </observers>
+            </dhl_versenden_announce_postal_facility>
+        </events>
     </adminhtml>
     <default>
         <customer>
