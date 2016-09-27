@@ -378,16 +378,16 @@ DhlLocationFinder.prototype = {
         // Set Post Number as required for packStation
         var postNumberElement = $('shipping:dhl_post_number');
         var postNumberLabelElement = $$('label[for="shipping:dhl_post_number"]')[0];
-        if (dataObject.type == 'packStation' && !postNumberElement.hasClassName('required-entry')) {
+        if (dataObject.type !== 'parcelShop') {
             postNumberElement.addClassName('required-entry');
             postNumberLabelElement.addClassName('required');
-        } else if (dataObject.type != 'packStation' && postNumberElement.hasClassName('required-entry')) {
+        } else {
             postNumberElement.removeClassName('required-entry');
             postNumberLabelElement.removeClassName('required');
         }
 
         // Remove Validation advice if necessary
-        if (dataObject.type != 'packStation' && postNumberElement.hasClassName('validation-failed')) {
+        if (postNumberElement.hasClassName('validation-failed')) {
             postNumberElement.removeClassName('validation-failed');
             var validationAdviceElement = $('advice-required-entry-shipping:dhl_post_number');
             if (validationAdviceElement != undefined) {
