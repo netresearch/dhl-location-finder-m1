@@ -6,12 +6,12 @@ Parcel Shops in the One Page Checkout.
 
 Facts
 -----
-- version: 1.0.1
-- extension key: Dhl_LocationFinder
-- [extension on Magento Connect](http://www.magentocommerce.com/magento-connect/dhl-locationfinder-1234.html)
-- Magento Connect 2.0 extension key: http://connect20.magentocommerce.com/community/Dhl_LocationFinder
-- [extension on GitLab](https://git.netresearch.de/dhl/location-finder)
-- [direct download link](http://connect.magentocommerce.com/community/get/Dhl_LocationFinder-1.0.1.tgz)
+- version: 1.0.2
+- [extension on GitLab](https://git.netresearch.de/dhl/location-finder-m1)
+- [extension on Magento Connect](https://www.magentocommerce.com/magento-connect/dhl-location-finder-standortsuche.html)
+  - extension key: Dhl_LocationFinder
+  - Magento Connect 2.0 extension key: http://connect20.magentocommerce.com/community/Dhl_LocationFinder
+  - [direct download link](http://connect20.magentocommerce.com/community/Dhl_LocationFinder/1.0.2/Dhl_LocationFinder-1.0.2.tgz)
 
 Description
 -----------
@@ -35,7 +35,7 @@ Installation Instructions
 2. Clear the cache, logout from the admin panel and then login again.
 
 More information on configuration and integration into custom themes can be found
-in the documentation.
+in the [documentation](https://www.netresearch.de/fileadmin/user_upload/partner-dhl/downloads/location-finder/DHL_Parcel_Shop_Finder_EN.pdf).
 
 Uninstallation
 --------------
