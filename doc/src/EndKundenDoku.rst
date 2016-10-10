@@ -170,6 +170,7 @@ Text:
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}
     {{depend company}}{{var company}}{{/depend}}
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}{{/depend}}
     {{if street1}}{{var street1}}{{/if}}
     {{depend street2}}{{var street2}}{{/depend}}
@@ -186,7 +187,8 @@ Text One Line:
 
     {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}{{depend dhl_post_number}},
-    Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station}}, {{var dhl_station}}{{/depend}},
+    Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
+    {{depend dhl_station}}, {{var dhl_station}}{{/depend}},
     {{var street}}, {{var city}}, {{var region}} {{var postcode}}, {{var country}}
 
 HTML:
@@ -197,6 +199,7 @@ HTML:
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>
     {{depend company}}{{var company}}<br />{{/depend}}
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}<br />{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}<br />{{/depend}}
     {{if street1}}{{var street1}}<br />{{/if}}
     {{depend street2}}{{var street2}}<br />{{/depend}}
@@ -215,6 +218,7 @@ PDF:
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}|
     {{depend company}}{{var company}}|{{/depend}}
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
     {{if street1}}{{var street1}}{{/if}}
     {{depend street2}}{{var street2}}|{{/depend}}
@@ -230,7 +234,7 @@ JavaScript Template:
 ::
 
     #{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number},
-    #{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
+    #{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
     #{postcode}<br/>#{country_id}<br/>T: #{telephone}<br/>F: #{fax}
 
 .. raw:: pdf

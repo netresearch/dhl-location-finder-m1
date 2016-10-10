@@ -38,6 +38,12 @@
 class Dhl_LocationFinder_Test_Model_ObserverTest
     extends EcomDev_PHPUnit_Test_Case
 {
+    protected function setUp()
+    {
+        $sessionMock = $this->getModelMock('core/session', array('init'));
+        $this->replaceByMock('singleton', 'core/session', $sessionMock);
+    }
+
     /**
      * @test
      * @loadFixture
@@ -72,27 +78,34 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
 
     /**
      * @test
+     * @loadFixture ../../ConfigTest/fixtures/ConfigTest
      */
     public function appendLocationFinderToShipping()
     {
+        $this->setCurrentStore('store_one');
+
+        $originalMarkup = '<div id="checkout-step-shipping" class="step">foo</div>';
+
         $blockMock = $this->getBlockMock('checkout/onepage_shipping', array('getCheckout'), false, array(), '', false);
-        $blockMock->expects($this->any())->method('getCheckout')->will($this->returnValue(new Varien_Object()));
         $this->replaceByMock('block', 'checkout/onepage_shipping', $blockMock);
 
-        $observer  = new Varien_Event_Observer();
         $block     = Mage::app()->getLayout()->createBlock('checkout/onepage_shipping');
         $transport = new Varien_Object();
-        $transport->setData('html', '');
+        $transport->setData('html', $originalMarkup);
 
+        $observer = new Varien_Event_Observer();
         $observer->setData('block', $block);
         $observer->setData('transport', $transport);
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
-        $observerModel->appendLocationFinderToShipping($observer);
+        // before observer, shipping address does not contain map
+        $this->assertNotContains('map-canvas', $transport->getData('html'));
 
-        $changedObject = $observer->getData('transport');
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver->appendLocationFinderToShipping($observer);
 
-        $this->assertInternalType('string', $changedObject['html']);
+        // after observer, shipping address contains map
+        $this->assertContains('map-canvas', $transport->getData('html'));
+        $this->assertStringStartsWith($originalMarkup, $transport->getData('html'));
     }
 
     /**
@@ -100,65 +113,164 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
      */
     public function saveDHLFieldsInQuote()
     {
+        $stationType = 'Station Type';
+        $stationId = '123';
+        $station = "$stationType $stationId";
+        $postNumber = 'Post Number';
+
         $postData = array(
-            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE => 'Station Type',
-            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => 'Station Number',
-            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER => 'Post Number',
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE   => $stationType,
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => $station,
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER    => $postNumber,
         );
         Mage::app()->getRequest()->setParam('shipping', $postData);
 
-        $observer = new Varien_Event_Observer();
-        $quote    = new Varien_Object();
+        $quote = new Varien_Object();
         $quote->setData('shipping_address', Mage::getModel('sales/quote_address'));
 
+        $observer = new Varien_Event_Observer();
         $observer->setData('quote', $quote);
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
-        $observerModel->saveDHLFieldsInQuote($observer);
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver->saveDHLFieldsInQuote($observer);
 
         /** @var Mage_Sales_Model_Quote_Address $address */
-        $address = $quote->getShippingAddress();
-        foreach ($postData as $attributeCode => $value) {
-            $this->assertArrayHasKey($attributeCode, $address->getData());
-            $this->assertEquals($value, $address->getData($attributeCode));
-        }
+        $address = $quote->getData('shipping_address');
+        $this->assertEquals(
+            $stationType,
+            $address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE)
+        );
+        $this->assertEquals(
+            $stationId,
+            $address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER)
+        );
+        $this->assertEquals(
+            $postNumber,
+            $address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER)
+        );
+    }
+
+    /**
+     * Shift data from customer address to postal facility transport object
+     *
+     * @test
+     */
+    public function loadPostalFacilityFields()
+    {
+        $stationType = 'Station Type';
+        $stationId = '123';
+        $station = "$stationType $stationId";
+        $postNumber = 'Post Number';
+
+        $postalFacility = new Varien_Object();
+
+        $addressData = array(
+            'dhl_station_type' => $stationType,
+            'dhl_post_number'  => $postNumber,
+            'dhl_station'      => $station,
+        );
+        $address = new Varien_Object($addressData);
+
+        $observer = new Varien_Event_Observer();
+        $observer->setData('postal_facility', $postalFacility);
+        $observer->setData('customer_address', $address);
+
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver->loadPostalFacilityFields($observer);
+
+        $this->assertArrayHasKey('shop_type', $postalFacility->getData());
+        $this->assertEquals($stationType, $postalFacility->getData('shop_type'));
+        $this->assertArrayHasKey('shop_number', $postalFacility->getData());
+        $this->assertEquals($stationId, $postalFacility->getData('shop_number'));
+        $this->assertArrayHasKey('post_number', $postalFacility->getData());
+        $this->assertEquals($postNumber, $postalFacility->getData('post_number'));
+    }
+
+    /**
+     * Shift data from customer address to postal facility transport object
+     *
+     * @test
+     */
+    public function loadPostalFacilityFieldsAlreadySet()
+    {
+        $stationType = 'Station Type';
+        $stationId = '123';
+        $station = "$stationType $stationId";
+        $postNumber = 'Post Number';
+
+        $postalFacilityData = array('foo' => 'bar');
+        $postalFacility = new Varien_Object($postalFacilityData);
+
+        $addressData = array(
+            'dhl_station_type' => $stationType,
+            'dhl_post_number'  => $postNumber,
+            'dhl_station'      => $station,
+        );
+        $address = new Varien_Object($addressData);
+
+        $observer = new Varien_Event_Observer();
+        $observer->setData('postal_facility', $postalFacility);
+        $observer->setData('customer_address', $address);
+
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver->loadPostalFacilityFields($observer);
+
+        $this->assertArrayNotHasKey('shop_type', $postalFacility->getData());
+        $this->assertArrayNotHasKey('shop_number', $postalFacility->getData());
+        $this->assertArrayNotHasKey('post_number', $postalFacility->getData());
     }
 
     /**
      * @test
      */
-    public function saveDHLFieldsInPostalFacility()
+    public function loadPostalFacilityFieldsNoStation()
     {
         $observer       = new Varien_Event_Observer();
-        $postalFacility = $quoteAddress = new Varien_Object();
-
-        $quoteAddress->setData(
-            array(
-                'dhl_station_type' => 'Stationtyp',
-                'dhl_post_number'  => 'Postnumber',
-                'dhl_station'      => 'Station'
-            )
-        );
+        $postalFacility = new Varien_Object();
+        $address        = new Varien_Object();
 
         $observer->setData('postal_facility', $postalFacility);
-        $observer->setData('quote_address', $quoteAddress);
+        $observer->setData('customer_address', $address);
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
-        $observerModel->saveDHLFieldsInPostalFacility($observer);
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver->loadPostalFacilityFields($observer);
 
-        $changedObject = $observer->getData('postal_facility')->getData();
-
-        $this->assertArrayHasKey('shop_type', $changedObject);
-
-        // negative case
-        $observer->getData('quote_address')->setData('dhl_station_type', false);
-        $observer->setData('postal_facility', new Varien_Object());
-
-        $observerModel->saveDHLFieldsInPostalFacility($observer);
-
-        $changedObject = $observer->getData('postal_facility')->getData();
-
-        $this->assertArrayNotHasKey('shop_type', $changedObject);
+        $this->assertArrayNotHasKey('shop_type', $postalFacility->getData());
+        $this->assertArrayNotHasKey('shop_number', $postalFacility->getData());
+        $this->assertArrayNotHasKey('post_number', $postalFacility->getData());
     }
 
+    /**
+     * Shift data from postal facility transport object to customer address
+     *
+     * @test
+     */
+    public function updatePostalFacilityFields()
+    {
+        $addressMock = $this->getModelMock('sales/order_address', array('save'));
+        $this->replaceByMock('model', 'sales/order_address', $addressMock);
+
+        $postalFacilityData = array(
+            'shop_type'   => 'Stationtyp',
+            'post_number' => 'Postnumber',
+            'shop_number' => 'DHL Station'
+        );
+        $postalFacility = new Varien_Object($postalFacilityData);
+
+        $orderAddress = Mage::getModel('sales/order_address');
+
+        $observer = new Varien_Event_Observer();
+        $observer->setData('postal_facility', $postalFacility);
+        $observer->setData('customer_address', $orderAddress);
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->updatePostalFacilityFields($observer);
+
+        $this->assertArrayHasKey('dhl_station_type', $orderAddress->getData());
+        $this->assertEquals($postalFacilityData['shop_type'], $orderAddress->getData('dhl_station_type'));
+        $this->assertArrayHasKey('dhl_station', $orderAddress->getData());
+        $this->assertEquals($postalFacilityData['shop_number'], $orderAddress->getData('dhl_station'));
+        $this->assertArrayHasKey('dhl_post_number', $orderAddress->getData());
+        $this->assertEquals($postalFacilityData['post_number'], $orderAddress->getData('dhl_post_number'));
+    }
 }

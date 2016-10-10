@@ -39,4 +39,7 @@
 "Show postOffice","Zeige Postfilialen an."
 "Show parcelShop","Zeige Paketshops an."
 "Show:","Anzeigen:"
-"The post number is your personal identification code for DHL. Once using a DHL service you should use your post number for identification. The post number is mandatory if you want to use the Packstation.","Die Postnummer ist ihre persönliche Kundennummer bei DHL. Wichtig ist, dass Sie diese immer angeben, wenn Sie einen DHL Service nutzen möchten. Vorausgesetzt wird diese Nummer bei der Nutzung der Packstation."
+"The post number is your personal identification code for DHL. Once using a DHL service you should use your post number for identification. The post number is mandatory if you want to use the Packstation or a Post office.","Die Postnummer ist ihre persönliche Kundennummer bei DHL. Wichtig ist, dass Sie diese immer angeben, wenn Sie einen DHL Service nutzen möchten. Vorausgesetzt wird diese Nummer bei der Nutzung der Packstation oder einer Postfiliale."
+"packStation","DHL Packstation"
+"parcelShop","DHL Paketshop"
+"postOffice","DHL Postfiliale"
