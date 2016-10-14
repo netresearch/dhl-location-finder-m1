@@ -27,18 +27,28 @@ ChangeLog
 
 .. list-table::
    :header-rows: 1
-   :widths: 1 1 6
+   :widths: 2 2 10
 
    * - **Revision**
      - **Date**
      - **Description**
 
+   * - 1.0.2
+     - 17.10.2016
+     - Bugfixes:
+
+       * Post account number is now properly required in checkout if a packing station is selected
+
+       Improvements:
+
+       * Add compatibility for address updates performed with the new DHL Versenden extension based on GKP2.0 API
+
    * - 1.0.1
      - 27.07.2016
      - Features:
 
-       * Select "Shipping per DHl Station" in checkout process, in the shipping address step
-       * Show a Google Map for searching a dhl station
+       * Select "Shipping per DHL Station" in checkout process, in the shipping address step
+       * Show a Google Map for searching a DHL station
        * Show stations according to the selected address
        * Fill the shipping address with customer data and the address data from the chosen station
        * Save this Data into the order address and show them:
