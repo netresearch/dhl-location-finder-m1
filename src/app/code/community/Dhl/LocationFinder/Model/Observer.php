@@ -114,16 +114,22 @@ class Dhl_LocationFinder_Model_Observer
             if (isset($shippingData[$stationIdCode])) {
                 $stationId = preg_filter('/^.*([\d]{3})$/', '$1', $shippingData[$stationIdCode]);
                 $shippingAddress->setData($stationIdCode, $stationId);
+            } elseif ($shippingAddress->getData($stationIdCode)) {
+                $shippingAddress->setData($stationIdCode, null);
             }
 
             $postNumberCode = Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER;
             if (isset($shippingData[$postNumberCode])) {
                 $shippingAddress->setData($postNumberCode, $shippingData[$postNumberCode]);
+            } elseif ($shippingAddress->getData($postNumberCode)) {
+                $shippingAddress->setData($postNumberCode, null);
             }
 
             $stationTypeCode = Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE;
             if (isset($shippingData[$stationTypeCode])) {
                 $shippingAddress->setData($stationTypeCode, $shippingData[$stationTypeCode]);
+            } elseif ($shippingAddress->getData($stationTypeCode)) {
+                $shippingAddress->setData($stationTypeCode, null);
             }
         }
     }
