@@ -105,7 +105,7 @@ After the installation, go to the configuration area:
 
     System → Configuration → Sales → Checkout
 
-You will find a new config group "DHL Parcelshop Finder" there which contains all the relevant configuration.
+You will find a new config group "DHL Locationfinder" there which contains all the relevant configuration.
 
 .. list-table:: Configuration settings
    :widths: 4 2 6
@@ -342,9 +342,9 @@ Magento® Checkout: Shipping address
 -----------------------------------
 
 - If you are already logged in and you see the dropdown with your stored addresses, please select *New address*
-- Activate the checkbox *Shipping per Locationfinder*
+- Activate the checkbox *Shipping to Packstation or post office*
 - When the checkbox is activated, the additional fields *DHL Post Number* and *DHL Station* and the button *Search Pack Station / Post Office* become visible
-- Open the DHL Location Map by clicking *Search Pack Station / Post Office*
+- Open the DHL Location Map by clicking *Search for Packstation/ Post office*
 
 .. image:: images/en-checkout-step-002-checkbox-locationfinder.png
    :width: 16.5cm
@@ -380,7 +380,7 @@ DHL Location Map: Additional information and selecting a location
 - With a *single click* on a location icon you get additional information about that location
 - For Pack Stations: Pack Station number and address
 - For Post Offices and Parcel Shops: name, address, opening hours, services
-- By clicking the hyperlink *Use this station* the location can be selected; the DHL Location map will be closed afterwards
+- By clicking the hyperlink *Choose this drop-off location* the location can be selected; the DHL Location map will be closed afterwards
 - With a *double-click* on the location icon you can directly select the location. The map will be closed immediately.
 
 .. image:: images/en-checkout-step-002-shipping-information.png
@@ -394,7 +394,7 @@ Magento® Checkout: Shipping address - check your data
 -----------------------------------------------------
 
 - The location data for the *Pack Station*, *Post Office* or *Parcel Shop* have been entered now. You cannot edit these fields manually
-- To select another DHL location, open the DHL Location Map again by clicking *Search Pack Station / Post Office*
+- To select another DHL location, open the DHL Location Map again by clicking *Search for Packstation/ Post office*
 - If you have selected a *Pack Station*, you must enter your personal *DHL Post Number* (required field)
 - When selecting a *Post Office* or *Parcel Shop*, your personal *DHL Postnummer* is not required (but can still be entered)
 - Continue the checkout process as usual (Magento® standard behaviour)
@@ -406,7 +406,7 @@ Magento® Checkout: Additional hints
 -----------------------------------
 
 - The addresses of *Pack Stations*, *Post Offices*, or *Parcel Shops* cannot be stored in the customer's address book
-- If you decide to enter your billing address in the checkout step *Shipping address*, please disable the checkbox *Shipping per Locationfinder* first
+- If you decide to enter your billing address in the checkout step *Shipping address*, please disable the checkbox *Shipping to Packstation or post office* first
 
 .. raw:: pdf
 

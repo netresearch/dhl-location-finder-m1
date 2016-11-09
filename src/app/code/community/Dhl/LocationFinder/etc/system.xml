@@ -49,7 +49,7 @@
                         </map_api_key>
                         <map_results_limit translate="label" module="dhl_locationfinder">
                             <label>Limit Results</label>
-                            <comment>Display no more than the given number of DHL stations on the map.</comment>
+                            <comment>Display no more than the given number of DHL locations on the map.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>dhl_locationfinder/adminhtml_system_config_source_limit</source_model>
                             <sort_order>20</sort_order>

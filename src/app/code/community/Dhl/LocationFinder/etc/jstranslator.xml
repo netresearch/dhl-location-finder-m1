@@ -27,6 +27,6 @@
 -->
 <jstranslator>
     <choose_store translate="message" module="dhl_locationfinder">
-        <message>Use this station</message>
+        <message>Choose this drop-off location</message>
     </choose_store>
 </jstranslator>

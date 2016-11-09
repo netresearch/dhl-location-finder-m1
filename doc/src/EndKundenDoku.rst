@@ -22,7 +22,7 @@
 DHL Lieferadressen: Adress-Suche von Packstationen und Filialen
 ===============================================================
 
-Das Modul *DHL_LocationFinder* für Magento® ermöglicht es, DHL Abholstationen (Packstationen, Postfilialen und Paketshops) im
+Das Modul *DHL_LocationFinder* für Magento® ermöglicht es, DHL Abholorte (Packstationen, Postfilialen und Paketshops) im
 Magento® Checkout zu wählen und diese als Lieferadresse zu übernehmen. Das Modul nutzt dazu den von DHL bereitgestellten
 Service Standortsuche API Europa.
 
@@ -103,7 +103,7 @@ Modulkonfiguration
 
     System → Konfiguration → Verkäufe → Zur Kasse
 
-Dort finden Sie einen neuen Abschnitt "DHL Standortsuche" mit den für das Modul
+Dort finden Sie einen neuen Abschnitt "DHL Standort-Finder" mit den für das Modul
 relevanten Konfigurationseinstellungen.
 
 .. list-table:: Konfigurationseinstellungen
@@ -115,7 +115,7 @@ relevanten Konfigurationseinstellungen.
      - Kommentar
    * - Google Maps API Key
      - Pflichtfeld
-     - Zur Anzeige der DHL Abholstationen im Checkout wird die Google Maps API
+     - Zur Anzeige der DHL Abholorte im Checkout wird die Google Maps API
        verwendet, die einen API Key erfordert.
    * - Suchergebnisse beschränken
      - optional
@@ -257,7 +257,7 @@ Derzeit werden folgende Länder durch Standortsuche API Europa unterstützt:
 - Slowakei
 - Tschechien
 
-Somit sind bei der Standortsuche im Checkout auch nur diese Länder verfügbar (oder weniger, je nach
+Somit sind beim Standort-Finder im Checkout auch nur diese Länder verfügbar (oder weniger, je nach
 Shop-Konfiguration).
 
 Sprachunterstützung
@@ -348,7 +348,7 @@ Magento® Checkout: Lieferadresse
 --------------------------------
 
 - Wenn Sie bereits mit Ihrem Kundenkonto eingeloggt sind und Ihr Adressbuch-Dropdown zur Vefügung steht, wählen Sie die Option *Neue Adresse*
-- Aktivieren Sie die Checkbox *Lieferung an eine DHL Abholstation*
+- Aktivieren Sie die Checkbox *Lieferung an einen Abholort*
 - Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Station* sowie der Button *Packstation / Postfiliale suchen*
 - Per Klick auf den Button *Packstation / Postfiliale suchen* öffnen Sie die DHL Location Map
 
@@ -411,7 +411,7 @@ Magento® Checkout: Zusätzliche Hinweise
 ---------------------------------------
 
 - Adressen von *Packstationen*, *Postfilialen* oder *Paketshops* können nicht im Adressbuch Ihres Kundenkontos gespeichert werden
-- Falls Sie im Checkout-Schritt *Lieferadresse* doch Ihre Rechnungsadresse verwenden möchten, deaktivieren Sie zuvor die Checkbox *Lieferung an eine DHL Abholstation*
+- Falls Sie im Checkout-Schritt *Lieferadresse* doch Ihre Rechnungsadresse verwenden möchten, deaktivieren Sie zuvor die Checkbox *Lieferung an einen Abholort*
 
 .. raw:: pdf
 

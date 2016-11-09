@@ -35,13 +35,13 @@ $markerIcons = $this->getMarkerIcons();
     />
 
     <input type="checkbox" name="shipping[useLocationFinder]" id="shipping:useLocationFinder" value=""
-           title="<?php echo $this->__('Shipping per Locationfinder'); ?>"
+           title="<?php echo $this->__('Shipping to Packstation or post office'); ?>"
            onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
-    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping per Locationfinder'); ?></label>
+    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping to Packstation or post office'); ?></label>
 
     <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap('map-canvas');"
        class="locationfinder-opener button">
-        <?php echo $this->__('Search packing station / post office'); ?>
+        <?php echo $this->__('Search for Packstation / Post office'); ?>
     </a>
 </div>
 
