@@ -381,10 +381,14 @@
     position: relative;
 }
 
+#dhl_locationfinder_trigger > img {
+    margin-bottom: 10px;
+}
+
 #dhl_locationfinder_trigger .locationfinder-opener {
     display: none;
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
 }
 
@@ -481,11 +485,6 @@
         height: 445px;
     }
 
-    #dhl_locationfinder_trigger .locationfinder-opener {
-        margin: 10px 110px 0 0;
-        position: relative;
-    }
-
     .map-loading {
         left: 40%;
     }
@@ -518,6 +517,11 @@
 
     #sf-map-wrapper #map-canvas {
         height: 365px;
+    }
+
+    #dhl_locationfinder_trigger .locationfinder-opener {
+        margin: 10px 110px 0 0;
+        position: relative;
     }
 }
 

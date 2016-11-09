@@ -11,7 +11,7 @@
    +-------------------------+-------------------------+
 
 .. header::
-   .. image:: images/dhl.jpg
+   .. image:: images/DHL_rgb.jpg
       :width: 4.5cm
       :height: 1.2cm
       :align: right

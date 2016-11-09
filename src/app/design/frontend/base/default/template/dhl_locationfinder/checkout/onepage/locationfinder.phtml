@@ -28,6 +28,12 @@ $markerIcons = $this->getMarkerIcons();
 ?>
 <?php // Container with CTA Elements ?>
 <div id="dhl_locationfinder_trigger" class="control">
+    <img
+        src="<?php echo $this->getSkinUrl('images/dhl_locationfinder/logo.png') ?>"
+        alt="<?php echo $this->__('DHL Additional Services') ?>"
+        title="<?php echo $this->__('DHL Additional Services') ?>"
+    />
+
     <input type="checkbox" name="shipping[useLocationFinder]" id="shipping:useLocationFinder" value=""
            title="<?php echo $this->__('Shipping per Locationfinder'); ?>"
            onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
