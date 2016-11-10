@@ -234,12 +234,9 @@ JavaScript Template:
 ::
 
     #{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number},
-    #{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
+    #{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
+    {dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
     #{postcode}<br/>#{country_id}<br/>T: #{telephone}<br/>F: #{fax}
-
-.. raw:: pdf
-
-   PageBreak
 
 Hinweise zur Verwendung des Moduls
 ==================================
@@ -341,7 +338,7 @@ Magento® Checkout
 - Geben Sie im Checkout Schritt *Rechnungsadresse* Ihre Rechnungsadresse an
 - Wählen Sie die Option *An andere Adresse verschicken* aus und klicken Sie dann auf *Weiter*
 
-.. image:: images/en-checkout-step-001.png
+.. image:: images/de/checkout-step-001.png
    :width: 5.0cm
 
 Magento® Checkout: Lieferadresse
@@ -352,7 +349,7 @@ Magento® Checkout: Lieferadresse
 - Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Station* sowie der Button *Packstation / Postfiliale suchen*
 - Per Klick auf den Button *Packstation / Postfiliale suchen* öffnen Sie die DHL Location Map
 
-.. image:: images/en-checkout-step-002-checkbox-locationfinder.png
+.. image:: images/de/checkout-step-002-checkbox-locationfinder.png
    :width: 16.5cm
 
 DHL Location Map: Initiales Anzeigeergebnis und neue Standortsuche
@@ -364,7 +361,7 @@ DHL Location Map: Initiales Anzeigeergebnis und neue Standortsuche
 - Für eine erfolgreiche Suche benötigen Sie mind. die Angabe *Land, Stadt* oder erweitert *Land, Stadt, PLZ* oder *Land, Stadt, PLZ, Straße ggf. Hausnummer*
 - Das Dropdown-Feld *Land* richtet sich nach Ihrer Systemkonfiguration für ``general_country_default`` und ``general_country_allow``
 
-.. image:: images/en-checkout-step-002-map-invoiceaddress.png
+.. image:: images/de/checkout-step-002-map-invoiceaddress.png
    :width: 16.5cm
 
 DHL Location Map: Mögliche Filterung des Anzeigeergebnisses
@@ -372,7 +369,7 @@ DHL Location Map: Mögliche Filterung des Anzeigeergebnisses
 
 - Durch Aktivierung oder Deaktivierung der Checkboxen können Sie das Anzeigeergebnis nach *Packstationen*, *Postfilialen* oder *Paketshops* filtern
 
-.. image:: images/en-checkout-step-002-map-invoiceaddress-filtered.png
+.. image:: images/de/checkout-step-002-map-invoiceaddress-filtered.png
    :width: 16.5cm
 
 .. raw:: pdf
@@ -388,7 +385,7 @@ DHL Location Map: Zusätzliche Informationen und Übernahme des Standorts
 - Mit einem Klick auf den Textlink *Diesen Standort verwenden* können Sie den Standort übernehmen; die DHL Location Map schließt sich danach
 - Per *Doppelklick* auf ein Standort Icon können Sie den Standort direkt übernehmen, die Map schließt sich sofort
 
-.. image:: images/en-checkout-step-002-shipping-information.png
+.. image:: images/de/checkout-step-002-shipping-information.png
    :width: 16.5cm
 
 .. raw:: pdf
@@ -404,7 +401,7 @@ Magento® Checkout: Lieferadresse - Überprüfung Ihrer Angaben
 - Bei Auswahl einer *Postfiliale* oder eines *Paketshops* ist die Angabe der persönlichen *DHL Postnummer* nicht erforderlich (kann aber trotzdem angegeben werden)
 - Setzen Sie den Checkout wie üblich fort (Magento®-Standardverhalten)
 
-.. image:: images/en-checkout-step-003-packstation-data.png
+.. image:: images/de/checkout-step-003-packstation-data.png
    :width: 16.5cm
 
 Magento® Checkout: Zusätzliche Hinweise

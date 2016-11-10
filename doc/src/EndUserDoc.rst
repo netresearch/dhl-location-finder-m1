@@ -335,7 +335,7 @@ Magento® Checkout
 - In the checkout step *Billing address*, enter your billing address
 - Select *Ship to different address* and click *Continue*
 
-.. image:: images/en-checkout-step-001.png
+.. image:: images/en/checkout-step-001.png
    :width: 5.0cm
 
 Magento® Checkout: Shipping address
@@ -346,7 +346,7 @@ Magento® Checkout: Shipping address
 - When the checkbox is activated, the additional fields *DHL Post Number* and *DHL Station* and the button *Search Pack Station / Post Office* become visible
 - Open the DHL Location Map by clicking *Search for Packstation/ Post office*
 
-.. image:: images/en-checkout-step-002-checkbox-locationfinder.png
+.. image:: images/en/checkout-step-002-checkbox-locationfinder.png
    :width: 16.5cm
 
 DHL Location Map: Initial result and new location search
@@ -359,7 +359,7 @@ DHL Location Map: Initial result and new location search
   either *country, city, ZIP* or *country, city, ZIP, street, and house number*
 - The dropdown field *country* depends on your system configuration for ``general_country_default`` and ``general_country_allow``
 
-.. image:: images/en-checkout-step-002-map-invoiceaddress.png
+.. image:: images/en/checkout-step-002-map-invoiceaddress.png
    :width: 16.5cm
 
 DHL Location Map: Filtering the search results
@@ -367,7 +367,7 @@ DHL Location Map: Filtering the search results
 
 - By enabling or disabling the checkboxes you can filter the result to show only *Pack Stations*, *Post Offices* or *Parcel Shops*
 
-.. image:: images/en-checkout-step-002-map-invoiceaddress-filtered.png
+.. image:: images/en/checkout-step-002-map-invoiceaddress-filtered.png
    :width: 16.5cm
 
 .. raw:: pdf
@@ -383,7 +383,7 @@ DHL Location Map: Additional information and selecting a location
 - By clicking the hyperlink *Choose this drop-off location* the location can be selected; the DHL Location map will be closed afterwards
 - With a *double-click* on the location icon you can directly select the location. The map will be closed immediately.
 
-.. image:: images/en-checkout-step-002-shipping-information.png
+.. image:: images/en/checkout-step-002-shipping-information.png
    :width: 16.5cm
 
 .. raw:: pdf
@@ -399,7 +399,7 @@ Magento® Checkout: Shipping address - check your data
 - When selecting a *Post Office* or *Parcel Shop*, your personal *DHL Postnummer* is not required (but can still be entered)
 - Continue the checkout process as usual (Magento® standard behaviour)
 
-.. image:: images/en-checkout-step-003-packstation-data.png
+.. image:: images/en/checkout-step-003-packstation-data.png
    :width: 16.5cm
 
 Magento® Checkout: Additional hints
