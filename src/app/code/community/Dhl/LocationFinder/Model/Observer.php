@@ -191,4 +191,17 @@ class Dhl_LocationFinder_Model_Observer
 
         $address->save();
     }
+
+    /**
+     * Translate the station type string
+     * - event: customer_address_format
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function translateStationtype(Varien_Event_Observer $observer)
+    {
+        $address = $observer->getData('address');
+        $stationType = Mage::helper('dhl_locationfinder/data')->__($address->getData('dhl_station_type'));
+        $address->setData('dhl_station_type', $stationType);
+    }
 }

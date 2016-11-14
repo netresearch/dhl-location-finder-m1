@@ -111,6 +111,15 @@
                     </update_postal_facility_fields>
                 </observers>
             </dhl_versenden_announce_postal_facility>
+            <customer_address_format>
+                <observers>
+                    <dhl_locationfinder_translate_address>
+                        <class>dhl_locationfinder/observer</class>
+                        <method>translateStationtype</method>
+                        <type>singleton</type>
+                    </dhl_locationfinder_translate_address>
+                </observers>
+            </customer_address_format>
         </events>
     </global>
     <frontend>
