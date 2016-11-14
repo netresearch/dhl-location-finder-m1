@@ -146,7 +146,7 @@ $markerIcons = $this->getMarkerIcons();
             <div class="input-box">
                 <input type="text" name="shipping[dhl_post_number]" value=""
                        title="<?php echo $this->__('DHL Post Number'); ?>"
-                       class="input-text" id="shipping:dhl_post_number"
+                       class="input-text validate-length minimum-length-6" id="shipping:dhl_post_number"
                        placeholder="<?php echo $this->__('DHL Post Number'); ?>" disabled/>
             </div>
         </div>
