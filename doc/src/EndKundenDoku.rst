@@ -156,6 +156,7 @@ die Adress-Attribute manuell in Ihrer Systemkonfiguration ergänzen, z.B. so:
 ::
 
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
 
 .. raw:: pdf

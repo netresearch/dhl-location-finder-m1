@@ -154,6 +154,7 @@ system configuration, e.g. like this:
 ::
 
     {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
 
 .. raw:: pdf
