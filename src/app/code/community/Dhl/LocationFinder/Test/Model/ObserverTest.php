@@ -273,4 +273,28 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $this->assertArrayHasKey('dhl_post_number', $orderAddress->getData());
         $this->assertEquals($postalFacilityData['post_number'], $orderAddress->getData('dhl_post_number'));
     }
+
+    /**
+     * Test translation of internal packstation type to human friendly string
+     *
+    */
+    public function translateStationtype()
+    {
+        $observer = new Varien_Event_Observer(
+            array('address' => new Varien_Object(array('dhl_station_type' => 'packStation')))
+        );
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->translateStationtype($observer);
+        $this->assertEquals('DHL Packstation', $observer->getData('address')->getDhlStationType());
+
+        $observer->getAddress()->setDhlStationType('parcelShop');
+        $observerModel->translateStationtype($observer);
+        $this->assertEquals('DHL Paketshop', $observer->getData('address')->getDhlStationType());
+
+        $observer->getAddress()->setDhlStationType('postOffice');
+        $observerModel->translateStationtype($observer);
+        $this->assertEquals('DHL Postfiliale', $observer->getData('address')->getDhlStationType());
+
+    }
 }
