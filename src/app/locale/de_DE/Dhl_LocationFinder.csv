@@ -42,5 +42,6 @@
 "packStation","DHL Packstation"
 "parcelShop","DHL Paketshop"
 "postOffice","DHL Postfiliale"
+"DHL Additional Services","DHL Additional Services"
 "Shipping to Packstation or post office","Lieferung an einen DHL Abholort"
 "Dhl_LocationFinder::Search","Suchen"
