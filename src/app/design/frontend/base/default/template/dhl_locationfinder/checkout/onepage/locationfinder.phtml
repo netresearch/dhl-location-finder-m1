@@ -37,7 +37,7 @@ $markerIcons = $this->getMarkerIcons();
     <input type="checkbox" name="shipping[useLocationFinder]" id="shipping:useLocationFinder" value=""
            title="<?php echo $this->__('Shipping to Packstation or post office'); ?>"
            onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
-    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping to Packstation or post office'); ?></label>
+    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping to Parcelstation or post office'); ?></label>
 
     <a href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap('map-canvas');"
        class="locationfinder-opener button">
@@ -137,17 +137,16 @@ $markerIcons = $this->getMarkerIcons();
     <li class="fields">
         <div class="field">
             <label for="shipping:dhl_post_number">
-                <?php echo $this->__('DHL Post Number'); ?>
-                <i class="tooltip-inner"
-                   data-tooltip="<?php echo $this->__('The post number is your personal identification code for DHL. Once using a DHL service you should use your post number for identification. The post number is mandatory if you want to use the Packstation or a Post office.');?>">
-                    ?
-                </i>
+                <?php echo $this->__('DHL Postnumber'); ?>
+                <div class="service-tooltip">
+                    <div><?php echo $this->__('The Postnummer is your personal identification code that you receive with your registration at DHL.The post number is mandatory if you want to use the Packstation or a Post office.');?></div>
+                </div>
             </label>
             <div class="input-box">
                 <input type="text" name="shipping[dhl_post_number]" value=""
                        title="<?php echo $this->__('DHL Post Number'); ?>"
                        class="input-text validate-length minimum-length-6" id="shipping:dhl_post_number"
-                       placeholder="<?php echo $this->__('DHL Post Number'); ?>" disabled/>
+                       placeholder="<?php echo $this->__('DHL Postnumber'); ?>" disabled/>
             </div>
         </div>
         <div class="field">
