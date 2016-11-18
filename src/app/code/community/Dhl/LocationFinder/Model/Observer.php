@@ -204,4 +204,21 @@ class Dhl_LocationFinder_Model_Observer
         $stationType = Mage::helper('dhl_locationfinder/data')->__($address->getData('dhl_station_type'));
         $address->setData('dhl_station_type', $stationType);
     }
+
+
+    /**
+     * Add the Postnumber Label
+     * - event: customer_address_format
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function addPostNumberLabel(Varien_Event_Observer $observer)
+    {
+        $address = $observer->getData('address');
+        if ($address->getData('dhl_post_number')) {
+            $postNumberLabel = Mage::helper('dhl_locationfinder/data')->__('Postnumber: ');
+            $postNumberString = $postNumberLabel . $address->getData('dhl_post_number');
+            $address->setData('dhl_post_number', $postNumberString);
+        }
+    }
 }
