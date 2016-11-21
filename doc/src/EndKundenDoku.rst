@@ -347,7 +347,7 @@ Magento® Checkout: Lieferadresse
 
 - Wenn Sie bereits mit Ihrem Kundenkonto eingeloggt sind und Ihr Adressbuch-Dropdown zur Vefügung steht, wählen Sie die Option *Neue Adresse*
 - Aktivieren Sie die Checkbox *Lieferung an einen Abholort*
-- Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Station* sowie der Button *Packstation / Postfiliale suchen*
+- Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Abholort* sowie der Button *Packstation / Postfiliale suchen*
 - Per Klick auf den Button *Packstation / Postfiliale suchen* öffnen Sie die DHL Location Map
 
 .. image:: images/de/checkout-step-002-checkbox-locationfinder.png

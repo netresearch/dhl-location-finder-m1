@@ -238,7 +238,7 @@ DhlLocationFinder.prototype = {
                                     'data-zipCode="' + details.zipCode + '" ' +
                                     'data-type="' + details.type + '" ' +
                                     'data-station="' + details.station + '" >' +
-                                    Translator.translate("Choose this drop-off location") +
+                                    Translator.translate("Choose this pick-up location") +
                                     '</a>' +
                                     '</p>';
 

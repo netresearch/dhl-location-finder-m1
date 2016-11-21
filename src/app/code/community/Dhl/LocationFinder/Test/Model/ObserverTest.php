@@ -269,7 +269,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $postalFacilityData = array(
             'shop_type'   => 'Stationtyp',
             'post_number' => 'Postnumber',
-            'shop_number' => 'DHL Station'
+            'shop_number' => 'DHL pick-up location'
         );
         $postalFacility     = new Varien_Object($postalFacilityData);
 

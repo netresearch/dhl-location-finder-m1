@@ -47,7 +47,7 @@ ChangeLog
      - 27.07.2016
      - Features:
 
-       * Select "Shipping per DHL Station" in checkout process, in the shipping address step
+       * Select "Shipping to parcelstation or post office" in checkout process, in the shipping address step
        * Show a Google Map for searching a DHL station
        * Show stations according to the selected address
        * Fill the shipping address with customer data and the address data from the chosen station
