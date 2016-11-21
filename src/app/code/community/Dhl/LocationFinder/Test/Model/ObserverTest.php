@@ -114,9 +114,9 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
     public function saveDHLFieldsInQuote()
     {
         $stationType = 'Station Type';
-        $stationId = '123';
-        $station = "$stationType $stationId";
-        $postNumber = 'Post Number';
+        $stationId   = '123';
+        $station     = "$stationType $stationId";
+        $postNumber  = 'Post Number';
 
         $postData = array(
             Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE   => $stationType,
@@ -148,6 +148,22 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             $postNumber,
             $address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER)
         );
+
+        // Delete fields from object if deleted afterwards
+        $postData = array(
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE   => null,
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER => null,
+            Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER    => null,
+        );
+        Mage::app()->getRequest()->setParam('shipping', $postData);
+
+        $dhlObserver->saveDHLFieldsInQuote($observer);
+
+        /** @var Mage_Sales_Model_Quote_Address $address */
+        $address = $quote->getData('shipping_address');
+        $this->assertEmpty($address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_TYPE));
+        $this->assertEmpty($address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_STATION_NUMBER));
+        $this->assertEmpty($address->getData(Dhl_LocationFinder_Model_Resource_Setup::ATTRIBUTE_CODE_POST_NUMBER));
     }
 
     /**
@@ -158,9 +174,9 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
     public function loadPostalFacilityFields()
     {
         $stationType = 'Station Type';
-        $stationId = '123';
-        $station = "$stationType $stationId";
-        $postNumber = 'Post Number';
+        $stationId   = '123';
+        $station     = "$stationType $stationId";
+        $postNumber  = 'Post Number';
 
         $postalFacility = new Varien_Object();
 
@@ -169,7 +185,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             'dhl_post_number'  => $postNumber,
             'dhl_station'      => $station,
         );
-        $address = new Varien_Object($addressData);
+        $address     = new Varien_Object($addressData);
 
         $observer = new Varien_Event_Observer();
         $observer->setData('postal_facility', $postalFacility);
@@ -194,19 +210,19 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
     public function loadPostalFacilityFieldsAlreadySet()
     {
         $stationType = 'Station Type';
-        $stationId = '123';
-        $station = "$stationType $stationId";
-        $postNumber = 'Post Number';
+        $stationId   = '123';
+        $station     = "$stationType $stationId";
+        $postNumber  = 'Post Number';
 
         $postalFacilityData = array('foo' => 'bar');
-        $postalFacility = new Varien_Object($postalFacilityData);
+        $postalFacility     = new Varien_Object($postalFacilityData);
 
         $addressData = array(
             'dhl_station_type' => $stationType,
             'dhl_post_number'  => $postNumber,
             'dhl_station'      => $station,
         );
-        $address = new Varien_Object($addressData);
+        $address     = new Varien_Object($addressData);
 
         $observer = new Varien_Event_Observer();
         $observer->setData('postal_facility', $postalFacility);
@@ -255,7 +271,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             'post_number' => 'Postnumber',
             'shop_number' => 'DHL Station'
         );
-        $postalFacility = new Varien_Object($postalFacilityData);
+        $postalFacility     = new Varien_Object($postalFacilityData);
 
         $orderAddress = Mage::getModel('sales/order_address');
 
@@ -277,24 +293,45 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
     /**
      * Test translation of internal packstation type to human friendly string
      *
-    */
+     * @test
+     */
     public function translateStationtype()
     {
+        $translation         = 'DHL Packstation';
+        $translateHelperMock = $this->getHelperMock('dhl_locationfinder/data', array('__'));
+        $translateHelperMock
+            ->expects($this->once())
+            ->method('__')
+            ->willReturn($translation);
+        $this->replaceByMock('helper', 'dhl_locationfinder/data', $translateHelperMock);
+
         $observer = new Varien_Event_Observer(
             array('address' => new Varien_Object(array('dhl_station_type' => 'packStation')))
         );
 
         $observerModel = new Dhl_LocationFinder_Model_Observer();
         $observerModel->translateStationtype($observer);
-        $this->assertEquals('DHL Packstation', $observer->getData('address')->getDhlStationType());
 
-        $observer->getAddress()->setDhlStationType('parcelShop');
-        $observerModel->translateStationtype($observer);
-        $this->assertEquals('DHL Paketshop', $observer->getData('address')->getDhlStationType());
-
-        $observer->getAddress()->setDhlStationType('postOffice');
-        $observerModel->translateStationtype($observer);
-        $this->assertEquals('DHL Postfiliale', $observer->getData('address')->getDhlStationType());
-
+        $this->assertEquals($translation, $observer->getAddress()->getDhlStationType());
     }
+
+    /**
+     * Test translation of internal packstation type to human friendly string
+     *
+     * @test
+     */
+    public function addPostNumberLabel()
+    {
+        $label = 'Postnumber: 123456';
+
+        $observer = new Varien_Event_Observer(
+            array('address' => new Varien_Object(array('dhl_post_number' => '123456')))
+        );
+
+        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel->addPostNumberLabel($observer);
+
+        $this->assertEquals($label, $observer->getAddress()->getDhlPostNumber());
+    }
+
 }

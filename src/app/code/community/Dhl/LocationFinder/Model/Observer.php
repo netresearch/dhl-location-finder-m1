@@ -49,8 +49,7 @@ class Dhl_LocationFinder_Model_Observer
         $autoloader = Mage::helper('dhl_locationfinder/autoloader');
 
         $dhlLibs = array('LocationFinder', 'Psf');
-        array_walk(
-            $dhlLibs,
+        array_walk($dhlLibs,
             function($libDir) use ($autoloader) {
                 $autoloader->addNamespace(
                     "Dhl\\$libDir\\", // prefix
