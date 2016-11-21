@@ -33,7 +33,7 @@
                 <attributes translate="dhl_station dhl_station_type dhl_post_number" module="dhl_locationfinder">
                     <dhl_station>DHL pick-up location</dhl_station>
                     <dhl_station_type>DHL pick-up location type</dhl_station_type>
-                    <dhl_post_number>DHL Post Number</dhl_post_number>
+                    <dhl_post_number>DHL Postnumber</dhl_post_number>
                 </attributes>
             </order_address>
         </resources>
