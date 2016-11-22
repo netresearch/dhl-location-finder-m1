@@ -395,6 +395,9 @@ DhlLocationFinder.prototype = {
             }
         }
 
+        // Update Regions for possible new country
+        shippingRegionUpdater.update();
+
         // Hide Map
         this.hideLocationFinder();
     },
