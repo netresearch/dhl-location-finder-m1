@@ -23,7 +23,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\Webservice\RequestData;
+use \Netresearch\Dhl\LocationFinder\Webservice\RequestData;
 /**
  * Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
  *
@@ -44,8 +44,8 @@ class Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
         $lat = '33    ';
         $lng = '    44';
         $services = array(
-            \Dhl\Psf\Api\service::ageVerification,
-            \Dhl\Psf\Api\service::parking,
+            Netresearch\Dhl\Psf\Api\service::ageVerification,
+            Netresearch\Dhl\Psf\Api\service::parking,
         );
         $flatServices = implode(', ', $services);
 
@@ -68,8 +68,8 @@ class Dhl_LocationFinder_Test_Model_Webservice_RequestDataTest
         $district = 'myDistrict';
         $country = '    AT';
         $services = array(
-            \Dhl\Psf\Api\service::ageVerification,
-            \Dhl\Psf\Api\service::parking,
+            Netresearch\Dhl\Psf\Api\service::ageVerification,
+            Netresearch\Dhl\Psf\Api\service::parking,
         );
         $flatAddress  = "$zipCode $city $district $street $houseNo Austria";
         $flatServices = implode(', ', $services);

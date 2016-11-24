@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\ParcelLocation;
-use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
-use \Dhl\LocationFinder\Webservice\RequestData;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation;
+use \Netresearch\Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
+use \Netresearch\Dhl\LocationFinder\Webservice\RequestData;
 /**
  * Dhl_LocationFinder_Test_Controller_FacilitiesControllerTest
  *

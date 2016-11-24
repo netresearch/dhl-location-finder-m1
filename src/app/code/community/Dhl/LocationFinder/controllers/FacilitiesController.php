@@ -24,12 +24,12 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\ParcelLocation\Limiter;
-use \Dhl\LocationFinder\ParcelLocation\Formatter\MarkerDetailsFormatter;
-use \Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
-use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
-use \Dhl\LocationFinder\Webservice\RequestData;
-use \Dhl\Psf\Api as LocationsApi;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Limiter;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Formatter\MarkerDetailsFormatter;
+use \Netresearch\Dhl\LocationFinder\Webservice\Adapter\Soap as SoapAdapter;
+use \Netresearch\Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
+use \Netresearch\Dhl\LocationFinder\Webservice\RequestData;
+use \Netresearch\Dhl\Psf\Api as LocationsApi;
 
 /**
  * Dhl_LocationFinder_FacilitiesController

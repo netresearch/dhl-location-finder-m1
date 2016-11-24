@@ -52,8 +52,8 @@ class Dhl_LocationFinder_Model_Observer
         array_walk($dhlLibs,
             function($libDir) use ($autoloader) {
                 $autoloader->addNamespace(
-                    "Dhl\\$libDir\\", // prefix
-                    sprintf('%s/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
+                    "Netresearch\Dhl\\$libDir\\", // prefix
+                    sprintf('%s/Netresearch/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
                 );
             }
         );

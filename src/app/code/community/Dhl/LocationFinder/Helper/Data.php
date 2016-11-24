@@ -24,9 +24,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\Webservice\Adapter as AdapterInterface;
-use \Dhl\LocationFinder\Webservice\Adapter\Soap as WebserviceAdapter;
-use \Dhl\Psf\Api as LocationsApi;
+use \Netresearch\Dhl\LocationFinder\Webservice\Adapter as AdapterInterface;
+use \Netresearch\Dhl\LocationFinder\Webservice\Adapter\Soap as WebserviceAdapter;
+use \Netresearch\Dhl\Psf\Api as LocationsApi;
 
 /**
  * Dhl_LocationFinder_Helper_Data

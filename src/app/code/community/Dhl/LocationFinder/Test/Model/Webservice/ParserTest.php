@@ -23,9 +23,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
-use \Dhl\LocationFinder\ParcelLocation\Collection as LocationCollection;
-use \Dhl\LocationFinder\ParcelLocation\Item as Location;
+use \Netresearch\Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Collection as LocationCollection;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Item as Location;
 /**
  * Dhl_LocationFinder_Test_Model_Webservice_ParserTest
  *
@@ -45,7 +45,7 @@ class Dhl_LocationFinder_Test_Model_Webservice_ParserTest
      */
     public function parcelLocations($serializedResponse)
     {
-        /** @var \Dhl\Psf\Api\psfParcellocation[] $psfLocations */
+        /** @var Netresearch\Dhl\Psf\Api\psfParcellocation[] $psfLocations */
         $psfLocations = unserialize($serializedResponse);
 
         $parser = new LocationParser();

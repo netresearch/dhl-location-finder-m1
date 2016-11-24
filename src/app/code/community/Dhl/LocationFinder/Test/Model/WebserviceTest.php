@@ -23,13 +23,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-use \Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
-use \Dhl\LocationFinder\ParcelLocation\Item as ParcelLocation;
-use \Dhl\LocationFinder\ParcelLocation\Limiter as ParcelLocationLimiter;
-use \Dhl\LocationFinder\Webservice;
-use \Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
-use \Dhl\LocationFinder\Webservice\RequestData;
-use \Dhl\Psf\Api as LocationsApi;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Collection as ParcelLocationCollection;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Item as ParcelLocation;
+use \Netresearch\Dhl\LocationFinder\ParcelLocation\Limiter as ParcelLocationLimiter;
+use \Netresearch\Dhl\LocationFinder\Webservice;
+use \Netresearch\Dhl\LocationFinder\Webservice\Parser\Location as LocationParser;
+use \Netresearch\Dhl\LocationFinder\Webservice\RequestData;
+use \Netresearch\Dhl\Psf\Api as LocationsApi;
 /**
  * Dhl_LocationFinder_Test_Model_WebserviceTest
  *
