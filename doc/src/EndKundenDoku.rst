@@ -103,7 +103,7 @@ Modulkonfiguration
 
     System → Konfiguration → Verkäufe → Zur Kasse
 
-Dort finden Sie einen neuen Abschnitt "DHL Standort-Finder" mit den für das Modul
+Dort finden Sie einen neuen Abschnitt "DHL Parcelshop Finder" mit den für das Modul
 relevanten Konfigurationseinstellungen.
 
 .. list-table:: Konfigurationseinstellungen
@@ -111,14 +111,14 @@ relevanten Konfigurationseinstellungen.
    :header-rows: 1
 
    * - Konfiguration
-     - Pflichtfeld / optional
+     - Pflichtfeld / Optional
      - Kommentar
    * - Google Maps API Key
      - Pflichtfeld
      - Zur Anzeige der DHL Abholorte im Checkout wird die Google Maps API
        verwendet, die einen API Key erfordert.
    * - Suchergebnisse beschränken
-     - optional
+     - Optional
      - Dieses Feld legt fest, wie viele Ergebnisse auf der Karte angezeigt werden.
        Die Standortsuche API Europa liefert maximal 50 Abholstationen zurück.
    * - Zoom (Automatisch oder Festwert)
@@ -126,7 +126,7 @@ relevanten Konfigurationseinstellungen.
      - Dieses Feld legt fest, ob die Karte im Checkout entsprechend den
        Suchergebnissen automatisch eingepasst oder ein fester Zoom-Faktor verwendet wird.
    * - Zoom-Faktor (nur bei Festwert)
-     - Pflichtfeld
+     - Optional
      - Wenn ein fester Zoom-Faktor verwendet werden soll, kann dieser hier
        festgelegt werden. Werte zwischen 9 und 15 sind möglich, wobei 15 der
        größte (detaillierteste) Zoom-Faktor ist.
@@ -155,9 +155,9 @@ die Adress-Attribute manuell in Ihrer Systemkonfiguration ergänzen, z.B. so:
 
 ::
 
-    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
-    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
-    {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
+    {{depend dhl_post_number}}{{var dhl_post_number}}{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}{{depend dhl_station}}
+    {{var dhl_station}}{{/depend}}
 
 .. raw:: pdf
 
@@ -170,15 +170,15 @@ Text:
     {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}
     {{depend company}}{{var company}}{{/depend}}
-    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}{{/depend}}
-    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
-    {{depend dhl_station}}{{var dhl_station}}{{/depend}}
+    {{depend dhl_post_number}}{{var dhl_post_number}}{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}{{depend dhl_station}}
+    {{var dhl_station}}{{/depend}}
     {{if street1}}{{var street1}}{{/if}}
     {{depend street2}}{{var street2}}{{/depend}}
     {{depend street3}}{{var street3}}{{/depend}}
     {{depend street4}}{{var street4}}{{/depend}}
-    {{if city}}{{var city}}, {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-    {{/if}}{{var country}}
+    {{if city}}{{var city}}, {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}
+    {{var postcode}}{{/if}} {{var country}}
     T: {{var telephone}}
     {{depend fax}}F: {{var fax}}{{/depend}}
 
@@ -188,9 +188,9 @@ Text One Line:
 
     {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}{{depend dhl_post_number}},
-    Postnummer: {{var dhl_post_number}}{{/depend}}{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
-    {{depend dhl_station}}, {{var dhl_station}}{{/depend}},
-    {{var street}}, {{var city}}, {{var region}} {{var postcode}}, {{var country}}
+    {{var dhl_post_number}}{{/depend}}{{depend dhl_station}}, {{var dhl_station}}{{/depend}},
+    {{var street}},
+    {{var city}}, {{var region}} {{var postcode}}, {{var country}}
 
 HTML:
 
@@ -199,15 +199,15 @@ HTML:
     {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>
     {{depend company}}{{var company}}<br />{{/depend}}
-    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}<br />{{/depend}}
-    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
-    {{depend dhl_station}}{{var dhl_station}}<br />{{/depend}}
-    {{if street1}}{{var street1}}<br />{{/if}}
+    {{depend dhl_post_number}} {{var dhl_post_number}}<br />{{/depend}}
+    {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}{{depend dhl_station}}
+    {{var dhl_station}}<br />{{/depend}} {{if street1}}{{var street1}}<br />{{/if}}
     {{depend street2}}{{var street2}}<br />{{/depend}}
     {{depend street3}}{{var street3}}<br />{{/depend}}
     {{depend street4}}{{var street4}}<br />{{/depend}}
-    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-    {{/if}}<br/>{{var country}}<br/>
+    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}
+    {{if postcode}}{{var postcode}}{{/if}}<br/>
+    {{var country}}<br/>
     {{depend telephone}}T: {{var telephone}}{{/depend}}
     {{depend fax}}<br/>F: {{var fax}}{{/depend}}
 
@@ -218,15 +218,16 @@ PDF:
     {{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}}
     {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}|
     {{depend company}}{{var company}}|{{/depend}}
-    {{depend dhl_post_number}}Postnummer: {{var dhl_post_number}}|{{/depend}}
+    {{depend dhl_post_number}} {{var dhl_post_number}}|{{/depend}}
     {{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
     {{depend dhl_station}}{{var dhl_station}}|{{/depend}}
     {{if street1}}{{var street1}}{{/if}}
     {{depend street2}}{{var street2}}|{{/depend}}
     {{depend street3}}{{var street3}}|{{/depend}}
     {{depend street4}}{{var street4}}|{{/depend}}
-    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}{{if postcode}}{{var postcode}}
-    {{/if}}| {{var country}}|
+    {{if city}}{{var city}},  {{/if}}{{if region}}{{var region}}, {{/if}}
+    {{if postcode}}{{var postcode}}{{/if}}|
+    {{var country}}|
     {{depend telephone}}T: {{var telephone}}{{/depend}}|
     {{depend fax}}<br/>F: {{var fax}}{{/depend}}
 
@@ -235,8 +236,7 @@ JavaScript Template:
 ::
 
     #{prefix} #{firstname} #{middlename} #{lastname} #{suffix}<br/>#{company}<br/>#{dhl_post_number},
-    #{{depend dhl_station_type}}{{var dhl_station_type}} {{/depend}}
-    {dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
+    #{dhl_station}<br/>#{street0}<br/>#{street1}<br/>#{street2}<br/>#{street3}<br/>#{city}, #{region},
     #{postcode}<br/>#{country_id}<br/>T: #{telephone}<br/>F: #{fax}
 
 Hinweise zur Verwendung des Moduls
@@ -255,7 +255,7 @@ Derzeit werden folgende Länder durch Standortsuche API Europa unterstützt:
 - Slowakei
 - Tschechien
 
-Somit sind beim Standort-Finder im Checkout auch nur diese Länder verfügbar (oder weniger, je nach
+Somit sind beim DHL Parcelshop Finder im Checkout auch nur diese Länder verfügbar (oder weniger, je nach
 Shop-Konfiguration).
 
 Sprachunterstützung
@@ -274,10 +274,6 @@ eingebunden.
 jQuery wird jedoch *nicht* eingebunden bei Verwendung des *RWD*-Themes. Sollten Sie ein angepasstes
 Theme einsetzen, das bereits jQuery ausliefert, übernehmen Sie bitte die Datei
 ``rwd/default/template/dhl_locationfinder/page/html/head.phtml`` in Ihr eigenes Theme.
-
-.. raw:: pdf
-
-   PageBreak
 
 Magento® API
 ------------
@@ -303,6 +299,10 @@ SOAP V2 (WS-I Compliance Mode)
         'orderIncrementId' => $incrementId,
     ));
     var_dump($result->result->shipping_address);
+
+.. raw:: pdf
+
+   PageBreak
 
 REST
 ~~~~
@@ -346,9 +346,9 @@ Magento® Checkout: Lieferadresse
 --------------------------------
 
 - Wenn Sie bereits mit Ihrem Kundenkonto eingeloggt sind und Ihr Adressbuch-Dropdown zur Vefügung steht, wählen Sie die Option *Neue Adresse*
-- Aktivieren Sie die Checkbox *Lieferung an einen Abholort*
-- Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Abholort* sowie der Button *Packstation / Postfiliale suchen*
-- Per Klick auf den Button *Packstation / Postfiliale suchen* öffnen Sie die DHL Location Map
+- Aktivieren Sie die Checkbox *Lieferung an einen DHL Abholort*
+- Durch Aktivierung erscheinen die zusätzlichen Eingabefelder *DHL Postnummer* und *DHL Abholort* sowie der Button *Paketshop / Postfiliale suchen*
+- Per Klick auf den Button *Paketshop / Postfiliale suchen* öffnen Sie die DHL Location Map
 
 .. image:: images/de/checkout-step-002-checkbox-locationfinder.png
    :width: 16.5cm
@@ -363,7 +363,7 @@ DHL Location Map: Initiales Anzeigeergebnis und neue Standortsuche
 - Das Dropdown-Feld *Land* richtet sich nach Ihrer Systemkonfiguration für ``general_country_default`` und ``general_country_allow``
 
 .. image:: images/de/checkout-step-002-map-invoiceaddress.png
-   :width: 16.5cm
+   :width: 14.5cm
 
 DHL Location Map: Mögliche Filterung des Anzeigeergebnisses
 -----------------------------------------------------------
@@ -371,7 +371,7 @@ DHL Location Map: Mögliche Filterung des Anzeigeergebnisses
 - Durch Aktivierung oder Deaktivierung der Checkboxen können Sie das Anzeigeergebnis nach *Packstationen*, *Postfilialen* oder *Paketshops* filtern
 
 .. image:: images/de/checkout-step-002-map-invoiceaddress-filtered.png
-   :width: 16.5cm
+   :width: 14.5cm
 
 .. raw:: pdf
 
@@ -385,6 +385,10 @@ DHL Location Map: Zusätzliche Informationen und Übernahme des Standorts
 - Für Postfilialen und Paketshops: Name, Adresse, Öffnungszeiten, Services
 - Mit einem Klick auf den Textlink *Diesen Standort verwenden* können Sie den Standort übernehmen; die DHL Location Map schließt sich danach
 - Per *Doppelklick* auf ein Standort Icon können Sie den Standort direkt übernehmen, die Map schließt sich sofort
+
+
+.. image:: images/de/checkout-step-002-store-information.png
+   :width: 16.5cm
 
 .. image:: images/de/checkout-step-002-shipping-information.png
    :width: 16.5cm
@@ -401,9 +405,6 @@ Magento® Checkout: Lieferadresse - Überprüfung Ihrer Angaben
 - Wenn Sie eine *Packstation* ausgewählt haben, müssen Sie Ihre persönliche *DHL Postnummer* angeben (Pflichtfeld)
 - Bei Auswahl einer *Postfiliale* oder eines *Paketshops* ist die Angabe der persönlichen *DHL Postnummer* nicht erforderlich (kann aber trotzdem angegeben werden)
 - Setzen Sie den Checkout wie üblich fort (Magento®-Standardverhalten)
-
-.. image:: images/de/checkout-step-003-packstation-data.png
-   :width: 16.5cm
 
 Magento® Checkout: Zusätzliche Hinweise
 ---------------------------------------
