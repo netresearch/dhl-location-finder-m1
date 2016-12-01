@@ -35,13 +35,13 @@ $markerIcons = $this->getMarkerIcons();
     />
 
     <input type="checkbox" name="shipping[useLocationFinder]" id="shipping:useLocationFinder" value=""
-           title="<?php echo $this->__('Shipping to Packstation or post office'); ?>"
+           title="<?php echo $this->__('Shipping to Parcelstation or Post Office'); ?>"
            onclick="locationFinder.showLocationData(this.checked)" class="checkbox">
-    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping to Parcelstation or post office'); ?></label>
+    <label for="shipping:useLocationFinder"><?php echo $this->__('Shipping to Parcelstation or Post Office'); ?></label>
 
     <a id = "locationfinder-button" href="javascript:void(0);" onclick="locationFinder.showLocationFinder(); locationFinder.initMap('map-canvas');"
        class="locationfinder-opener button">
-        <?php echo $this->__('Search for Packstation / Post office'); ?>
+        <?php echo $this->__('Search for Parcelstation/ Post Office'); ?>
     </a>
 </div>
 
@@ -139,7 +139,7 @@ $markerIcons = $this->getMarkerIcons();
             <label for="shipping:dhl_post_number">
                 <?php echo $this->__('DHL Postnumber'); ?>
                 <i class="tooltip-inner"
-                   data-tooltip="<?php echo $this->__('The Postnumber is your personal identification code that you receive with your registration at DHL.The postnumber is mandatory if you want to use the Packstation or a Post office.');?>">
+                   data-tooltip="<?php echo $this->__('The Postnumber is your personal identification code that you receive with your registration at DHL.The postnumber is mandatory if you want to use a Packstation or a Post Office.');?>">
                     ?
                 </i>
             </label>
