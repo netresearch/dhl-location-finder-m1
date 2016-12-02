@@ -11,16 +11,16 @@
    +-------------------------+-------------------------+
 
 .. header::
-   .. image:: images/DHL_rgb.jpg
+   .. image:: images/dhl.jpg
       :width: 4.5cm
       :height: 1.2cm
       :align: right
 
 .. sectnum::
 
-=======================================================
-DHL Parcel Shop Finder: Select Parcel Shops in Checkout
-=======================================================
+==========================================================
+DHL Locationfinder: Search Parcelstations and Post Offices
+==========================================================
 
 ChangeLog
 =========
@@ -32,6 +32,20 @@ ChangeLog
    * - **Revision**
      - **Date**
      - **Description**
+
+
+   * - 1.0.3
+     - 02.12.2016
+     - Bugfixes:
+
+       * Update Region Field after the country was changed in the Location Map Popup
+       * Remove all locations from the map, which do not accept shipping orders
+
+       Improvements:
+
+       * Improve translations to DHL standard
+       * Add validation for Postnumber
+       * Add full compatibility with the new DHL Versenden extension in version 1.0.0
 
    * - 1.0.2
      - 17.10.2016
