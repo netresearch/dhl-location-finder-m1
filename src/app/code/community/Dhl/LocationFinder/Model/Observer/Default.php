@@ -35,30 +35,18 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @link      http://www.netresearch.de/
  */
-class Dhl_LocationFinder_Model_Observer
+class Dhl_LocationFinder_Model_Observer_Default
 {
     /**
-     * Register autoloader in order to locate the extension libraries.
+     * Dhl_LocationFinder_Model_Observer constructor.
+     *
+     * Observer methods may get triggered through 3rd party cron tasks. To make
+     * sure the library classes are loaded in those cases, we need to register
+     * the autoloader before the observer method is invoked.
      */
-    public function registerAutoload()
+    public function __construct()
     {
-        if (!Mage::getModel('dhl_locationfinder/config')->isAutoloadEnabled()) {
-            return;
-        }
-
-        $autoloader = Mage::helper('dhl_locationfinder/autoloader');
-
-        $dhlLibs = array('LocationFinder', 'Psf');
-        array_walk($dhlLibs,
-            function($libDir) use ($autoloader) {
-                $autoloader->addNamespace(
-                    "Netresearch\Dhl\\$libDir\\", // prefix
-                    sprintf('%s/Netresearch/Dhl/%s/', Mage::getBaseDir('lib'), $libDir) // baseDir
-                );
-            }
-        );
-
-        $autoloader->register();
+        Mage::getSingleton('dhl_locationfinder/autoloader')->registerAutoload();
     }
 
     /**
