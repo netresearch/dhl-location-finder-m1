@@ -46,6 +46,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
 
     /**
      * @test
+     * @singleton dhl_locationfinder/autoloader
      * @loadFixture
      */
     public function registerAutoloadDisabled()
@@ -56,12 +57,13 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             ->method('register');
         $this->replaceByMock('helper', 'dhl_locationfinder/autoloader', $helperMock);
 
-        $observer = new Dhl_LocationFinder_Model_Observer();
+        $observer = new Dhl_LocationFinder_Model_Observer_Autoload();
         $observer->registerAutoload();
     }
 
     /**
      * @test
+     * @singleton dhl_locationfinder/autoloader
      * @loadFixture
      */
     public function registerAutoloadEnabled()
@@ -72,7 +74,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             ->method('register');
         $this->replaceByMock('helper', 'dhl_locationfinder/autoloader', $helperMock);
 
-        $observer = new Dhl_LocationFinder_Model_Observer();
+        $observer = new Dhl_LocationFinder_Model_Observer_Autoload();
         $observer->registerAutoload();
     }
 
@@ -100,7 +102,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         // before observer, shipping address does not contain map
         $this->assertNotContains('map-canvas', $transport->getData('html'));
 
-        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer_Default();
         $dhlObserver->appendLocationFinderToShipping($observer);
 
         // after observer, shipping address contains map
@@ -131,7 +133,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observer = new Varien_Event_Observer();
         $observer->setData('quote', $quote);
 
-        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer_Default();
         $dhlObserver->saveDHLFieldsInQuote($observer);
 
         /** @var Mage_Sales_Model_Quote_Address $address */
@@ -191,7 +193,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observer->setData('postal_facility', $postalFacility);
         $observer->setData('customer_address', $address);
 
-        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer_Default();
         $dhlObserver->loadPostalFacilityFields($observer);
 
         $this->assertArrayHasKey('shop_type', $postalFacility->getData());
@@ -228,7 +230,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observer->setData('postal_facility', $postalFacility);
         $observer->setData('customer_address', $address);
 
-        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer_Default();
         $dhlObserver->loadPostalFacilityFields($observer);
 
         $this->assertArrayNotHasKey('shop_type', $postalFacility->getData());
@@ -248,7 +250,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observer->setData('postal_facility', $postalFacility);
         $observer->setData('customer_address', $address);
 
-        $dhlObserver = new Dhl_LocationFinder_Model_Observer();
+        $dhlObserver = new Dhl_LocationFinder_Model_Observer_Default();
         $dhlObserver->loadPostalFacilityFields($observer);
 
         $this->assertArrayNotHasKey('shop_type', $postalFacility->getData());
@@ -279,7 +281,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
         $observer->setData('postal_facility', $postalFacility);
         $observer->setData('customer_address', $orderAddress);
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel = new Dhl_LocationFinder_Model_Observer_Default();
         $observerModel->updatePostalFacilityFields($observer);
 
         $this->assertArrayHasKey('dhl_station_type', $orderAddress->getData());
@@ -309,7 +311,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             array('address' => new Varien_Object(array('dhl_station_type' => 'packStation')))
         );
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel = new Dhl_LocationFinder_Model_Observer_Default();
         $observerModel->translateStationtype($observer);
 
         $this->assertEquals($translation, $observer->getAddress()->getDhlStationType());
@@ -328,7 +330,7 @@ class Dhl_LocationFinder_Test_Model_ObserverTest
             array('address' => new Varien_Object(array('dhl_post_number' => '123456')))
         );
 
-        $observerModel = new Dhl_LocationFinder_Model_Observer();
+        $observerModel = new Dhl_LocationFinder_Model_Observer_Default();
         $observerModel->addPostNumberLabel($observer);
 
         $this->assertEquals($label, $observer->getAddress()->getDhlPostNumber());
