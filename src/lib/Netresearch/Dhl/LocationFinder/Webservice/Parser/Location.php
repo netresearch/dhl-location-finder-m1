@@ -106,28 +106,30 @@ class Location implements Parser
         foreach ($parcelLocations as $parcelLocation) {
 
             // filter all invalid locations which not accept shipping orders
-            if (array_key_exists(service::parcelpickup, array_flip($parcelLocation->getPsfServicetypes()))) {
-                $collection->addItem(
-                    new ParcelLocation(
-                        array(
-                            'key_word'        => $parcelLocation->getKeyWord(),
-                            'shop_type'       => $parcelLocation->getShopType(),
-                            'shop_number'     => $parcelLocation->getPrimaryKeyZipRegion(),
-                            'shop_name'       => $parcelLocation->getShopName(),
-                            'additional_info' => $parcelLocation->getAdditionalInfo(),
-                            'opening_hours'   => $this->parseOpeningHours($parcelLocation->getPsfOtherinfos()),
-                            'services'        => $parcelLocation->getPsfServicetypes(),
-                            'street'          => $parcelLocation->getStreet(),
-                            'house_no'        => $parcelLocation->getHouseNo(),
-                            'zip_code'        => $parcelLocation->getZipCode(),
-                            'city'            => $parcelLocation->getCity(),
-                            'country_code'    => $parcelLocation->getCountryCode(),
-                            'id'              => $parcelLocation->getPrimaryKeyDeliverySystem(),
-                            'latitude'        => $parcelLocation->getLocation()->getLatitude(),
-                            'longitude'       => $parcelLocation->getLocation()->getLongitude(),
+            if (is_array($parcelLocation->getPsfServicetypes())) {
+                if (array_key_exists(service::parcelpickup, array_flip($parcelLocation->getPsfServicetypes()))) {
+                    $collection->addItem(
+                        new ParcelLocation(
+                            array(
+                                'key_word'        => $parcelLocation->getKeyWord(),
+                                'shop_type'       => $parcelLocation->getShopType(),
+                                'shop_number'     => $parcelLocation->getPrimaryKeyZipRegion(),
+                                'shop_name'       => $parcelLocation->getShopName(),
+                                'additional_info' => $parcelLocation->getAdditionalInfo(),
+                                'opening_hours'   => $this->parseOpeningHours($parcelLocation->getPsfOtherinfos()),
+                                'services'        => $parcelLocation->getPsfServicetypes(),
+                                'street'          => $parcelLocation->getStreet(),
+                                'house_no'        => $parcelLocation->getHouseNo(),
+                                'zip_code'        => $parcelLocation->getZipCode(),
+                                'city'            => $parcelLocation->getCity(),
+                                'country_code'    => $parcelLocation->getCountryCode(),
+                                'id'              => $parcelLocation->getPrimaryKeyDeliverySystem(),
+                                'latitude'        => $parcelLocation->getLocation()->getLatitude(),
+                                'longitude'       => $parcelLocation->getLocation()->getLongitude(),
+                            )
                         )
-                    )
-                );
+                    );
+                }
             }
         }
 
