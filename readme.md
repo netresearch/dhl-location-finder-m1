@@ -1,12 +1,20 @@
 Dhl Parcel Shop Finder Extension
 ================================
 
+***
+**Important**: The _DHL Location Search Europe_ web service that this module
+connects to is abandoned.
+
+The Dhl_LocationFinder module is no longer usable.
+See also [Post & DHL Shipping in Magento FAQ](https://dhl.support.netresearch.de/support/solutions/articles/12000075016-what-does-security-violation-mean-).
+***
+
 The DHL Parcel Location Finder extension for Magento allows customers to select
 Parcel Shops in the One Page Checkout.
 
 Facts
 -----
-- version: 1.0.3
+- version: 1.0.4
 - [extension on GitLab](https://git.netresearch.de/dhl/location-finder-m1)
 - [extension on Magento Connect](https://www.magentocommerce.com/magento-connect/dhl-location-finder-standortsuche.html)
   - extension key: Dhl_LocationFinder

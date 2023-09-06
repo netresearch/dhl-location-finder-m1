@@ -34,6 +34,12 @@ ChangeLog
      - **Description**
 
 
+   * - 1.0.4
+     - 08.09.2023
+     - Changes:
+
+       * Update README to publish module's end of life.
+
    * - 1.0.3
      - 02.12.2016
      - Bugfixes:
