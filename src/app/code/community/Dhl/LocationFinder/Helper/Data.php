@@ -65,11 +65,11 @@ class Dhl_LocationFinder_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMapJsUrl()
     {
-        $jsUrl = 'https://maps.googleapis.com/maps/api/js';
+        $jsUrl = 'https://maps.googleapis.com/maps/api/js?v=3.53';
 
         $apiKey = Mage::getSingleton('dhl_locationfinder/config')->getApiKey();
         if ($apiKey) {
-            $jsUrl = sprintf('%s?key=%s', $jsUrl, $apiKey);
+            $jsUrl = sprintf('%s&key=%s', $jsUrl, $apiKey);
         }
 
         return $jsUrl;

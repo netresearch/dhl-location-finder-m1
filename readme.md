@@ -6,7 +6,7 @@ Parcel Shops in the One Page Checkout.
 
 Facts
 -----
-- version: 1.0.2
+- version: 1.0.3
 - [extension on GitLab](https://git.netresearch.de/dhl/location-finder-m1)
 - [extension on Magento Connect](https://www.magentocommerce.com/magento-connect/dhl-location-finder-standortsuche.html)
   - extension key: Dhl_LocationFinder
